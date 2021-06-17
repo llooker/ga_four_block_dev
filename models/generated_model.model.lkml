@@ -37,13 +37,8 @@ explore: sessions {
     relationship: one_to_many
   }
 
-  join: event_data_event_params {
-    sql: LEFT JOIN UNNEST(${event_data.event_params}) as event_data_event_params ;;
-    relationship: one_to_many
-    required_joins: [event_data]
-  }
-
   join: event_data_items {
+    view_label: "Event Data"
     sql: LEFT JOIN UNNEST(${event_data.items}) as event_data_items  ;;
     relationship: one_to_many
     required_joins: [event_data]

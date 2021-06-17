@@ -1,6 +1,8 @@
 view: sessions {
   derived_table: {
     datagroup_trigger: generated_model_default_datagroup
+    partition_keys: ["session_date"]
+    cluster_keys: ["session_date"]
     increment_key: "session_date"
     increment_offset: 3
     sql: with

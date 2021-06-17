@@ -21,7 +21,7 @@ view: event_data_event_params {
     group_label: "Event: Parameters"
     label: "Clean Event"
     type: string
-    sql: (SELECT value.string FROM UNNEST(event_params) WHERE key = "clean_event") ;;
+    sql: (SELECT value.string_value FROM UNNEST(event_params) WHERE key = "clean_event") ;;
   }
 
   dimension: event_param_debug_mode {
