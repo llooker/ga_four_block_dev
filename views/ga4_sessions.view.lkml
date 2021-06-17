@@ -4,51 +4,36 @@ view: ga4_sessions {
     increment_key: "session_date"
     increment_offset: 3
     sql: with
-      session_list as (
+      session_list_with_event_history as (
         select timestamp(PARSE_DATE('%Y%m%d', REGEXP_EXTRACT(_TABLE_SUFFIX,r'[0-9]+'))) session_date
             ,  (select value.int_value from UNNEST(events.event_params) where key = "ga_session_id") ga_session_id
             ,  (select value.int_value from UNNEST(events.event_params) where key = "ga_session_number") ga_session_number
             ,  events.user_pseudo_id
+            ,  ARRAY_AGG(STRUCT(event_date
+                              , event_timestamp
+                              , event_name
+                              , event_params
+                              , event_previous_timestamp
+                              , event_value_in_usd
+                              , event_bundle_sequence_id
+                              , event_server_timestamp_offset
+                              , user_id
+                              , user_pseudo_id
+                              , user_properties
+                              , user_first_touch_timestamp
+                              , user_ltv
+                              , device
+                              , geo
+                              , app_info
+                              , traffic_source
+                              , stream_id
+                              , platform
+                              , event_dimensions
+                              , ecommerce
+                              , items)) event_data
               from `adh-demo-data-review.analytics_213025502.events_*` events
-              where {% incrementcondition %} timestamp(PARSE_DATE('%Y%m%d', REGEXP_EXTRACT(_TABLE_SUFFIX,r'[0-9]+'))) {%  endincrementcondition %}
-              -- where  >= ((TIMESTAMP_ADD(TIMESTAMP_TRUNC(CURRENT_TIMESTAMP(), DAY), INTERVAL -3 DAY)))
-              --   and  timestamp(PARSE_DATE('%Y%m%d', REGEXP_EXTRACT(_TABLE_SUFFIX,r'[0-9]+'))) <= ((TIMESTAMP_ADD(TIMESTAMP_ADD(TIMESTAMP_TRUNC(CURRENT_TIMESTAMP(), DAY), INTERVAL -3 DAY), INTERVAL 4 DAY)))
-              group by 1,2,3,4
+              where {% incrementcondition %} timestamp(PARSE_DATE('%Y%m%d', REGEXP_EXTRACT(_TABLE_SUFFIX,r'[0-9]+'))) {%  endincrementcondition %}              group by 1,2,3,4
         ),
-      -- To Enable Session List w/ Event History, Comment-Out or Delete the "Session_List" CTE above and uncomment the "session_list_with_event_history" cte below.
-      --    Also adjust the "FROM" line in
-      -- session_list_with_event_history as (
-      --   select timestamp(PARSE_DATE('%Y%m%d', REGEXP_EXTRACT(_TABLE_SUFFIX,r'[0-9]+'))) session_date
-      --       ,  (select value.int_value from UNNEST(events.event_params) where key = "ga_session_id") ga_session_id
-      --       ,  (select value.int_value from UNNEST(events.event_params) where key = "ga_session_number") ga_session_number
-      --       ,  events.user_pseudo_id
-      --       ,  ARRAY_AGG(STRUCT(event_date
-      --                         , event_timestamp
-      --                         , event_name
-      --                         , event_params
-      --                         , event_previous_timestamp
-      --                         , event_value_in_usd
-      --                         , event_bundle_sequence_id
-      --                         , event_server_timestamp_offset
-      --                         , user_id
-      --                         , user_pseudo_id
-      --                         , user_properties
-      --                         , user_first_touch_timestamp
-      --                         , user_ltv
-      --                         , device
-      --                         , geo
-      --                         , app_info
-      --                         , traffic_source
-      --                         , stream_id
-      --                         , platform
-      --                         , event_dimensions
-      --                         , ecommerce
-      --                         , items)) event_data
-      --         from `adh-demo-data-review.analytics_213025502.events_*` events
-      --         where timestamp(PARSE_DATE('%Y%m%d', REGEXP_EXTRACT(_TABLE_SUFFIX,r'[0-9]+'))) >= ((TIMESTAMP_ADD(TIMESTAMP_TRUNC(CURRENT_TIMESTAMP(), DAY), INTERVAL -3 DAY)))
-      --           and  timestamp(PARSE_DATE('%Y%m%d', REGEXP_EXTRACT(_TABLE_SUFFIX,r'[0-9]+'))) <= ((TIMESTAMP_ADD(TIMESTAMP_ADD(TIMESTAMP_TRUNC(CURRENT_TIMESTAMP(), DAY), INTERVAL -3 DAY), INTERVAL 4 DAY)))
-      --         group by 1,2,3,4
-      --   ),
       session_facts as (
         select timestamp(PARSE_DATE('%Y%m%d', REGEXP_EXTRACT(_TABLE_SUFFIX,r'[0-9]+'))) session_date
             ,  (select value.int_value from UNNEST(events.event_params) where key = "ga_session_id") ga_session_id
@@ -65,10 +50,23 @@ view: ga4_sessions {
                   , (MAX(events.event_timestamp) - MIN(events.event_timestamp))/(60 * 1000 * 1000) AS session_length_minutes
               from `adh-demo-data-review.analytics_213025502.events_*` events
               where {% incrementcondition %} timestamp(PARSE_DATE('%Y%m%d', REGEXP_EXTRACT(_TABLE_SUFFIX,r'[0-9]+'))) {%  endincrementcondition %}
-
-              -- where timestamp(PARSE_DATE('%Y%m%d', REGEXP_EXTRACT(_TABLE_SUFFIX,r'[0-9]+'))) >= ((TIMESTAMP_ADD(TIMESTAMP_TRUNC(CURRENT_TIMESTAMP(), DAY), INTERVAL -3 DAY)))
-              --   and  timestamp(PARSE_DATE('%Y%m%d', REGEXP_EXTRACT(_TABLE_SUFFIX,r'[0-9]+'))) <= ((TIMESTAMP_ADD(TIMESTAMP_ADD(TIMESTAMP_TRUNC(CURRENT_TIMESTAMP(), DAY), INTERVAL -3 DAY), INTERVAL 4 DAY)))
               group by 1,2,3,4
+        ),
+
+      -- Retrieves the last non-direct medium, source, and campaign from the session's page_view and user_engagement events.
+      session_tags as (
+        select sl.session_date
+            ,  sl.ga_session_id
+            ,  sl.ga_session_number
+            ,  sl.user_pseudo_id
+            ,  first_value((select value.string_value from unnest(ed.event_params) where key = 'medium')) over (partition by sl.session_date, sl.ga_session_id, sl.user_pseudo_id order by ed.event_timestamp desc) medium
+            ,  first_value((select value.string_value from unnest(ed.event_params) where key = 'source')) over (partition by sl.session_date, sl.ga_session_id, sl.user_pseudo_id order by ed.event_timestamp desc) source
+            ,  first_value((select value.string_value from unnest(ed.event_params) where key = 'campaign')) over (partition by sl.session_date, sl.ga_session_id, sl.user_pseudo_id order by ed.event_timestamp desc) campaign
+            ,  first_value((select value.string_value from unnest(ed.event_params) where key = 'page_referrer')) over (partition by sl.session_date, sl.ga_session_id, sl.user_pseudo_id order by ed.event_timestamp desc) page_referrer
+        from session_list_with_event_history sl
+          ,  unnest(event_data) ed
+        where ed.event_name in ('page_view','user_engagement')
+          and (select value.string_value from unnest(ed.event_params) where key = 'medium') is not null
         ),
 
       -- Device Columns from 'Session Start' event.
@@ -93,11 +91,8 @@ view: ga4_sessions {
             ,  case when device.category = 'mobile' then true else false end as device__is_mobile
         from `adh-demo-data-review.analytics_213025502.events_*` events
         where event_name = 'session_start'
-          and {% incrementcondition %} timestamp(PARSE_DATE('%Y%m%d', REGEXP_EXTRACT(_TABLE_SUFFIX,r'[0-9]+'))) {%  endincrementcondition %}
+          and {% incrementcondition %} timestamp(PARSE_DATE('%Y%m%d', REGEXP_EXTRACT(_TABLE_SUFFIX,r'[0-9]+'))) {%  endincrementcondition %}        ),
 
-         -- and timestamp(PARSE_DATE('%Y%m%d', REGEXP_EXTRACT(_TABLE_SUFFIX,r'[0-9]+'))) >= ((TIMESTAMP_ADD(TIMESTAMP_TRUNC(CURRENT_TIMESTAMP(), DAY), INTERVAL -3 DAY)))
-         -- and timestamp(PARSE_DATE('%Y%m%d', REGEXP_EXTRACT(_TABLE_SUFFIX,r'[0-9]+'))) <= ((TIMESTAMP_ADD(TIMESTAMP_ADD(TIMESTAMP_TRUNC(CURRENT_TIMESTAMP(), DAY), INTERVAL -3 DAY), INTERVAL 4 DAY)))
-        ),
       -- GEO Columns from 'Session Start' event.
       geo as (
         select timestamp(PARSE_DATE('%Y%m%d', REGEXP_EXTRACT(_TABLE_SUFFIX,r'[0-9]+'))) session_date
@@ -113,9 +108,6 @@ view: ga4_sessions {
         from `adh-demo-data-review.analytics_213025502.events_*` events
         where event_name = 'session_start'
           and {% incrementcondition %} timestamp(PARSE_DATE('%Y%m%d', REGEXP_EXTRACT(_TABLE_SUFFIX,r'[0-9]+'))) {%  endincrementcondition %}
-
-        -- and timestamp(PARSE_DATE('%Y%m%d', REGEXP_EXTRACT(_TABLE_SUFFIX,r'[0-9]+'))) >= ((TIMESTAMP_ADD(TIMESTAMP_TRUNC(CURRENT_TIMESTAMP(), DAY), INTERVAL -3 DAY)))
-        -- and timestamp(PARSE_DATE('%Y%m%d', REGEXP_EXTRACT(_TABLE_SUFFIX,r'[0-9]+'))) <= ((TIMESTAMP_ADD(TIMESTAMP_ADD(TIMESTAMP_TRUNC(CURRENT_TIMESTAMP(), DAY), INTERVAL -3 DAY), INTERVAL 4 DAY)))
         )
 
       -- Final Select Statement:
@@ -123,6 +115,10 @@ view: ga4_sessions {
           ,  sl.ga_session_id ga_session_id
           ,  sl.ga_session_number ga_session_number
           ,  sl.user_pseudo_id user_pseudo_id
+          ,  (SELECT AS STRUCT coalesce(sa.medium,'(none)') medium
+                            ,  coalesce(sa.source,'(direct)') source
+                            ,  coalesce(sa.campaign,'(direct)') campaign
+                            ,  sa.page_referrer ) session_attribution
           ,  (SELECT AS STRUCT sf.session_event_count
                             ,  engaged_events
                             ,  is_engaged_session
@@ -149,9 +145,13 @@ view: ga4_sessions {
                             ,  g.geo__metro
                             ,  g.geo__sub_continent
                             ,  g.geo__region) geo_data
-      from session_list sl
-      -- Comment out above "From" line and Uncomment out below "From" line if enabling session list w/ event history CTE.
-      -- from session_list_with_event_history sl
+          ,  sl.event_data
+      from session_list_with_event_history sl
+      left join session_tags sa
+        on  sl.session_date = sa.session_date
+        and sl.ga_session_id = sa.ga_session_id
+        and sl.ga_session_number = sa.ga_session_number
+        and sl.user_pseudo_id = sa.user_pseudo_id
       left join session_facts sf
         on  sl.session_date = sf.session_date
         and sl.ga_session_id = sf.ga_session_id
@@ -167,6 +167,7 @@ view: ga4_sessions {
         and sl.ga_session_id = g.ga_session_id
         and sl.ga_session_number = g.ga_session_number
         and sl.user_pseudo_id = g.user_pseudo_id
+
        ;;
   }
 
