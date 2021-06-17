@@ -30,4 +30,22 @@ explore: events_20201008 {
   }
 }
 
-explore: ga4_sessions {}
+explore: sessions {
+
+  join: event_data {
+    sql: LEFT JOIN UNNEST(${sessions.event_data}) as event_data ;;
+    relationship: one_to_many
+  }
+
+  join: event_data_event_params {
+    sql: LEFT JOIN UNNEST(${event_data.event_params}) as event_data_event_params ;;
+    relationship: one_to_many
+    required_joins: [event_data]
+  }
+
+  join: event_data_items {
+    sql: LEFT JOIN UNNEST(${event_data.items}) as event_data_items  ;;
+    relationship: one_to_many
+    required_joins: [event_data]
+  }
+}
