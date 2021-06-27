@@ -35,7 +35,7 @@ view: event_data_event_params {
     group_label: "Event: Parameters"
     label: "Session Event"
     type: number
-    sql: (SELECT value.int_value FROM UNNEST(event_params) WHERE key = "engaged_session_event") ;;
+    sql: (SELECT coalesce(cast(value.string_value as INT64),value.int_value) FROM UNNEST(event_params) WHERE key = "engaged_session_event") ;;
   }
 
   dimension: event_param_engagement_time_msec {
@@ -135,4 +135,14 @@ view: event_data_event_params {
     type: string
     sql: (SELECT value.string_value FROM UNNEST(event_params) WHERE key = "term") ;;
   }
+
+## Measures
+
+  measure: total_engaged_events {
+    group_label: "Event: Parameters"
+    label: "Total Engaged Events"
+    type: count_distinct
+    filters: [event_param_engaged_session_event: ">0"]
+  }
+
 }

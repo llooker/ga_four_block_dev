@@ -1,6 +1,7 @@
 connection: "looker-demos"
 include: "*.view.lkml"
 include: "/views/*.view.lkml"
+include: "/attributes/*.lkml"
 
 datagroup: generated_model_default_datagroup {
   sql_trigger:  SELECT FLOOR(((TIMESTAMP_DIFF(CURRENT_TIMESTAMP(),'1970-01-01 00:00:00',SECOND)) - 60*60*6)/(60*60*24));;
@@ -43,4 +44,11 @@ explore: sessions {
     relationship: one_to_many
     required_joins: [event_data]
   }
+
+  join: event_data_user_properties {
+    view_label: "Event Data"
+    sql: left join unnest(${event_data.user_properties}) as event_data_user_properties ;;
+    relationship: one_to_many
+  }
+
 }

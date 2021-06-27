@@ -161,11 +161,10 @@ left join device d
   on  sl.sl_key = d.sl_key
 left join geo g
   on  sl.sl_key = g.sl_key
-limit 10
-
        ;;
   }
 
+## Dimensions
   dimension: sl_key {
     type: string
     sql: ${TABLE}.ga_session_id ;;
@@ -193,20 +192,156 @@ limit 10
     sql: ${TABLE}.user_pseudo_id ;;
   }
 
+  ## Session Data Dimensions
   dimension: session_data {
     type: string
     sql: ${TABLE}.session_data ;;
+    hidden: yes
+    ## This is the Parent Struct that contains the session_data elements. It is not directly useably as a dimension.
+    ## It is referred to by its child dimensions in their sql definition.
   }
 
+    dimension: session_data_session_event_count {
+      type: number
+      sql: ${session_data}.session_event_count ;;
+      label: "Session Event Count"
+    }
+
+    dimension: session_data_engaged_events {
+      type: number
+      sql: ${session_data}.engaged_events ;;
+      label: "Session Engaged Event Count"
+    }
+
+    dimension: session_data_is_engaged_session {
+      type: yesno
+      sql: ${session_data}.is_engaged_session ;;
+      label: "Is Engaged Session?"
+    }
+
+    dimension: session_data_is_first_visit_session {
+      type: yesno
+      sql: ${session_data}.is_first_visit_session ;;
+      label: "Is First Visit Session?"
+    }
+
+    dimension_group: session_data_session_end {
+      type: time
+      sql: ${session_data}.session_end ;;
+      timeframes: [raw,time,date,week,month,year]
+      label: "Session End"
+    }
+
+    dimension_group: session_data_session_start {
+      type: time
+      sql: ${session_data}.session_start ;;
+      timeframes: [raw,time,date,week,month,year]
+      label: "Session Start"
+    }
+
+    dimension: session_data_session_duration {
+      type: number
+      sql: ((TIMESTAMP_DIFF(${session_data_session_end_raw}, ${session_data_session_start_raw}, second))/86400.0)  ;;
+      value_format_name: hour_format
+      label: "Session Duration"
+    }
+
+    dimension: session_data_session_duration_tier {
+      label: "Session Duration Tiers"
+      description: "The length (returned as a string) of a session measured in seconds and reported in second increments."
+      type: tier
+      sql: (${session_data_session_duration}*86400.0) ;;
+      tiers: [10,30,60,120,180,240,300,600]
+      style: integer
+    }
+
+    dimension: session_data_is_bounce {
+      type: yesno
+      sql: ${session_data_session_duration} = 0 AND ${session_data_engaged_events} = 0;;
+      label: "Is Bounce?"
+      description: "If Session Duration Minutes = 0 and there are no engaged events in the Session, then Bounce = True."
+    }
+
+  ## Session Attribution Dimensions
+  dimension: session_attribution {
+    type: string
+    sql: ${TABLE}.session_attribution ;;
+    hidden: yes
+    ## This is the Parent Struct that contains the session_attribution elements. It is not directly useably as a dimension.
+    ## It is referred to by its child dimensions in their sql definition.
+  }
+
+    dimension: session_attribution_page_referrer {
+      group_label: "Attribution"
+      label: "Page Referrer"
+      type: string
+      sql: ${session_attribution}.page_referrer ;;
+    }
+
+    dimension: session_attribution_campaign {
+      group_label: "Attribution"
+      label: "Campaign"
+      type: string
+      sql: ${session_attribution}.campaign ;;
+    }
+
+    dimension: session_attribution_source {
+      group_label: "Attribution"
+      label: "Source"
+      type: string
+      sql: ${session_attribution}.source ;;
+    }
+
+    dimension: session_attribution_medium {
+      group_label: "Attribution"
+      label: "Medium"
+      type: string
+      sql: ${session_attribution}.medium ;;
+    }
+
+    dimension: session_attribution_channel {
+      group_label: "Attribution"
+      label: "Channel"
+      description: "Default Channel Grouping as defined in https://support.google.com/analytics/answer/9756891?hl=en"
+      sql: case when ${session_attribution_source} = '(direct)'
+                 and (${session_attribution_medium} = '(none)' or ${session_attribution_medium} = '(not set)')
+                  then 'Direct'
+                when ${session_attribution_medium} = 'organic'
+                  then 'Organic Search'
+                when REGEXP_CONTAINS(${session_attribution_source}, r"^(facebook|instagram|pinterest|reddit|twitter|linkedin)") = true
+                 and REGEXP_CONTAINS(${session_attribution_medium}, r"^(cpc|ppc|paid)") = true
+                  then 'Paid Social'
+                when REGEXP_CONTAINS(${session_attribution_source}, r"^(facebook|instagram|pinterest|reddit|twitter|linkedin)") = true
+                  or REGEXP_CONTAINS(${session_attribution_medium}, r"^(social|social-network|social-media|sm|social network|social media)") = true
+                  then 'Organic Social'
+                when REGEXP_CONTAINS(${session_attribution_medium}, r"email|e-mail|e_mail|e mail") = true
+                  or REGEXP_CONTAINS(${session_attribution_source}, r"email|e-mail|e_mail|e mail") = true
+                  then 'Email'
+                when REGEXP_CONTAINS(${session_attribution_medium}, r"affiliate|affiliates") = true
+                  then 'Affiliates'
+                when ${session_attribution_medium} = 'referral'
+                  then 'Referral'
+                when REGEXP_CONTAINS(${session_attribution_medium}, r"^(cpc|ppc|paidsearch)$")
+                  then 'Paid Search'
+                when REGEXP_CONTAINS(${session_attribution_medium}, r"^(display|cpm|banner)$")
+                  then 'Display'
+                when REGEXP_CONTAINS(${session_attribution_medium}, r"^(cpv|cpa|cpp|content-text)$")
+                  then 'Other Advertising'
+                else '(Other)' end ;;
+    }
+
+  ## Session Device Data Dimensions
   dimension: device_data {
     type: string
     sql: ${TABLE}.device_data ;;
   }
 
+  ## Session Geo Data Dimensions
   dimension: geo_data {
     type: string
     sql: ${TABLE}.geo_data ;;
   }
+
 
   dimension: event_data {
     ## This is the parent dimension for the event_data fields within the event_data view.
@@ -215,4 +350,91 @@ limit 10
     sql: ${TABLE}.event_data ;;
   }
 
+
+## Measures
+
+  measure: total_sessions {
+    type: count_distinct
+    sql: ${sl_key} ;;
+  }
+
+  measure: total_first_visit_sessions {
+    type: count_distinct
+    sql: ${sl_key} ;;
+    filters: [session_data_is_first_visit_session: "yes"]
+  }
+
+  measure: total_first_visit_sessions_percentage {
+    type: number
+    sql: ${total_first_visit_sessions}/nullif(${total_sessions},0) ;;
+    value_format_name: percent_2
+  }
+
+  measure: total_engaged_sessions {
+    type: count_distinct
+    sql: ${sl_key} ;;
+    filters: [session_data_is_engaged_session: "yes"]
+  }
+
+  measure: total_engaged_sessions_percentage {
+    type: number
+    sql: ${total_engaged_sessions}/nullif(${total_sessions},0) ;;
+    value_format_name: percent_2
+  }
+
+  measure: total_bounced_sessions {
+    type: count_distinct
+    sql: ${sl_key} ;;
+    filters: [session_data_is_bounce: "yes"]
+  }
+
+  measure: total_bounced_sessions_percentage {
+    type: number
+    sql: ${total_bounced_sessions}/nullif(${total_sessions},0) ;;
+    value_format_name: percent_2
+  }
+
+  measure: average_session_duration {
+    type: average
+    sql: ${session_data_session_duration} ;;
+    value_format_name: hour_format
+    label: "Average Session Duration (HH:MM:SS)"
+  }
+
+  measure: total_users {
+    label: "Total Users"
+    description: "Distinct/Unique count of User Pseudo ID"
+    type: count_distinct
+    sql: ${user_pseudo_id} ;;
+  }
+
+  measure: total_new_users {
+    label: "Total New Users"
+    description: "Distinct/Unique count of User Pseudo ID where GA Session Number = 1"
+    type: count_distinct
+    sql: ${user_pseudo_id} ;;
+    filters: [ga_session_number: "1"]
+  }
+
+  measure: total_returning_users {
+    label: "Total Returning Users"
+    description: "Distinct/Unique count of User Pseudo ID where GA Session Number > 1"
+    type: count_distinct
+    sql: ${user_pseudo_id} ;;
+    filters: [ga_session_number: ">1"]
+  }
+
+  measure: percentage_new_users {
+    label: "Total New Users - Percentage"
+    type: number
+    sql: ${total_new_users}/nullif(${total_users},0) ;;
+    value_format_name: percent_2
+  }
+
+  measure: percentage_returning_users {
+    label: "Total Returning Users - Percentage"
+    type: number
+    sql: ${total_returning_users}/nullif(${total_users},0) ;;
+    value_format_name: percent_2
+  }
 }
