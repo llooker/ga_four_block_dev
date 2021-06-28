@@ -139,7 +139,8 @@ view: event_data_event_params {
 ## Measures
 
   measure: total_engaged_events {
-    group_label: "Event: Parameters"
+    view_label: "Metrics"
+    group_label: "Event Data"
     label: "Total Engaged Events"
     type: count_distinct
     filters: [event_param_engaged_session_event: ">0"]

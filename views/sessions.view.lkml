@@ -43,8 +43,9 @@ session_list_with_event_history as (
                         , items)) event_data
         from `adh-demo-data-review.analytics_213025502.events_*` events
         where {% incrementcondition %} timestamp(PARSE_DATE('%Y%m%d', REGEXP_EXTRACT(_TABLE_SUFFIX,r'[0-9]+'))) {%  endincrementcondition %}
-        -- where timestamp(PARSE_DATE('%Y%m%d', REGEXP_EXTRACT(_TABLE_SUFFIX,r'[0-9]+'))) >= ((TIMESTAMP_ADD(TIMESTAMP_TRUNC(CURRENT_TIMESTAMP(), DAY), INTERVAL -3 DAY)))
-        --   and  timestamp(PARSE_DATE('%Y%m%d', REGEXP_EXTRACT(_TABLE_SUFFIX,r'[0-9]+'))) <= ((TIMESTAMP_ADD(TIMESTAMP_ADD(TIMESTAMP_TRUNC(CURRENT_TIMESTAMP(), DAY), INTERVAL -3 DAY), INTERVAL 4 DAY)))
+          -- This limits the default table to go back 30 days. If you want to extend it further, adjust or remove the below lines:
+          and timestamp(PARSE_DATE('%Y%m%d', REGEXP_EXTRACT(_TABLE_SUFFIX,r'[0-9]+'))) >= ((TIMESTAMP_ADD(TIMESTAMP_TRUNC(CURRENT_TIMESTAMP(), DAY), INTERVAL -29 DAY)))
+          and  timestamp(PARSE_DATE('%Y%m%d', REGEXP_EXTRACT(_TABLE_SUFFIX,r'[0-9]+'))) <= ((TIMESTAMP_ADD(TIMESTAMP_ADD(TIMESTAMP_TRUNC(CURRENT_TIMESTAMP(), DAY), INTERVAL -29 DAY), INTERVAL 30 DAY)))
         group by 1,2,3,4,5
   ),
 
@@ -164,6 +165,26 @@ left join geo g
        ;;
   }
 
+
+## Parameters
+
+  parameter: audience_selector {
+    view_label: "Audience"
+    description: "Use to set 'Audience Trait' field to dynamically choose a user cohort."
+    type: string
+    allowed_value: { value: "Device" }
+    allowed_value: { value: "Operating System" }
+    allowed_value: { value: "Country" }
+    allowed_value: { value: "Continent" }
+    allowed_value: { value: "Metro" }
+    allowed_value: { value: "Language" }
+    allowed_value: { value: "Channel" }
+    allowed_value: { value: "Medium" }
+    allowed_value: { value: "Source" }
+    allowed_value: { value: "Source Medium" }
+    default_value: "Source"
+  }
+
 ## Dimensions
   dimension: sl_key {
     type: string
@@ -190,6 +211,33 @@ left join geo g
   dimension: user_pseudo_id {
     type: string
     sql: ${TABLE}.user_pseudo_id ;;
+  }
+
+  dimension: event_data {
+    hidden: yes
+    type: string
+    sql: ${TABLE}.event_data ;;
+    ## This is the parent array that contains the event_data struct elements. It is not directly useably as a dimension.
+    ## It is necessary for proper unnesting in the model Join.
+  }
+
+  dimension: audience_trait {
+    view_label: "Audience"
+    group_label: "Audience Cohorts"
+    description: "Dynamic cohort field based on value set in 'Audience Selector' filter."
+    type: string
+    sql: CASE
+              WHEN {% parameter audience_selector %} = 'Channel' THEN ${session_attribution_channel}
+              WHEN {% parameter audience_selector %} = 'Medium' THEN ${session_attribution_medium}
+              WHEN {% parameter audience_selector %} = 'Source' THEN ${session_attribution_source}
+              WHEN {% parameter audience_selector %} = 'Source Medium' THEN ${session_attribution_source_medium}
+              WHEN {% parameter audience_selector %} = 'Device' THEN ${device_data_device_category}
+              WHEN {% parameter audience_selector %} = 'Metro' THEN ${geo_data_metro}
+              WHEN {% parameter audience_selector %} = 'Country' THEN ${geo_data_country}
+              WHEN {% parameter audience_selector %} = 'Continent' THEN ${geo_data_continent}
+              WHEN {% parameter audience_selector %} = 'Language' THEN ${device_data_language}
+              WHEN {% parameter audience_selector %} = 'Operating System' THEN ${device_data_operating_system}
+        END;;
   }
 
   ## Session Data Dimensions
@@ -299,6 +347,13 @@ left join geo g
       sql: ${session_attribution}.medium ;;
     }
 
+    dimension: session_attribution_source_medium {
+      group_label: "Attribution"
+      label: "Source Medium"
+      type: string
+      sql: ${session_attribution}.source||' '||${session_attribution}.medium ;;
+    }
+
     dimension: session_attribution_channel {
       group_label: "Attribution"
       label: "Channel"
@@ -334,67 +389,221 @@ left join geo g
   dimension: device_data {
     type: string
     sql: ${TABLE}.device_data ;;
+    hidden: yes
+    ## This is the Parent Struct that contains the device_data elements. It is not directly useably as a dimension.
+    ## It is referred to by its child dimensions in their sql definition.
   }
+
+    dimension: device_data_device_category {
+      group_label: "Device"
+      label: "Device Category"
+      type: string
+      sql: ${device_data}.device__category ;;
+    }
+
+    dimension: device_data_mobile_brand_name {
+      group_label: "Device"
+      label: "Mobile Brand Name"
+      type: string
+      sql: ${device_data}.device__mobile_brand_name ;;
+    }
+
+    dimension: device_data_mobile_model_name {
+      group_label: "Device"
+      label: "Mobile Model Name"
+      type: string
+      sql: ${device_data}.device__mobile_model_name ;;
+    }
+
+    dimension: device_data_mobile_device_info {
+      group_label: "Device"
+      label: "Mobile Device Info"
+      type: string
+      sql: ${device_data}.device__mobile_device_info ;;
+    }
+
+    dimension: device_data_mobile_marketing_name {
+      group_label: "Device"
+      label: "Mobile Marketing Name"
+      type: string
+      sql: ${device_data}.device__mobile_marketing_name ;;
+    }
+
+    dimension: device_data_mobile_os_hardware_model {
+      group_label: "Device"
+      label: "Mobile OS Hardware Model"
+      type: string
+      sql: ${device_data}.device__mobile_os_hardware_model ;;
+    }
+
+    dimension: device_data_operating_system {
+      group_label: "Device"
+      label: "Operating System"
+      type: string
+      sql: ${device_data}.device__operating_system ;;
+    }
+
+    dimension: device_data_operating_system_version {
+      group_label: "Device"
+      label: "Operating System Version"
+      type: string
+      sql: ${device_data}.device__operating_system_version ;;
+    }
+
+    dimension: device_data_vendor_id {
+      group_label: "Device"
+      label: "Vendor ID"
+      type: string
+      sql: ${device_data}.device__vendor_id ;;
+    }
+
+    dimension: device_data_advertising_id {
+      group_label: "Device"
+      label: "Advertising ID"
+      type: string
+      sql: ${device_data}.device__advertising_id ;;
+    }
+
+    dimension: device_data_language {
+      group_label: "Device"
+      label: "Language"
+      type: string
+      sql: ${device_data}.device__language ;;
+    }
+
+    dimension: device_data_time_zone_offset_seconds {
+      group_label: "Device"
+      label: "Time Zone Offset Seconds"
+      type: number
+      sql: ${device_data}.device__time_zone_offset_seconds ;;
+    }
+
+    dimension: device_data_is_limited_ad_tracking {
+      group_label: "Device"
+      label: "Is Limited Ad Tracking?"
+      type: string
+      sql: ${device_data}.device__is_limited_ad_tracking ;;
+    }
+
 
   ## Session Geo Data Dimensions
   dimension: geo_data {
     type: string
     sql: ${TABLE}.geo_data ;;
-  }
-
-
-  dimension: event_data {
-    ## This is the parent dimension for the event_data fields within the event_data view.
     hidden: yes
-    type: string
-    sql: ${TABLE}.event_data ;;
+    ## This is the Parent Struct that contains the geo_data elements. It is not directly useably as a dimension.
+    ## It is referred to by its child dimensions in their sql definition.
   }
+
+    dimension: geo_data_continent {
+      group_label: "Geo"
+      label: "Continent"
+      type: string
+      sql: ${geo_data}.geo__continent ;;
+    }
+
+    dimension: geo_data_country {
+      group_label: "Geo"
+      label: "Country"
+      type: string
+      sql: ${geo_data}.geo__country ;;
+      map_layer_name: countries
+    }
+
+    dimension: geo_data_city {
+      group_label: "Geo"
+      label: "City"
+      type: string
+      sql: ${geo_data}.geo__city ;;
+    }
+
+    dimension: geo_data_metro {
+      group_label: "Geo"
+      label: "Metro"
+      type: string
+      sql: ${geo_data}.geo__metro ;;
+    }
+
+    dimension: geo_data_sub_continent {
+      group_label: "Geo"
+      label: "Sub-Continent"
+      type: string
+      sql: ${geo_data}.geo__sub_continent ;;
+    }
+
+    dimension: geo_data_region {
+      group_label: "Geo"
+      label: "Region"
+      type: string
+      sql: ${geo_data}.geo__region ;;
+      map_layer_name: us_states
+    }
 
 
 ## Measures
 
   measure: total_sessions {
+    view_label: "Metrics"
+    group_label: "Session"
     type: count_distinct
     sql: ${sl_key} ;;
+    value_format_name: formatted_number
   }
 
   measure: total_first_visit_sessions {
+    view_label: "Metrics"
+    group_label: "Session"
     type: count_distinct
     sql: ${sl_key} ;;
     filters: [session_data_is_first_visit_session: "yes"]
+    value_format_name: formatted_number
   }
 
   measure: total_first_visit_sessions_percentage {
+    view_label: "Metrics"
+    group_label: "Session"
     type: number
     sql: ${total_first_visit_sessions}/nullif(${total_sessions},0) ;;
     value_format_name: percent_2
   }
 
   measure: total_engaged_sessions {
+    view_label: "Metrics"
+    group_label: "Session"
     type: count_distinct
     sql: ${sl_key} ;;
     filters: [session_data_is_engaged_session: "yes"]
+    value_format_name: formatted_number
   }
 
   measure: total_engaged_sessions_percentage {
+    view_label: "Metrics"
+    group_label: "Session"
     type: number
     sql: ${total_engaged_sessions}/nullif(${total_sessions},0) ;;
     value_format_name: percent_2
   }
 
   measure: total_bounced_sessions {
+    view_label: "Metrics"
+    group_label: "Session"
     type: count_distinct
     sql: ${sl_key} ;;
     filters: [session_data_is_bounce: "yes"]
+    value_format_name: formatted_number
   }
 
   measure: total_bounced_sessions_percentage {
+    view_label: "Metrics"
+    group_label: "Session"
     type: number
     sql: ${total_bounced_sessions}/nullif(${total_sessions},0) ;;
     value_format_name: percent_2
   }
 
   measure: average_session_duration {
+    view_label: "Metrics"
+    group_label: "Session"
     type: average
     sql: ${session_data_session_duration} ;;
     value_format_name: hour_format
@@ -402,29 +611,40 @@ left join geo g
   }
 
   measure: total_users {
+    view_label: "Metrics"
+    group_label: "Session"
     label: "Total Users"
     description: "Distinct/Unique count of User Pseudo ID"
     type: count_distinct
     sql: ${user_pseudo_id} ;;
+    value_format_name: formatted_number
   }
 
   measure: total_new_users {
+    view_label: "Metrics"
+    group_label: "Session"
     label: "Total New Users"
     description: "Distinct/Unique count of User Pseudo ID where GA Session Number = 1"
     type: count_distinct
     sql: ${user_pseudo_id} ;;
-    filters: [ga_session_number: "1"]
+    filters: [session_data_is_first_visit_session: "yes"]
+    value_format_name: formatted_number
   }
 
   measure: total_returning_users {
+    view_label: "Metrics"
+    group_label: "Session"
     label: "Total Returning Users"
     description: "Distinct/Unique count of User Pseudo ID where GA Session Number > 1"
     type: count_distinct
     sql: ${user_pseudo_id} ;;
-    filters: [ga_session_number: ">1"]
+    filters: [session_data_is_first_visit_session: "no"]
+    value_format_name: formatted_number
   }
 
   measure: percentage_new_users {
+    view_label: "Metrics"
+    group_label: "Session"
     label: "Total New Users - Percentage"
     type: number
     sql: ${total_new_users}/nullif(${total_users},0) ;;
@@ -432,9 +652,12 @@ left join geo g
   }
 
   measure: percentage_returning_users {
+    view_label: "Metrics"
+    group_label: "Session"
     label: "Total Returning Users - Percentage"
     type: number
     sql: ${total_returning_users}/nullif(${total_users},0) ;;
     value_format_name: percent_2
   }
+
 }

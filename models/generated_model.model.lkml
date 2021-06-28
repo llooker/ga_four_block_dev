@@ -33,6 +33,18 @@ explore: events_20201008 {
 
 explore: sessions {
 
+  join: audience_cohorts {
+    type: left_outer
+    sql_on: ${sessions.audience_trait} = ${audience_cohorts.audience_trait} ;;
+    relationship: many_to_one
+  }
+
+  join: page_views {
+    type: left_outer
+    sql_on: ${sessions.sl_key} = ${page_views.sl_key} ;;
+    relationship: one_to_one
+  }
+
   join: event_data {
     sql: LEFT JOIN UNNEST(${sessions.event_data}) as event_data ;;
     relationship: one_to_many

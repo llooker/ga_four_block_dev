@@ -11,6 +11,15 @@ include: "event_data_event_params.view"
 view: event_data {
   extends: [event_data_event_params]
 
+## Dimensions
+
+  dimension: ed_key {
+    type: string
+    primary_key: yes
+    hidden: yes
+    sql: ${event_timestamp}||${event_param_ga_session_id}||${event_param_ga_session_number}||${user_pseudo_id} ;;
+  }
+
   dimension: event_date {
     type: string
     sql: ${TABLE}.event_date ;;
@@ -411,6 +420,36 @@ view: event_data {
   }
 
   # dimension: user_id
+
+## Measures
+
+  measure: total_page_views {
+    view_label: "Metrics"
+    group_label: "Event Data"
+    label: "Total Page Views"
+    type: count
+    filters: [event_name: "page_view"]
+    value_format_name: formatted_number
+  }
+
+  measure: total_unique_page_views {
+    view_label: "Metrics"
+    group_label: "Event Data"
+    label: "Total Unique Page Views"
+    type: count_distinct
+    sql: CONCAT(${event_param_ga_session_id}, ${event_param_page}, ${event_param_page_title}) ;;
+    value_format_name: formatted_number
+  }
+
+  measure: total_unique_page_views_percentage {
+    view_label: "Metrics"
+    group_label: "Event Data"
+    label: "Total Unique Page Views Percentage"
+    type: number
+    sql: ${total_unique_page_views}/nullif(${total_page_views},0) ;;
+    value_format_name: percent_2
+    required_fields: [total_unique_page_views]
+  }
 
   # ----- Sets of fields for drilling ------
   set: detail {
