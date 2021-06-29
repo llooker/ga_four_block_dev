@@ -39,12 +39,6 @@ explore: sessions {
     relationship: many_to_one
   }
 
-  join: page_views {
-    type: left_outer
-    sql_on: ${sessions.sl_key} = ${page_views.sl_key} ;;
-    relationship: one_to_one
-  }
-
   join: event_data {
     sql: LEFT JOIN UNNEST(${sessions.event_data}) as event_data ;;
     relationship: one_to_many
@@ -61,6 +55,13 @@ explore: sessions {
     view_label: "Event Data"
     sql: left join unnest(${event_data.user_properties}) as event_data_user_properties ;;
     relationship: one_to_many
+  }
+
+  join: page_views {
+    type: left_outer
+    sql_on: ${sessions.sl_key} = ${page_views.sl_key}
+      and ${event_data.ed_key} = ${page_views.ed_key} ;;
+    relationship: one_to_one
   }
 
 }

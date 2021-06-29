@@ -9,13 +9,14 @@ view: page_views {
       column: event_param_page_referrer { field: event_data.event_param_page_referrer }
       column: event_param_page_title { field: event_data.event_param_page_title }
       derived_column: time_to_next_event {
-        sql: TIMESTAMP_DIFF(TIMESTAMP_MICROS(LEAD(event_timestamp) OVER (PARTITION BY sl_key ORDER BY event_timestamp asc))
-                           ,TIMESTAMP_MICROS(event_timestamp),second)  ;;
+        sql: (TIMESTAMP_DIFF(TIMESTAMP_MICROS(LEAD(event_timestamp) OVER (PARTITION BY sl_key ORDER BY event_timestamp asc))
+                           ,TIMESTAMP_MICROS(event_timestamp),second)/86400.0)  ;;
       }
       derived_column: page_view_rank {
         sql: ROW_NUMBER() OVER(PARTITION BY sl_key ORDER BY event_timestamp asc) ;;
       }
       bind_all_filters: yes
+      filters: [event_data.event_name: "page_view"]
     }
   }
 
@@ -63,6 +64,19 @@ view: page_views {
   dimension: time_to_next_event {
     label: "Time to Next Event"
     value_format_name: hour_format
+  }
+
+  dimension: is_landing_page {
+    type: yesno
+    label: "Is Landing Page?"
+    sql: ${page_view_rank} = 1 ;;
+  }
+
+  dimension: landing_page_page {
+    type: string
+    sql: case when ${page_view_rank} = 1 then ${event_param_page} else null end ;;
+    label: "Landing Page"
+    description: "Page value for Page View Ranked 1 (First Page View in Session)"
   }
 
 ## Measures

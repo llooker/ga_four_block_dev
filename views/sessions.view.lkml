@@ -43,9 +43,8 @@ session_list_with_event_history as (
                         , items)) event_data
         from `adh-demo-data-review.analytics_213025502.events_*` events
         where {% incrementcondition %} timestamp(PARSE_DATE('%Y%m%d', REGEXP_EXTRACT(_TABLE_SUFFIX,r'[0-9]+'))) {%  endincrementcondition %}
-          -- This limits the default table to go back 30 days. If you want to extend it further, adjust or remove the below lines:
-          and timestamp(PARSE_DATE('%Y%m%d', REGEXP_EXTRACT(_TABLE_SUFFIX,r'[0-9]+'))) >= ((TIMESTAMP_ADD(TIMESTAMP_TRUNC(CURRENT_TIMESTAMP(), DAY), INTERVAL -29 DAY)))
-          and  timestamp(PARSE_DATE('%Y%m%d', REGEXP_EXTRACT(_TABLE_SUFFIX,r'[0-9]+'))) <= ((TIMESTAMP_ADD(TIMESTAMP_ADD(TIMESTAMP_TRUNC(CURRENT_TIMESTAMP(), DAY), INTERVAL -29 DAY), INTERVAL 30 DAY)))
+          -- and timestamp(PARSE_DATE('%Y%m%d', REGEXP_EXTRACT(_TABLE_SUFFIX,r'[0-9]+'))) >= ((TIMESTAMP_ADD(TIMESTAMP_TRUNC(CURRENT_TIMESTAMP(), DAY), INTERVAL -29 DAY)))
+          -- and  timestamp(PARSE_DATE('%Y%m%d', REGEXP_EXTRACT(_TABLE_SUFFIX,r'[0-9]+'))) <= ((TIMESTAMP_ADD(TIMESTAMP_ADD(TIMESTAMP_TRUNC(CURRENT_TIMESTAMP(), DAY), INTERVAL -29 DAY), INTERVAL 30 DAY)))
         group by 1,2,3,4,5
   ),
 
@@ -95,6 +94,9 @@ device as (
       ,  ed.device.language device__language
       ,  ed.device.time_zone_offset_seconds device__time_zone_offset_seconds
       ,  ed.device.is_limited_ad_tracking device__is_limited_ad_tracking
+      ,  ed.device.web_info.browser device__web_info_browser
+      ,  ed.device.web_info.browser_version device__web_info_browser_version
+      ,  ed.device.web_info.hostname device__web_info_hostname
       ,  case when ed.device.category = 'mobile' then true else false end as device__is_mobile
   from session_list_with_event_history sl
     ,  unnest(event_data) ed
@@ -127,12 +129,12 @@ select sl.session_date session_date
                       ,  coalesce(sa.campaign,'(direct)') campaign
                       ,  sa.page_referrer ) session_attribution
     ,  (SELECT AS STRUCT sf.session_event_count
-                      ,  engaged_events
-                      ,  is_engaged_session
-                      ,  is_first_visit_session
-                      ,  session_end
-                      ,  session_start
-                      ,  session_length_minutes) session_data
+                      ,  sf.engaged_events
+                      ,  sf.is_engaged_session
+                      ,  sf.is_first_visit_session
+                      ,  sf.session_end
+                      ,  sf.session_start
+                      ,  sf.session_length_minutes) session_data
     ,  (SELECT AS STRUCT d.device__category
                       ,  d.device__mobile_brand_name
                       ,  d.device__mobile_model_name
@@ -145,13 +147,19 @@ select sl.session_date session_date
                       ,  d.device__advertising_id
                       ,  d.device__language
                       ,  d.device__time_zone_offset_seconds
-                      ,  d.device__is_limited_ad_tracking) device_data
+                      ,  d.device__is_limited_ad_tracking
+                      ,  d.device__web_info_browser
+                      ,  d.device__web_info_browser_version
+                      ,  d.device__web_info_hostname
+                      ,  d.device__is_mobile) device_data
     ,  (SELECT AS STRUCT g.geo__continent
                       ,  g.geo__country
                       ,  g.geo__city
                       ,  g.geo__metro
                       ,  g.geo__sub_continent
                       ,  g.geo__region) geo_data
+    ,  lag(sf.session_start) over (partition by sl.user_pseudo_id order by sl.ga_session_number) user_previous_session_start
+    ,  lag(sf.session_end) over (partition by sl.user_pseudo_id order by sl.ga_session_number) user_previous_session_end
     ,  sl.event_data event_data
 from session_list_with_event_history sl
 left join session_tags sa
@@ -174,6 +182,7 @@ left join geo g
     type: string
     allowed_value: { value: "Device" }
     allowed_value: { value: "Operating System" }
+    allowed_value: { value: "Browser" }
     allowed_value: { value: "Country" }
     allowed_value: { value: "Continent" }
     allowed_value: { value: "Metro" }
@@ -208,9 +217,35 @@ left join geo g
     sql: ${TABLE}.ga_session_number ;;
   }
 
+  dimension: ga_session_number_tier {
+    view_label: "Audience"
+    group_label: "User"
+    label: "Session Number Tier"
+    description: "Session Number dimension grouped in tiers between 1-100. See 'Session Number' for full description."
+    type: tier
+    tiers: [1,2,5,10,15,20,50,100]
+    style: integer
+    sql: ${ga_session_number} ;;
+  }
+
   dimension: user_pseudo_id {
     type: string
     sql: ${TABLE}.user_pseudo_id ;;
+  }
+
+  dimension: user_previous_session_start {
+    sql: ${TABLE}.user_previous_session_start ;;
+  }
+
+  dimension: user_previous_session_end {
+    sql: ${TABLE}.user_previous_session_end ;;
+  }
+
+  dimension_group: since_previous_session {
+    type: duration
+    intervals: [second,hour,minute,day,week]
+    sql_start: ${session_data_session_start_raw} ;;
+    sql_end: ${user_previous_session_end} ;;
   }
 
   dimension: event_data {
@@ -232,6 +267,7 @@ left join geo g
               WHEN {% parameter audience_selector %} = 'Source' THEN ${session_attribution_source}
               WHEN {% parameter audience_selector %} = 'Source Medium' THEN ${session_attribution_source_medium}
               WHEN {% parameter audience_selector %} = 'Device' THEN ${device_data_device_category}
+              WHEN {% parameter audience_selector %} = 'Browser' THEN ${device_data_web_info_browser}
               WHEN {% parameter audience_selector %} = 'Metro' THEN ${geo_data_metro}
               WHEN {% parameter audience_selector %} = 'Country' THEN ${geo_data_country}
               WHEN {% parameter audience_selector %} = 'Continent' THEN ${geo_data_continent}
@@ -485,6 +521,26 @@ left join geo g
       sql: ${device_data}.device__is_limited_ad_tracking ;;
     }
 
+    dimension: device_data_web_info_browser {
+      group_label: "Device"
+      label: "Browser"
+      type: string
+      sql: ${device_data}.device__web_info_browser ;;
+    }
+
+    dimension: device_data_web_info_browser_version {
+      group_label: "Device"
+      label: "Browser Version"
+      type: string
+      sql: ${device_data}.device__web_info_browser_version ;;
+    }
+
+    dimension: device_data_web_info_hostname {
+      group_label: "Device"
+      label: "Hostname"
+      type: string
+      sql: ${device_data}.device__web_info_hostname ;;
+    }
 
   ## Session Geo Data Dimensions
   dimension: geo_data {
