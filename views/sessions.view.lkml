@@ -52,6 +52,7 @@ session_list_with_event_history as (
 session_facts as (
   select sl.sl_key
       ,  COUNT(ed.event_timestamp) session_event_count
+      ,  SUM(case when ed.event_name = 'page_view' then 1 else 0 end) session_page_view_count
       ,  COALESCE(SUM((select value.int_value from UNNEST(ed.event_params) where key = "engaged_session_event")),0) engaged_events
       ,  case when (COALESCE(SUM((select value.int_value from UNNEST(ed.event_params) where key = "engaged_session_event")),0) = 0
                and COALESCE(SUM((select coalesce(cast(value.string_value as INT64),value.int_value) from UNNEST(ed.event_params) where key = "session_engaged"))) = 0)
@@ -130,6 +131,7 @@ select sl.session_date session_date
                       ,  sa.page_referrer ) session_attribution
     ,  (SELECT AS STRUCT sf.session_event_count
                       ,  sf.engaged_events
+                      ,  sf.session_page_view_count
                       ,  sf.is_engaged_session
                       ,  sf.is_first_visit_session
                       ,  sf.session_end
@@ -170,7 +172,7 @@ left join device d
   on  sl.sl_key = d.sl_key
 left join geo g
   on  sl.sl_key = g.sl_key
-       ;;
+   ;;
   }
 
 
@@ -244,8 +246,18 @@ left join geo g
   dimension_group: since_previous_session {
     type: duration
     intervals: [second,hour,minute,day,week]
-    sql_start: ${session_data_session_start_raw} ;;
-    sql_end: ${user_previous_session_end} ;;
+    sql_start: ${user_previous_session_end} ;;
+    sql_end: ${session_data_session_start_raw} ;;
+  }
+
+  dimension: days_since_previous_session_tier {
+    # view_label: "Audience"
+    # group_label: "User"
+    description: "Days since the previous session. 0 if user only has 1 session."
+    type: tier
+    style: integer
+    tiers: [1,2,4,8,15,31,61,121,365]
+    sql: ${days_since_previous_session};;
   }
 
   dimension: event_data {
@@ -297,6 +309,16 @@ left join geo g
       label: "Session Engaged Event Count"
     }
 
+    dimension: session_data_page_view_count {
+      type: number
+      sql: ${session_data}.session_page_view_count ;;
+      label: "Session Page View Count"
+    }
+
+    dimension: session_data_page_view_count_tier {
+
+    }
+
     dimension: session_data_is_engaged_session {
       type: yesno
       sql: ${session_data}.is_engaged_session ;;
@@ -312,14 +334,14 @@ left join geo g
     dimension_group: session_data_session_end {
       type: time
       sql: ${session_data}.session_end ;;
-      timeframes: [raw,time,date,week,month,year]
+      timeframes: [raw,time,hour,hour_of_day,date,day_of_week,day_of_week_index,week,month,year]
       label: "Session End"
     }
 
     dimension_group: session_data_session_start {
       type: time
       sql: ${session_data}.session_start ;;
-      timeframes: [raw,time,date,week,month,year]
+      timeframes: [raw,time,hour,hour_of_day,date,day_of_week,day_of_week_index,week,month,year]
       label: "Session Start"
     }
 
