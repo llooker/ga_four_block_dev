@@ -662,6 +662,15 @@ left join geo g
     value_format_name: percent_2
   }
 
+  measure: average_page_views_per_session {
+    view_label: "Metrics"
+    group_label: "Session"
+    label: "Avg. Page Views per Session"
+    type: average
+    sql: ${session_data_page_view_count} ;;
+    value_format_name: decimal_2
+  }
+
   measure: total_bounced_sessions {
     view_label: "Metrics"
     group_label: "Session"
