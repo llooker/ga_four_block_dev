@@ -7,9 +7,10 @@
 ##   - event_data_items
 
 include: "event_data_event_params.view"
+include: "goals.view"
 
 view: event_data {
-  extends: [event_data_event_params]
+  extends: [event_data_event_params, goals]
 
 ## Dimensions
 
@@ -44,7 +45,7 @@ view: event_data {
   dimension: full_event {
     ## Customize with your specific event parameters that encompass the specific points of interest in your event.
     type: string
-    sql: ${event_name}||': '||${event_data.event_param_page} ;;
+    sql: ${event_name}||': '||coalesce(${event_data.event_param_page},"") ;;
   }
 
   dimension: event_params {
@@ -449,6 +450,23 @@ view: event_data {
   # dimension: user_id
 
 ## Measures
+
+  measure: total_events {
+    type: count
+    view_label: "Metrics"
+    group_label: "Event Data"
+    label: "Total Events"
+  }
+
+  measure: total_unique_events {
+    view_label: "Metrics"
+    group_label: "Event Data"
+    label: "Total Unique Events"
+    type: count_distinct
+    sql: ${sl_key} ;;
+    description: "Total Unique Events (Unique by Full Event Definition)"
+  }
+
 
   measure: total_page_views {
     view_label: "Metrics"
