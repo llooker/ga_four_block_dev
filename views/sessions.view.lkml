@@ -199,7 +199,7 @@ left join geo g
 ## Dimensions
   dimension: sl_key {
     type: string
-    sql: ${TABLE}.ga_session_id ;;
+    sql: ${TABLE}.sl_key ;;
     primary_key: yes
     hidden: yes
   }

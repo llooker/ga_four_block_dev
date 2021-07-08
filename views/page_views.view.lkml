@@ -8,12 +8,16 @@ view: page_views {
       column: event_param_page_location { field: event_data.event_param_page_location }
       column: event_param_page_referrer { field: event_data.event_param_page_referrer }
       column: event_param_page_title { field: event_data.event_param_page_title }
+      column: count_page_views { field: event_data.total_page_views }
       derived_column: time_to_next_event {
         sql: (TIMESTAMP_DIFF(TIMESTAMP_MICROS(LEAD(event_timestamp) OVER (PARTITION BY sl_key ORDER BY event_timestamp asc))
                            ,TIMESTAMP_MICROS(event_timestamp),second)/86400.0)  ;;
       }
       derived_column: page_view_rank {
         sql: ROW_NUMBER() OVER(PARTITION BY sl_key ORDER BY event_timestamp asc) ;;
+      }
+      derived_column: page_view_reverse_rank {
+        sql: ROW_NUMBER() OVER(PARTITION BY sl_key ORDER BY event_timestamp desc) ;;
       }
       bind_all_filters: yes
       filters: [event_data.event_name: "page_view"]
@@ -41,7 +45,16 @@ view: page_views {
     hidden: yes
   }
 
+  dimension: count_page_views {
+    type: number
+    hidden: yes
+  }
+
   dimension: page_view_rank {
+    type: number
+  }
+
+  dimension: page_view_reverse_rank {
     type: number
   }
 
@@ -72,18 +85,80 @@ view: page_views {
     sql: ${page_view_rank} = 1 ;;
   }
 
-  dimension: landing_page_page {
+  dimension: is_exit_page {
+    type: yesno
+    label: "Is Exit Page?"
+    sql: ${page_view_reverse_rank} = 1 ;;
+  }
+
+  dimension: is_bounce {
+    type: yesno
+    label: "Is Bounce?"
+    sql: ${count_page_views} = 1 ;;
+  }
+
+  # dimension: landing_page_page {
+  #   type: string
+  #   sql: case when ${page_view_rank} = 1 then ${event_param_page} else null end ;;
+  #   label: "Landing Page"
+  #   description: "Page value for Page View Ranked 1 (First Page View in Session)"
+  # }
+
+  dimension: exit_page_page {
     type: string
-    sql: case when ${page_view_rank} = 1 then ${event_param_page} else null end ;;
-    label: "Landing Page"
-    description: "Page value for Page View Ranked 1 (First Page View in Session)"
+    sql: case when ${page_view_reverse_rank} = 1 then ${event_param_page} else null end ;;
+    label: "Exit Page"
+    description: "Page value for Page View Reverse Ranked 1 (Last Page View in Session)"
   }
 
 ## Measures
+
+  measure: total_page_views {
+    type: count_distinct
+    label: "Total Page Views"
+    sql: ${pv_key} ;;
+  }
+
+  measure: total_entrances {
+    type: count_distinct
+    filters: [is_landing_page: "yes"]
+    sql: ${pv_key} ;;
+  }
+
+  measure: entrance_rate {
+    type: number
+    sql: ${total_entrances}/nullif(${total_page_views},0) ;;
+    value_format_name: percent_2
+  }
+
+  measure: total_bounce {
+    type: count_distinct
+    sql: ${pv_key} ;;
+    filters: [is_bounce: "yes"]
+  }
+
+  measure: bounce_rate {
+    type: number
+    sql: ${total_bounce}/nullif(${total_page_views},0) ;;
+    value_format_name: percent_2
+  }
+
+  measure: total_exits {
+    type: count_distinct
+    filters: [is_exit_page: "yes"]
+    sql: ${pv_key} ;;
+  }
+
+  measure: exit_rate {
+    type: number
+    sql: ${total_exits}/nullif(${total_page_views},0) ;;
+    value_format_name: percent_2
+  }
+
   measure: average_time_to_next_event {
     view_label: "Metrics"
     group_label: "Event Data"
-    label: "Average Time to Next Event"
+    label: "Average Time on Page"
     type: average
     sql: ${time_to_next_event} ;;
     value_format_name: hour_format

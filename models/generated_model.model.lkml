@@ -18,7 +18,7 @@ explore: sessions {
   }
 
   join: event_data {
-    sql: LEFT JOIN UNNEST(${sessions.event_data}) as event_data ;;
+    sql: LEFT JOIN UNNEST(${sessions.event_data}) as event_data with offset as event_row ;;
     relationship: one_to_many
   }
 
@@ -38,7 +38,13 @@ explore: sessions {
   join: page_views {
     type: left_outer
     sql_on: ${sessions.sl_key} = ${page_views.sl_key}
-      and ${event_data.ed_key} = ${page_views.ed_key} ;;
+        and ${page_views.ed_key} = ${event_data.ed_key} ;;
+    relationship: one_to_one
+  }
+
+  join: page_entrance_exit {
+    type: left_outer
+    sql_on: ${sessions.sl_key} = ${page_entrance_exit.sl_key} ;;
     relationship: one_to_one
   }
 

@@ -17,7 +17,18 @@ view: event_data {
     type: string
     primary_key: yes
     hidden: yes
-    sql: ${event_timestamp}||${event_param_ga_session_id}||${event_param_ga_session_number}||${user_pseudo_id} ;;
+    sql: ${sl_key}||${event_rank} ;;
+  }
+
+  dimension: sl_key {
+    type: string
+    hidden: yes
+    sql: ${TABLE}.sl_key ;;
+  }
+
+  dimension: event_rank {
+    type: number
+    sql: event_row ;;
   }
 
   dimension: event_date {
@@ -28,6 +39,12 @@ view: event_data {
   dimension: event_name {
     type: string
     sql: ${TABLE}.event_name ;;
+  }
+
+  dimension: full_event {
+    ## Customize with your specific event parameters that encompass the specific points of interest in your event.
+    type: string
+    sql: ${event_name}||': '||${event_data.event_param_page} ;;
   }
 
   dimension: event_params {
@@ -248,6 +265,7 @@ view: event_data {
     sql: ${TABLE}.ecommerce.purchase_revenue ;;
     group_label: "Ecommerce"
     group_item_label: "Purchase Revenue"
+    value_format_name: usd
   }
 
   dimension: ecommerce__purchase_revenue_in_usd {
@@ -255,6 +273,7 @@ view: event_data {
     sql: ${TABLE}.ecommerce.purchase_revenue_in_usd ;;
     group_label: "Ecommerce"
     group_item_label: "Purchase Revenue In USD"
+    value_format_name: usd
   }
 
   dimension: ecommerce__refund_value {
@@ -262,6 +281,7 @@ view: event_data {
     sql: ${TABLE}.ecommerce.refund_value ;;
     group_label: "Ecommerce"
     group_item_label: "Refund Value"
+    value_format_name: usd
   }
 
   dimension: ecommerce__refund_value_in_usd {
@@ -269,6 +289,7 @@ view: event_data {
     sql: ${TABLE}.ecommerce.refund_value_in_usd ;;
     group_label: "Ecommerce"
     group_item_label: "Refund Value In USD"
+    value_format_name: usd
   }
 
   dimension: ecommerce__shipping_value {
@@ -276,6 +297,7 @@ view: event_data {
     sql: ${TABLE}.ecommerce.shipping_value ;;
     group_label: "Ecommerce"
     group_item_label: "Shipping Value"
+    value_format_name: usd
   }
 
   dimension: ecommerce__shipping_value_in_usd {
@@ -283,6 +305,7 @@ view: event_data {
     sql: ${TABLE}.ecommerce.shipping_value_in_usd ;;
     group_label: "Ecommerce"
     group_item_label: "Shipping Value In USD"
+    value_format_name: usd
   }
 
   dimension: ecommerce__tax_value {
@@ -290,6 +313,7 @@ view: event_data {
     sql: ${TABLE}.ecommerce.tax_value ;;
     group_label: "Ecommerce"
     group_item_label: "Tax Value"
+    value_format_name: usd
   }
 
   dimension: ecommerce__tax_value_in_usd {
@@ -297,6 +321,7 @@ view: event_data {
     sql: ${TABLE}.ecommerce.tax_value_in_usd ;;
     group_label: "Ecommerce"
     group_item_label: "Tax Value In USD"
+    value_format_name: usd
   }
 
   dimension: ecommerce__total_item_quantity {
@@ -304,6 +329,7 @@ view: event_data {
     sql: ${TABLE}.ecommerce.total_item_quantity ;;
     group_label: "Ecommerce"
     group_item_label: "Total Item Quantity"
+    value_format_name: decimal_0
   }
 
   dimension: ecommerce__transaction_id {
@@ -318,6 +344,7 @@ view: event_data {
     sql: ${TABLE}.ecommerce.unique_items ;;
     group_label: "Ecommerce"
     group_item_label: "Unique Items"
+    value_format_name: decimal_0
   }
 
 
@@ -450,6 +477,90 @@ view: event_data {
     value_format_name: percent_2
     required_fields: [total_unique_page_views]
   }
+
+  ## ECommerce
+
+    measure: total_transactions {
+      type: count_distinct
+      sql: ${ecommerce__transaction_id} ;;
+      filters: [ecommerce__transaction_id: "-(not set)"]
+    }
+
+    measure: transaction_conversion_rate {
+      type: number
+      sql: 1.0 * (${total_transactions}/NULLIF(${sessions.total_sessions},0)) ;;
+      value_format_name: percent_2
+    }
+
+    measure: total_purchase_revenue {
+      type: sum_distinct
+      sql: ${ecommerce__purchase_revenue} ;;
+      sql_distinct_key: ${ecommerce__transaction_id} ;;
+      value_format_name: usd
+    }
+
+    measure: total_purchase_revenue_usd {
+      type: sum
+      sql: ${ecommerce__purchase_revenue_in_usd} ;;
+      # sql_distinct_key: ${ecommerce__transaction_id} ;;
+      value_format_name: usd
+    }
+
+    measure: total_refund_value {
+      type: sum_distinct
+      sql: ${ecommerce__refund_value} ;;
+      sql_distinct_key: ${ecommerce__transaction_id} ;;
+      value_format_name: usd
+    }
+
+    measure: total_refund_value_usd {
+      type: sum_distinct
+      sql: ${ecommerce__refund_value_in_usd} ;;
+      sql_distinct_key: ${ecommerce__transaction_id} ;;
+      value_format_name: usd
+    }
+
+    measure: total_shipping_value {
+      type: sum_distinct
+      sql: ${ecommerce__shipping_value} ;;
+      sql_distinct_key: ${ecommerce__transaction_id} ;;
+      value_format_name: usd
+    }
+
+    measure: total_shipping_value_usd {
+      type: sum_distinct
+      sql: ${ecommerce__shipping_value_in_usd} ;;
+      sql_distinct_key: ${ecommerce__transaction_id} ;;
+      value_format_name: usd
+    }
+
+    measure: total_tax_value {
+      type: sum_distinct
+      sql: ${ecommerce__tax_value} ;;
+      sql_distinct_key: ${ecommerce__transaction_id} ;;
+      value_format_name: usd
+    }
+
+    measure: total_tax_value_usd {
+      type: sum_distinct
+      sql: ${ecommerce__tax_value_in_usd} ;;
+      sql_distinct_key: ${ecommerce__transaction_id} ;;
+      value_format_name: usd
+    }
+
+    measure: total_item_quantity {
+      type: sum_distinct
+      sql: ${ecommerce__total_item_quantity} ;;
+      sql_distinct_key: ${ecommerce__transaction_id} ;;
+      value_format_name: decimal_0
+    }
+
+    measure: total_unique_items {
+      type: sum_distinct
+      sql: ${ecommerce__unique_items} ;;
+      sql_distinct_key: ${ecommerce__transaction_id} ;;
+      value_format_name: decimal_0
+    }
 
   # ----- Sets of fields for drilling ------
   set: detail {
