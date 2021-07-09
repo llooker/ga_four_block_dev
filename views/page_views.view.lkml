@@ -19,6 +19,26 @@ view: page_views {
       derived_column: page_view_reverse_rank {
         sql: ROW_NUMBER() OVER(PARTITION BY sl_key ORDER BY event_timestamp desc) ;;
       }
+      derived_column: current_page_minus_1 {sql: LAG(event_param_page) OVER (PARTITION BY sl_key ORDER BY event_timestamp) ;;}
+      derived_column: current_page_minus_2 {sql: LAG(event_param_page,2) OVER (PARTITION BY sl_key ORDER BY event_timestamp) ;;}
+      derived_column: current_page_minus_3 {sql: LAG(event_param_page,3) OVER (PARTITION BY sl_key ORDER BY event_timestamp) ;;}
+      derived_column: current_page_minus_4 {sql: LAG(event_param_page,4) OVER (PARTITION BY sl_key ORDER BY event_timestamp) ;;}
+      derived_column: current_page_minus_5 {sql: LAG(event_param_page,5) OVER (PARTITION BY sl_key ORDER BY event_timestamp) ;;}
+      derived_column: current_page_minus_6 {sql: LAG(event_param_page,6) OVER (PARTITION BY sl_key ORDER BY event_timestamp) ;;}
+      derived_column: current_page_minus_7 {sql: LAG(event_param_page,7) OVER (PARTITION BY sl_key ORDER BY event_timestamp) ;;}
+      derived_column: current_page_minus_8 {sql: LAG(event_param_page,8) OVER (PARTITION BY sl_key ORDER BY event_timestamp) ;;}
+      derived_column: current_page_minus_9 {sql: LAG(event_param_page,9) OVER (PARTITION BY sl_key ORDER BY event_timestamp) ;;}
+      derived_column: current_page_minus_10 {sql: LAG(event_param_page,10) OVER (PARTITION BY sl_key ORDER BY event_timestamp) ;;}
+      derived_column: current_page_plus_1 {sql: LEAD(event_param_page) OVER (PARTITION BY sl_key ORDER BY event_timestamp) ;;}
+      derived_column: current_page_plus_2 {sql: LEAD(event_param_page,2) OVER (PARTITION BY sl_key ORDER BY event_timestamp) ;;}
+      derived_column: current_page_plus_3 {sql: LEAD(event_param_page,3) OVER (PARTITION BY sl_key ORDER BY event_timestamp) ;;}
+      derived_column: current_page_plus_4 {sql: LEAD(event_param_page,4) OVER (PARTITION BY sl_key ORDER BY event_timestamp) ;;}
+      derived_column: current_page_plus_5 {sql: LEAD(event_param_page,5) OVER (PARTITION BY sl_key ORDER BY event_timestamp) ;;}
+      derived_column: current_page_plus_6 {sql: LEAD(event_param_page,6) OVER (PARTITION BY sl_key ORDER BY event_timestamp) ;;}
+      derived_column: current_page_plus_7 {sql: LEAD(event_param_page,7) OVER (PARTITION BY sl_key ORDER BY event_timestamp) ;;}
+      derived_column: current_page_plus_8 {sql: LEAD(event_param_page,8) OVER (PARTITION BY sl_key ORDER BY event_timestamp) ;;}
+      derived_column: current_page_plus_9 {sql: LEAD(event_param_page,9) OVER (PARTITION BY sl_key ORDER BY event_timestamp) ;;}
+      derived_column: current_page_plus_10 {sql: LEAD(event_param_page,10) OVER (PARTITION BY sl_key ORDER BY event_timestamp) ;;}
       bind_all_filters: yes
       filters: [event_data.event_name: "page_view"]
     }
@@ -97,18 +117,131 @@ view: page_views {
     sql: ${count_page_views} = 1 ;;
   }
 
-  # dimension: landing_page_page {
-  #   type: string
-  #   sql: case when ${page_view_rank} = 1 then ${event_param_page} else null end ;;
-  #   label: "Landing Page"
-  #   description: "Page value for Page View Ranked 1 (First Page View in Session)"
-  # }
-
   dimension: exit_page_page {
     type: string
     sql: case when ${page_view_reverse_rank} = 1 then ${event_param_page} else null end ;;
     label: "Exit Page"
     description: "Page value for Page View Reverse Ranked 1 (Last Page View in Session)"
+  }
+
+  dimension: current_page_plus_1 {
+    group_label: "Relative Page Path"
+    description: "Page Path for page that came directly before current page."
+    type: string
+  }
+
+  dimension: current_page_plus_2 {
+    group_label: "Relative Page Path"
+    description: "Page Path for page that came directly before current page."
+    type: string
+  }
+
+  dimension: current_page_plus_3 {
+    group_label: "Relative Page Path"
+    description: "Page Path for page that came directly before current page."
+    type: string
+  }
+
+  dimension: current_page_plus_4 {
+    group_label: "Relative Page Path"
+    description: "Page Path for page that came directly before current page."
+    type: string
+  }
+
+  dimension: current_page_plus_5 {
+    group_label: "Relative Page Path"
+    description: "Page Path for page that came directly before current page."
+    type: string
+  }
+
+  dimension: current_page_plus_6 {
+    group_label: "Relative Page Path"
+    description: "Page Path for page that came directly before current page."
+    type: string
+  }
+
+  dimension: current_page_plus_7 {
+    group_label: "Relative Page Path"
+    description: "Page Path for page that came directly before current page."
+    type: string
+  }
+
+  dimension: current_page_plus_8 {
+    group_label: "Relative Page Path"
+    description: "Page Path for page that came directly before current page."
+    type: string
+  }
+
+  dimension: current_page_plus_9 {
+    group_label: "Relative Page Path"
+    description: "Page Path for page that came directly before current page."
+    type: string
+  }
+
+  dimension: current_page_plus_10 {
+    group_label: "Relative Page Path"
+    description: "Page Path for page that came directly before current page."
+    type: string
+  }
+
+  dimension: current_page_minus_1 {
+    group_label: "Reverse Page Path"
+    description: "Page Path for page that came directly before current page."
+    type: string
+  }
+
+  dimension: current_page_minus_2 {
+    group_label: "Reverse Page Path"
+    description: "Page Path for page that came directly before current page."
+    type: string
+  }
+
+  dimension: current_page_minus_3 {
+    group_label: "Reverse Page Path"
+    description: "Page Path for page that came directly before current page."
+    type: string
+  }
+
+  dimension: current_page_minus_4 {
+    group_label: "Reverse Page Path"
+    description: "Page Path for page that came directly before current page."
+    type: string
+  }
+
+  dimension: current_page_minus_5 {
+    group_label: "Reverse Page Path"
+    description: "Page Path for page that came directly before current page."
+    type: string
+  }
+
+  dimension: current_page_minus_6 {
+    group_label: "Reverse Page Path"
+    description: "Page Path for page that came directly before current page."
+    type: string
+  }
+
+  dimension: current_page_minus_7 {
+    group_label: "Reverse Page Path"
+    description: "Page Path for page that came directly before current page."
+    type: string
+  }
+
+  dimension: current_page_minus_8 {
+    group_label: "Reverse Page Path"
+    description: "Page Path for page that came directly before current page."
+    type: string
+  }
+
+  dimension: current_page_minus_9 {
+    group_label: "Reverse Page Path"
+    description: "Page Path for page that came directly before current page."
+    type: string
+  }
+
+  dimension: current_page_minus_10 {
+    group_label: "Reverse Page Path"
+    description: "Page Path for page that came directly before current page."
+    type: string
   }
 
 ## Measures

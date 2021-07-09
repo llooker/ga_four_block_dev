@@ -55,6 +55,7 @@ view: event_data {
   }
 
   dimension: event_timestamp {
+    hidden: yes
     type: number
     sql: ${TABLE}.event_timestamp ;;
   }
