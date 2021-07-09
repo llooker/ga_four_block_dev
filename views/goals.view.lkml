@@ -13,6 +13,7 @@ view: goals {
     type: string
     suggest_explore: sessions
     suggest_dimension: event_data.event_name
+    full_suggestions: yes
   }
 
   filter: page_goal_selection {
@@ -23,6 +24,7 @@ view: goals {
     type: string
     suggest_explore: sessions
     suggest_dimension:  event_data.event_param_page
+    full_suggestions: yes
   }
 
   ########## DIMENSIONS ##########
