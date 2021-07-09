@@ -1,3 +1,4 @@
+label: "Google Analytics 4"
 connection: "looker-demos"
 include: "/views/*.view.lkml"
 include: "/attributes/*.lkml"
@@ -10,6 +11,7 @@ datagroup: generated_model_default_datagroup {
 persist_with: generated_model_default_datagroup
 
 explore: sessions {
+  label: "GA4 Sessions"
 
   join: audience_cohorts {
     type: left_outer
