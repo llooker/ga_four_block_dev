@@ -37,6 +37,13 @@ explore: sessions {
     relationship: one_to_many
   }
 
+  join: event_path {
+    view_label: "Event Data"
+    sql_on: ${sessions.sl_key} = ${event_path.sl_key}
+        and ${event_data.ed_key} = ${event_path.ed_key} ;;
+        relationship: one_to_one
+  }
+
   join: page_views {
     type: left_outer
     sql_on: ${sessions.sl_key} = ${page_views.sl_key}

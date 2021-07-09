@@ -132,115 +132,115 @@ view: page_views {
 
   dimension: current_page_plus_2 {
     group_label: "Relative Page Path"
-    description: "Page Path for page that came directly before current page."
+    description: "Page Path for page that came 2 pages before current page."
     type: string
   }
 
   dimension: current_page_plus_3 {
     group_label: "Relative Page Path"
-    description: "Page Path for page that came directly before current page."
+    description: "Page Path for page that came 3 pages before current page."
     type: string
   }
 
   dimension: current_page_plus_4 {
     group_label: "Relative Page Path"
-    description: "Page Path for page that came directly before current page."
+    description: "Page Path for page that came 4 pages before current page."
     type: string
   }
 
   dimension: current_page_plus_5 {
     group_label: "Relative Page Path"
-    description: "Page Path for page that came directly before current page."
+    description: "Page Path for page that came 5 pages before current page."
     type: string
   }
 
   dimension: current_page_plus_6 {
     group_label: "Relative Page Path"
-    description: "Page Path for page that came directly before current page."
+    description: "Page Path for page that came 6 pages before current page."
     type: string
   }
 
   dimension: current_page_plus_7 {
     group_label: "Relative Page Path"
-    description: "Page Path for page that came directly before current page."
+    description: "Page Path for page that came 7 pages before current page."
     type: string
   }
 
   dimension: current_page_plus_8 {
     group_label: "Relative Page Path"
-    description: "Page Path for page that came directly before current page."
+    description: "Page Path for page that came 8 pages before current page."
     type: string
   }
 
   dimension: current_page_plus_9 {
     group_label: "Relative Page Path"
-    description: "Page Path for page that came directly before current page."
+    description: "Page Path for page that came 9 pages before current page."
     type: string
   }
 
   dimension: current_page_plus_10 {
     group_label: "Relative Page Path"
-    description: "Page Path for page that came directly before current page."
+    description: "Page Path for page that came 10 pages before current page."
     type: string
   }
 
   dimension: current_page_minus_1 {
     group_label: "Reverse Page Path"
-    description: "Page Path for page that came directly before current page."
+    description: "Page Path for page that came directly after current page."
     type: string
   }
 
   dimension: current_page_minus_2 {
     group_label: "Reverse Page Path"
-    description: "Page Path for page that came directly before current page."
+    description: "Page Path for page that came 2 pages after current page."
     type: string
   }
 
   dimension: current_page_minus_3 {
     group_label: "Reverse Page Path"
-    description: "Page Path for page that came directly before current page."
+    description: "Page Path for page that came 3 pages after current page."
     type: string
   }
 
   dimension: current_page_minus_4 {
     group_label: "Reverse Page Path"
-    description: "Page Path for page that came directly before current page."
+    description: "Page Path for page that came 4 pages after current page."
     type: string
   }
 
   dimension: current_page_minus_5 {
     group_label: "Reverse Page Path"
-    description: "Page Path for page that came directly before current page."
+    description: "Page Path for page that came 5 pages after current page."
     type: string
   }
 
   dimension: current_page_minus_6 {
     group_label: "Reverse Page Path"
-    description: "Page Path for page that came directly before current page."
+    description: "Page Path for page that came 6 pages after current page."
     type: string
   }
 
   dimension: current_page_minus_7 {
     group_label: "Reverse Page Path"
-    description: "Page Path for page that came directly before current page."
+    description: "Page Path for page that came 7 pages after current page."
     type: string
   }
 
   dimension: current_page_minus_8 {
     group_label: "Reverse Page Path"
-    description: "Page Path for page that came directly before current page."
+    description: "Page Path for page that came 8 pages after current page."
     type: string
   }
 
   dimension: current_page_minus_9 {
     group_label: "Reverse Page Path"
-    description: "Page Path for page that came directly before current page."
+    description: "Page Path for page that came 9 pages after current page."
     type: string
   }
 
   dimension: current_page_minus_10 {
     group_label: "Reverse Page Path"
-    description: "Page Path for page that came directly before current page."
+    description: "Page Path for page that came 10 pages after current page."
     type: string
   }
 
