@@ -215,6 +215,9 @@ left join geo g
   }
 
   dimension: ga_session_number {
+    view_label: "Audience"
+    group_label: "User"
+    label: "Session Number"
     type: number
     sql: ${TABLE}.ga_session_number ;;
   }
@@ -244,15 +247,18 @@ left join geo g
   }
 
   dimension_group: since_previous_session {
+    view_label: "Audience"
+    group_label: "User"
     type: duration
-    intervals: [second,hour,minute,day,week]
+    # intervals: [second,hour,minute,day,week]
+    intervals: [day]
     sql_start: ${user_previous_session_end} ;;
     sql_end: ${session_data_session_start_raw} ;;
   }
 
   dimension: days_since_previous_session_tier {
-    # view_label: "Audience"
-    # group_label: "User"
+    view_label: "Audience"
+    group_label: "User"
     description: "Days since the previous session. 0 if user only has 1 session."
     type: tier
     style: integer
@@ -378,8 +384,12 @@ left join geo g
   }
 
     dimension: session_attribution_page_referrer {
-      group_label: "Attribution"
-      label: "Page Referrer"
+      # group_label: "Attribution"
+      # label: "Page Referrer"
+      view_label: "Acquisition"
+      group_label: "Advertising"
+      label: "Full Referrer"
+      description: "The full referring URL including the hostname and path."
       type: string
       sql: ${session_attribution}.page_referrer ;;
     }
@@ -453,62 +463,71 @@ left join geo g
   }
 
     dimension: device_data_device_category {
-      group_label: "Device"
+      view_label: "Audience"
+      group_label: "Mobile"
       label: "Device Category"
       type: string
       sql: ${device_data}.device__category ;;
     }
 
     dimension: device_data_mobile_brand_name {
-      group_label: "Device"
-      label: "Mobile Brand Name"
+      view_label: "Audience"
+      group_label: "Mobile"
+      label: "Mobile Device Branding"
       type: string
       sql: ${device_data}.device__mobile_brand_name ;;
     }
 
     dimension: device_data_mobile_model_name {
-      group_label: "Device"
-      label: "Mobile Model Name"
+      view_label: "Audience"
+      group_label: "Mobile"
+      label: "Mobile Device Model"
       type: string
       sql: ${device_data}.device__mobile_model_name ;;
     }
 
     dimension: device_data_mobile_device_info {
-      group_label: "Device"
+      view_label: "Audience"
+      group_label: "Mobile"
       label: "Mobile Device Info"
       type: string
       sql: ${device_data}.device__mobile_device_info ;;
     }
 
     dimension: device_data_mobile_marketing_name {
-      group_label: "Device"
-      label: "Mobile Marketing Name"
+      view_label: "Audience"
+      group_label: "Mobile"
+      label: "Mobile Device Marketing Name"
       type: string
       sql: ${device_data}.device__mobile_marketing_name ;;
     }
 
     dimension: device_data_mobile_os_hardware_model {
-      group_label: "Device"
+      view_label: "Audience"
+      group_label: "Mobile"
       label: "Mobile OS Hardware Model"
       type: string
       sql: ${device_data}.device__mobile_os_hardware_model ;;
     }
 
     dimension: device_data_operating_system {
-      group_label: "Device"
+      view_label: "Audience"
+      group_label: "Technology"
       label: "Operating System"
       type: string
       sql: ${device_data}.device__operating_system ;;
     }
 
     dimension: device_data_operating_system_version {
-      group_label: "Device"
+      view_label: "Audience"
+      group_label: "Technology"
       label: "Operating System Version"
       type: string
       sql: ${device_data}.device__operating_system_version ;;
     }
 
     dimension: device_data_vendor_id {
+      hidden: yes
       group_label: "Device"
       label: "Vendor ID"
       type: string
@@ -516,6 +535,7 @@ left join geo g
     }
 
     dimension: device_data_advertising_id {
+      hidden: yes
       group_label: "Device"
       label: "Advertising ID"
       type: string
@@ -523,7 +543,8 @@ left join geo g
     }
 
     dimension: device_data_language {
-      group_label: "Device"
+      view_label: "Audience"
+      group_label: "User"
       label: "Language"
       type: string
       sql: ${device_data}.device__language ;;
@@ -544,22 +565,27 @@ left join geo g
     }
 
     dimension: device_data_web_info_browser {
-      group_label: "Device"
+      view_label: "Audience"
+      group_label: "Technology"
       label: "Browser"
       type: string
       sql: ${device_data}.device__web_info_browser ;;
     }
 
     dimension: device_data_web_info_browser_version {
-      group_label: "Device"
+      view_label: "Audience"
+      group_label: "Technology"
       label: "Browser Version"
       type: string
       sql: ${device_data}.device__web_info_browser_version ;;
     }
 
     dimension: device_data_web_info_hostname {
-      group_label: "Device"
+      #group_label: "Device"
+      view_label: "Behavior"
+      group_label: "Pages"
       label: "Hostname"
+      description: "The hostname from which the tracking request was made."
       type: string
       sql: ${device_data}.device__web_info_hostname ;;
     }
@@ -574,6 +600,7 @@ left join geo g
   }
 
     dimension: geo_data_continent {
+      view_label: "Audience"
       group_label: "Geo"
       label: "Continent"
       type: string
@@ -581,6 +608,7 @@ left join geo g
     }
 
     dimension: geo_data_country {
+      view_label: "Audience"
       group_label: "Geo"
       label: "Country"
       type: string
@@ -589,6 +617,7 @@ left join geo g
     }
 
     dimension: geo_data_city {
+      view_label: "Audience"
       group_label: "Geo"
       label: "City"
       type: string
@@ -596,6 +625,7 @@ left join geo g
     }
 
     dimension: geo_data_metro {
+      view_label: "Audience"
       group_label: "Geo"
       label: "Metro"
       type: string
@@ -603,6 +633,7 @@ left join geo g
     }
 
     dimension: geo_data_sub_continent {
+      view_label: "Audience"
       group_label: "Geo"
       label: "Sub-Continent"
       type: string
@@ -610,6 +641,7 @@ left join geo g
     }
 
     dimension: geo_data_region {
+      view_label: "Audience"
       group_label: "Geo"
       label: "Region"
       type: string
@@ -708,9 +740,9 @@ left join geo g
   }
 
   measure: total_new_users {
-    view_label: "Metrics"
-    group_label: "Session"
-    label: "Total New Users"
+    view_label: "Audience"
+    group_label: "User"
+    label: "New Users"
     description: "Distinct/Unique count of User Pseudo ID where GA Session Number = 1"
     type: count_distinct
     sql: ${user_pseudo_id} ;;
@@ -719,9 +751,9 @@ left join geo g
   }
 
   measure: total_returning_users {
-    view_label: "Metrics"
-    group_label: "Session"
-    label: "Total Returning Users"
+    view_label: "Audience"
+    group_label: "User"
+    label: "Returning Users"
     description: "Distinct/Unique count of User Pseudo ID where GA Session Number > 1"
     type: count_distinct
     sql: ${user_pseudo_id} ;;
@@ -730,18 +762,18 @@ left join geo g
   }
 
   measure: percentage_new_users {
-    view_label: "Metrics"
-    group_label: "Session"
-    label: "Total New Users - Percentage"
+    view_label: "Audience"
+    group_label: "User"
+    label: "% New Users"
     type: number
     sql: ${total_new_users}/nullif(${total_users},0) ;;
     value_format_name: percent_2
   }
 
   measure: percentage_returning_users {
-    view_label: "Metrics"
-    group_label: "Session"
-    label: "Total Returning Users - Percentage"
+    view_label: "Audience"
+    group_label: "User"
+    label: "% Returning Users"
     type: number
     sql: ${total_returning_users}/nullif(${total_users},0) ;;
     value_format_name: percent_2

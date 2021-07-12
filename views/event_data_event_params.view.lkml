@@ -11,8 +11,11 @@ view: event_data_event_params {
   }
 
   dimension: event_param_campaign {
-    group_label: "Event: Parameters"
+    #group_label: "Event: Parameters"
+    view_label: "Acquisition"
+    group_label: "Advertising"
     label: "Campaign"
+    description: "The campaign value. Usually set by the utm_campaign URL parameter."
     type: string
     sql: (SELECT value.string_value FROM UNNEST(event_params) WHERE key = "campaign") ;;
   }
@@ -74,8 +77,11 @@ view: event_data_event_params {
   }
 
   dimension: event_param_page {
-    group_label: "Event: Parameters"
+    #group_label: "Event: Parameters"
+    view_label: "Behavior"
+    group_label: "Pages"
     label: "Page"
+    description: "The url of the page."
     type: string
     sql: (SELECT value.string_value FROM UNNEST(event_params) WHERE key = "page") ;;
   }
@@ -95,8 +101,11 @@ view: event_data_event_params {
   }
 
   dimension: event_param_page_title {
-    group_label: "Event: Parameters"
+    #group_label: "Event: Parameters"
+    view_label: "Behavior"
+    group_label: "Pages"
     label: "Page Title"
+    description: "The page's title. Multiple pages might have the same page title."
     type: string
     sql: (SELECT value.string_value FROM UNNEST(event_params) WHERE key = "page_title") ;;
   }
@@ -130,8 +139,12 @@ view: event_data_event_params {
   }
 
   dimension: event_param_term {
-    group_label: "Event: Parameters"
-    label: "Term"
+    # group_label: "Event: Parameters"
+    # label: "Term"
+    view_label: "Acquisition"
+    group_label: "Advertising"
+    label: "Keyword"
+    description: "The keyword of the traffic source, usually set when the trafficSource.medium is 'organic' or 'cpc'. Can be set by the utm_term URL parameter."
     type: string
     sql: (SELECT value.string_value FROM UNNEST(event_params) WHERE key = "term") ;;
   }
@@ -139,10 +152,14 @@ view: event_data_event_params {
 ## Measures
 
   measure: total_engaged_events {
-    view_label: "Metrics"
-    group_label: "Event Data"
-    label: "Total Engaged Events"
+    # view_label: "Metrics"
+    # group_label: "Event Data"
+    # label: "Total Engaged Events"
     type: count_distinct
+    view_label: "Behavior"
+    group_label: "Events"
+    label: "Engaged Events"
+    #description: ""
     filters: [event_param_engaged_session_event: ">0"]
   }
 

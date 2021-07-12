@@ -95,19 +95,26 @@ view: page_views {
   }
 
   dimension: time_to_next_event {
-    label: "Time to Next Event"
+    view_label: "Behavior"
+    group_label: "Time on Page"
+    label: "Time on Page"
+    description: "Time user spent on page. If it was the last page they visited before exiting, then time from when they entered and their last event on the page"
     value_format_name: hour_format
   }
 
   dimension: is_landing_page {
+    view_label: "Behavior"
+    group_label: "Page Filters"
+    description: "Use to filter for first pageview of a session. Use with Page dimensions."
     type: yesno
-    label: "Is Landing Page?"
     sql: ${page_view_rank} = 1 ;;
   }
 
   dimension: is_exit_page {
+    view_label: "Behavior"
+    group_label: "Page Filters"
+    description: "If this hit was the last pageview or screenview hit of a session, this is set to true."
     type: yesno
-    label: "Is Exit Page?"
     sql: ${page_view_reverse_rank} = 1 ;;
   }
 
@@ -247,18 +254,27 @@ view: page_views {
 ## Measures
 
   measure: total_page_views {
+    hidden: yes
     type: count_distinct
     label: "Total Page Views"
     sql: ${pv_key} ;;
   }
 
   measure: total_entrances {
+    view_label: "Behavior"
+    group_label: "Pages"
+    label: "Entrances"
+    description: "The number of entrances to the property measured as the first pageview in a session, typically used with landingPagePath."
     type: count_distinct
     filters: [is_landing_page: "yes"]
     sql: ${pv_key} ;;
   }
 
   measure: entrance_rate {
+    view_label: "Behavior"
+    group_label: "Pages"
+    label: "Entrance Rate"
+    description:"The percentage of pageviews in which this page was the entrance."
     type: number
     sql: ${total_entrances}/nullif(${total_page_views},0) ;;
     value_format_name: percent_2
@@ -277,21 +293,32 @@ view: page_views {
   }
 
   measure: total_exits {
+    view_label: "Behavior"
+    group_label: "Pages"
+    label: "Exits"
+    description: "The number of exits from the property."
     type: count_distinct
     filters: [is_exit_page: "yes"]
     sql: ${pv_key} ;;
   }
 
   measure: exit_rate {
+    view_label: "Behavior"
+    group_label: "Pages"
+    label: "Exit Rate"
+    description: "Exit is (number of exits) / (number of pageviews) for the page or set of pages. It indicates how often users exit from that page or set of pages when they view the page(s)."
     type: number
     sql: ${total_exits}/nullif(${total_page_views},0) ;;
     value_format_name: percent_2
   }
 
   measure: average_time_to_next_event {
-    view_label: "Metrics"
-    group_label: "Event Data"
+    # view_label: "Metrics"
+    # group_label: "Event Data"
+    view_label: "Behavior"
+    group_label: "Pages"
     label: "Average Time on Page"
+    description: "Avg time a user spent on a specific page."
     type: average
     sql: ${time_to_next_event} ;;
     value_format_name: hour_format

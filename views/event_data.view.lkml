@@ -43,6 +43,7 @@ view: event_data {
   }
 
   dimension: full_event {
+    view_label: "Behavior"
     ## Customize with your specific event parameters that encompass the specific points of interest in your event.
     type: string
     sql: ${event_name}||': '||coalesce(${event_data.event_param_page},"") ;;
@@ -398,13 +399,16 @@ view: event_data {
 
   ## Traffic Source Fields
   dimension: traffic_source__medium {
+    view_label: "Acquisition"
     type: string
     sql: ${TABLE}.traffic_source.medium ;;
     group_label: "Traffic Source"
     group_item_label: "Medium"
+    description: "The medium of the traffic source. Could be 'organic', 'cpc', 'referral', or the value of the utm_medium URL parameter."
   }
 
   dimension: traffic_source__name {
+    view_label: "Acquisition"
     type: string
     sql: ${TABLE}.traffic_source.name ;;
     group_label: "Traffic Source"
@@ -412,10 +416,12 @@ view: event_data {
   }
 
   dimension: traffic_source__source {
+    view_label: "Acquisition"
     type: string
     sql: ${TABLE}.traffic_source.source ;;
     group_label: "Traffic Source"
     group_item_label: "Source"
+    description: "The source of the traffic source. Could be the name of the search engine, the referring hostname, or a value of the utm_source URL parameter."
   }
 
   ## User Fields
@@ -453,35 +459,50 @@ view: event_data {
 ## Measures
 
   measure: total_events {
+    view_label: "Behavior"
+    group_label: "Events"
+    description: "The total number of web events for the event."
     type: count
-    view_label: "Metrics"
-    group_label: "Event Data"
-    label: "Total Events"
+    # view_label: "Metrics"
+    # group_label: "Event Data"
+    # label: "Total Events"
   }
 
   measure: total_unique_events {
-    view_label: "Metrics"
-    group_label: "Event Data"
-    label: "Total Unique Events"
+    view_label: "Behavior"
+    group_label: "Events"
+    label: "Unique Events"
+    description: "Unique Events are interactions with content by a single user within a single session that can be tracked separately from pageviews or screenviews."
     type: count_distinct
     sql: ${sl_key} ;;
-    description: "Total Unique Events (Unique by Full Event Definition)"
+    # view_label: "Metrics"
+    # group_label: "Event Data"
+    # label: "Total Unique Events"
+    # description: "Total Unique Events (Unique by Full Event Definition)"
   }
 
 
   measure: total_page_views {
-    view_label: "Metrics"
-    group_label: "Event Data"
-    label: "Total Page Views"
+    # view_label: "Metrics"
+    # group_label: "Event Data"
+    # label: "Total Page Views"
+    view_label: "Behavior"
+    group_label: "Pages"
+    label: "Pageviews"
+    description: "The total number of pageviews for the property."
     type: count
     filters: [event_name: "page_view"]
     value_format_name: formatted_number
   }
 
   measure: total_unique_page_views {
-    view_label: "Metrics"
-    group_label: "Event Data"
-    label: "Total Unique Page Views"
+    # view_label: "Metrics"
+    # group_label: "Event Data"
+    # label: "Total Unique Page Views"
+    view_label: "Behavior"
+    group_label: "Pages"
+    label: "Unique Pageviews"
+    description: "Unique Pageviews are the number of sessions during which the specified page was viewed at least once. A unique pageview is counted for each page URL + page title combination."
     type: count_distinct
     sql: CONCAT(${event_param_ga_session_id}, ${event_param_page}, ${event_param_page_title}) ;;
     value_format_name: formatted_number

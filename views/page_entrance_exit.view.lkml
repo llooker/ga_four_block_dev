@@ -32,10 +32,14 @@ view: page_entrance_exit {
   }
 
   dimension: landing_page {
+    view_label: "Behavior"
+    group_label: "Pages"
+    description: "Landing page for session without url parameters."
     type: string
   }
 
   dimension: exit_page {
+    hidden: yes
     type: string
   }
 
