@@ -1,5 +1,6 @@
 view: event_data_items {
 
+## Dimensions
   dimension: affiliation {
     group_label: "Items"
     type: string

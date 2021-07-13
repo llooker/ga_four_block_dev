@@ -1,6 +1,6 @@
 view: event_data_event_params {
   ## Event Parameters
-  ## These because there are multiple "key"/"value" rows per event, these are unnested at the dimension level.
+  ## Because there are multiple "key"/"value" rows per event, these are unnested at the dimension level.
   ## This view is included in event_data.view, and not directly joined on the model.
 
   dimension: event_param_all_data {
@@ -11,9 +11,7 @@ view: event_data_event_params {
   }
 
   dimension: event_param_campaign {
-    #group_label: "Event: Parameters"
-    view_label: "Acquisition"
-    group_label: "Advertising"
+    group_label: "Event: Parameters"
     label: "Campaign"
     description: "The campaign value. Usually set by the utm_campaign URL parameter."
     type: string
@@ -77,9 +75,7 @@ view: event_data_event_params {
   }
 
   dimension: event_param_page {
-    #group_label: "Event: Parameters"
-    view_label: "Behavior"
-    group_label: "Pages"
+    group_label: "Event: Parameters"
     label: "Page"
     description: "The url of the page."
     type: string
@@ -101,9 +97,7 @@ view: event_data_event_params {
   }
 
   dimension: event_param_page_title {
-    #group_label: "Event: Parameters"
-    view_label: "Behavior"
-    group_label: "Pages"
+    group_label: "Event: Parameters"
     label: "Page Title"
     description: "The page's title. Multiple pages might have the same page title."
     type: string
@@ -139,11 +133,11 @@ view: event_data_event_params {
   }
 
   dimension: event_param_term {
-    # group_label: "Event: Parameters"
-    # label: "Term"
-    view_label: "Acquisition"
-    group_label: "Advertising"
-    label: "Keyword"
+    group_label: "Event: Parameters"
+    label: "Term"
+    # view_label: "Acquisition"
+    # group_label: "Advertising"
+    # label: "Keyword"
     description: "The keyword of the traffic source, usually set when the trafficSource.medium is 'organic' or 'cpc'. Can be set by the utm_term URL parameter."
     type: string
     sql: (SELECT value.string_value FROM UNNEST(event_params) WHERE key = "term") ;;

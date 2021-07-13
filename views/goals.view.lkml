@@ -1,9 +1,9 @@
-#Purpose of this file is to house the fields used to generate Custom Goals. This file is extended into the `event_data` view.
+# Purpose of this file is to house the fields used to generate Custom Goals. This file is extended into the `event_data` view.
 
 view: goals {
   extension: required
 
-  ########## FILTERS ##########
+## Filters
 
   filter: event_name_goal_selection {
     label: "Event Name"
@@ -13,7 +13,6 @@ view: goals {
     type: string
     suggest_explore: sessions
     suggest_dimension: event_data.event_name
-    full_suggestions: yes
   }
 
   filter: page_goal_selection {
@@ -24,24 +23,19 @@ view: goals {
     type: string
     suggest_explore: sessions
     suggest_dimension:  event_data.event_param_page
-    full_suggestions: yes
   }
 
-  ########## DIMENSIONS ##########
+## Dimensions
 
   dimension: dynamic_goal {
     view_label: "Goals"
     group_label: "Goals"
     description: "Goal label based on Goal selection filters."
     type: string
-    sql: IF(
-          ${has_completed_goal}
-          , CONCAT(
+    sql: IF( ${has_completed_goal}, CONCAT(
               IF({{ event_name_goal_selection._in_query }}, CONCAT(${event_name}, " "), "")
             , IF({{ page_goal_selection._in_query }}, CONCAT("on ", ${event_param_page}), "")
-          )
-          , null
-        );;
+            ), null );;
   }
 
   dimension: goal_in_query {
@@ -65,7 +59,7 @@ view: goals {
         );;
   }
 
-  ########## MEASURES ##########
+## Measures
   measure: conversion_count {
     view_label: "Goals"
     group_label: "Goal Conversions"
@@ -74,12 +68,7 @@ view: goals {
     type: count_distinct
     allow_approximate_optimization: yes
     sql: ${ed_key} ;;
-
-    filters: {
-      field: has_completed_goal
-      value: "Yes"
-    }
-
+    filters: [has_completed_goal: "yes"]
     value_format_name: formatted_number
     drill_fields: []
   }
@@ -92,12 +81,7 @@ view: goals {
     type: count_distinct
     allow_approximate_optimization: yes
     sql: ${sessions.sl_key} ;;
-
-    filters: {
-      field: has_completed_goal
-      value: "Yes"
-    }
-
+    filters: [has_completed_goal: "yes"]
     value_format_name: formatted_number
     drill_fields: [client_id, visit_number, sessions_with_conversions]
   }
@@ -109,9 +93,7 @@ view: goals {
     description: "Percentage of sessions resulting in a conversion based on 'Goal Selection' filters."
     type: number
     sql: (1.0*${sessions_with_conversions})/NULLIF(${sessions.total_sessions}, 0) ;;
-
     value_format_name: percent_1
     drill_fields: []
   }
-
 }

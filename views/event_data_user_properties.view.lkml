@@ -1,5 +1,6 @@
 view: event_data_user_properties {
 
+## Dimensions
   dimension: user_property_age {
     group_label: "User Properties"
     label: "Age"

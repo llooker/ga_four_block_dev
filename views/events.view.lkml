@@ -8,9 +8,10 @@
 
 include: "event_data_event_params.view"
 include: "goals.view"
+include: "event_data_dimensions/*.view"
 
 view: event_data {
-  extends: [event_data_event_params, goals]
+  extends: [event_data_event_params, goals, page_data]
 
 ## Dimensions
 
@@ -28,16 +29,46 @@ view: event_data {
   }
 
   dimension: event_rank {
+    label: "Event Rank"
     type: number
-    sql: event_row ;;
+    sql: ${TABLE}.event_rank ;;
+    description: "Event Rank in Session, 1st Event = Event Rank 1."
   }
 
-  dimension: event_date {
-    type: string
-    sql: ${TABLE}.event_date ;;
+  dimension: reverse_event_rank {
+    label: "Reverse Event Rank"
+    type: number
+    sql: ${TABLE}.reverse_event_rank ;;
+    description: "Reverse Event Rank in Session. Last Event = Reverse Event Rank 1."
+  }
+
+  # dimension_group: event {
+  #   label: "Event"
+  #   type: time
+  #   timeframes: [date,day_of_month,day_of_week,day_of_week_index,day_of_year,month,month_name,month_num,fiscal_quarter,fiscal_quarter_of_year,year]
+  #   sql: ${TABLE}.event_date ;;
+  # }
+
+  dimension_group: event_time {
+    type: time
+    timeframes: [date,day_of_month,day_of_week,day_of_week_index,day_of_year,month,month_name,month_num,fiscal_quarter,fiscal_quarter_of_year,year,time,hour,hour_of_day]
+    label: "Event"
+    sql: TIMESTAMP_MICROS(${TABLE}.event_timestamp) ;;
+    description: "Event Date/Time from Event Timestamp."
+  }
+
+  dimension: event_timestamp { hidden: yes sql: ${TABLE}.event_timestamp ;; }
+
+  dimension: time_to_next_event {
+    label: "Time on Event"
+    description: "Time user spent on Event, measured as duration from event to the subsequent event."
+    sql: ${TABLE}.time_to_next_event ;;
+    type: number
+    value_format_name: hour_format
   }
 
   dimension: event_name {
+    label: "Event Name"
     type: string
     sql: ${TABLE}.event_name ;;
   }
@@ -53,12 +84,6 @@ view: event_data {
     hidden: yes
     sql: ${TABLE}.event_params ;;
     ## This is the parent dimension for the event_params fields within the event_data_event_params view.
-  }
-
-  dimension: event_timestamp {
-    hidden: yes
-    type: number
-    sql: ${TABLE}.event_timestamp ;;
   }
 
   dimension: event_bundle_sequence_id {
@@ -424,6 +449,7 @@ view: event_data {
     description: "The source of the traffic source. Could be the name of the search engine, the referring hostname, or a value of the utm_source URL parameter."
   }
 
+
   ## User Fields
   dimension: user_first_touch_timestamp {
     type: number
@@ -461,7 +487,7 @@ view: event_data {
   measure: total_events {
     view_label: "Behavior"
     group_label: "Events"
-    description: "The total number of web events for the event."
+    description: "The total number of events for the session."
     type: count
     # view_label: "Metrics"
     # group_label: "Event Data"
@@ -472,13 +498,10 @@ view: event_data {
     view_label: "Behavior"
     group_label: "Events"
     label: "Unique Events"
-    description: "Unique Events are interactions with content by a single user within a single session that can be tracked separately from pageviews or screenviews."
+    description: "Total Unique Events (Unique by Full Event Definition)"
+    #description: "Unique Events are interactions with content by a single user within a single session that can be tracked separately from pageviews or screenviews. "
     type: count_distinct
     sql: ${sl_key} ;;
-    # view_label: "Metrics"
-    # group_label: "Event Data"
-    # label: "Total Unique Events"
-    # description: "Total Unique Events (Unique by Full Event Definition)"
   }
 
 
