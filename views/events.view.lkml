@@ -6,11 +6,9 @@
 ##   - event_data_user_properties
 ##   - event_data_items
 
-include: "event_data_event_params.view"
-include: "goals.view"
 include: "event_data_dimensions/*.view"
 
-view: event_data {
+view: events {
   extends: [event_data_event_params, goals, page_data, event_path]
 
 ## Dimensions
@@ -77,7 +75,7 @@ view: event_data {
     view_label: "Behavior"
     ## Customize with your specific event parameters that encompass the specific points of interest in your event.
     type: string
-    sql: ${event_name}||': '||coalesce(${event_data.event_param_page},"") ;;
+    sql: ${event_name}||': '||coalesce(${events.event_param_page},"") ;;
   }
 
   dimension: event_params {

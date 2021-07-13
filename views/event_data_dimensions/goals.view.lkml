@@ -1,4 +1,4 @@
-# Purpose of this file is to house the fields used to generate Custom Goals. This file is extended into the `event_data` view.
+# Purpose: To house the fields used to generate Custom Goals. This file is extended into the `event_data` view.
 
 view: goals {
   extension: required
@@ -12,7 +12,7 @@ view: goals {
     description: "Enter Event Name to be used with Total Conversion measures."
     type: string
     suggest_explore: sessions
-    suggest_dimension: event_data.event_name
+    suggest_dimension: events.event_name
   }
 
   filter: page_goal_selection {
@@ -22,7 +22,7 @@ view: goals {
     description: "Enter Page Path to be used with Conversion measures (format should be: '/<page>'). Should not include Hostname."
     type: string
     suggest_explore: sessions
-    suggest_dimension:  event_data.event_param_page
+    suggest_dimension:  events.event_param_page
   }
 
 ## Dimensions

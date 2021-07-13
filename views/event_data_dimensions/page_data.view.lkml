@@ -1,6 +1,5 @@
 ## Purpose: This view is for defining the 'page_view' specific fields. This view is extended into 'event_data'.
 
-
 view: page_data {
   extension: required
 

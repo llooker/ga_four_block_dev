@@ -1,3 +1,6 @@
+## Purpose: This view is for defining the "Event Path" dimensions, it is extended into events.view
+
+
 view: event_path {
   extension: required
 

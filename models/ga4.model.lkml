@@ -3,6 +3,7 @@ connection: "looker-demos"
 label: "Google Analytics 4"
 
 include: "/views/*.view.lkml"
+include: "/views/*/*.view.lkml"
 include: "/attributes/*.lkml"
 
 datagroup: generated_model_default_datagroup {
@@ -22,7 +23,7 @@ explore: sessions {
     relationship: many_to_one
   }
 
-  join: event_data {
+  join: events {
     view_label: "Events"
     sql: LEFT JOIN UNNEST(${sessions.event_data}) as event_data with offset as event_row ;;
     relationship: one_to_many
@@ -30,9 +31,9 @@ explore: sessions {
 
   join: event_data_items {
     view_label: "Events"
-    sql: LEFT JOIN UNNEST(${event_data.items}) as event_data_items  ;;
+    sql: LEFT JOIN UNNEST(${events.items}) as event_data_items  ;;
     relationship: one_to_many
-    required_joins: [event_data]
+    required_joins: [events]
   }
 
 }

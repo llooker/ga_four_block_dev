@@ -1,3 +1,5 @@
+## Purpose: This view is for defining the 'event_data' 'Item' specific fields. This view unnested from event_data in the 'sessions' explore.
+
 view: event_data_items {
 
 ## Dimensions
