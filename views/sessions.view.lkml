@@ -321,6 +321,27 @@ left join device_geo d
         END;;
   }
 
+  ## Entrance(Landing)/Exit
+
+  dimension: landing_page {
+    view_label: "Behavior"
+    group_label: "Pages"
+    description: "Landing/Entrance Page (first 'Page View' event) of a Session."
+    sql: (select (select value.string_value FROM UNNEST(event_history.event_params) WHERE key = "page")
+          from UNNEST(sessions.event_data) as event_history
+          where event_history.sl_key = (sessions.sl_key) and event_history.page_view_rank = 1 limit 1) ;;
+  }
+
+  dimension: exit_page {
+    view_label: "Behavior"
+    group_label: "Pages"
+    description: "Exit Page (last 'Page View' event) of a Session."
+
+    sql: (select (select value.string_value FROM UNNEST(event_history.event_params) WHERE key = "page")
+          from UNNEST(sessions.event_data) as event_history
+          where event_history.sl_key = (sessions.sl_key) and event_history.page_view_reverse_rank = 1 limit 1) ;;
+  }
+
   ## Session Data Dimensions
   dimension: session_data {
     type: string

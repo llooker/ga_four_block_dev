@@ -57,22 +57,6 @@ view: page_data {
     sql: ${sessions.session_data_page_view_count} = 1 ;;
   }
 
-  dimension: landing_page {
-    view_label: "Behavior"
-    group_label: "Pages"
-    description: "Landing/Entrance Page (first 'Page View' event) of a Session."
-    sql: case when ${page_view_rank} = 1 then ${event_param_page} else null end ;;
-    type: string
-  }
-
-  dimension: exit_page {
-    view_label: "Behavior"
-    group_label: "Pages"
-    description: "Exit Page (last 'Page View' event) of a Session."
-    sql: sql: case when ${page_view_rank} = 1 then ${event_param_page} else null end ;;
-    type: string
-  }
-
   ## Page Path Dimensions
   dimension: page_path_1 {
     view_label: "Page Flow"

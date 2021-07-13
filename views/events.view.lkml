@@ -11,7 +11,7 @@ include: "goals.view"
 include: "event_data_dimensions/*.view"
 
 view: event_data {
-  extends: [event_data_event_params, goals, page_data]
+  extends: [event_data_event_params, goals, page_data, event_path]
 
 ## Dimensions
 
