@@ -157,7 +157,7 @@ select se.session_date session_date
     ,  (SELECT AS STRUCT coalesce(sa.medium,'(none)') medium
                       ,  coalesce(sa.source,'(direct)') source
                       ,  coalesce(sa.campaign,'(direct)') campaign
-                      ,  sa.page_referrer ) session_attribution
+                      ,  sa.page_referrer) session_attribution
     ,  (SELECT AS STRUCT sf.session_event_count
                       ,  sf.engaged_events
                       ,  sf.session_page_view_count
@@ -331,7 +331,6 @@ left join device_geo d
           from UNNEST(sessions.event_data) as event_history
           where event_history.sl_key = (sessions.sl_key) and event_history.page_view_rank = 1 limit 1) ;;
   }
-
   dimension: exit_page {
     view_label: "Behavior"
     group_label: "Pages"
@@ -350,62 +349,49 @@ left join device_geo d
     ## This is the Parent Struct that contains the session_data elements. It is not directly useably as a dimension.
     ## It is referred to by its child dimensions in their sql definition.
   }
-
     dimension: session_data_session_event_count {
       type: number
       sql: ${session_data}.session_event_count ;;
       label: "Session Event Count"
     }
-
     dimension: session_data_engaged_events {
       type: number
       sql: ${session_data}.engaged_events ;;
       label: "Session Engaged Event Count"
     }
-
     dimension: session_data_page_view_count {
       type: number
       sql: ${session_data}.session_page_view_count ;;
-      label: "Session Page View Count"
+      label: "Page View Count"
     }
-
-    dimension: session_data_page_view_count_tier {
-
-    }
-
     dimension: session_data_is_engaged_session {
       type: yesno
       sql: ${session_data}.is_engaged_session ;;
       label: "Is Engaged Session?"
     }
-
     dimension: session_data_is_first_visit_session {
       type: yesno
       sql: ${session_data}.is_first_visit_session ;;
       label: "Is First Visit Session?"
     }
-
     dimension_group: session_data_session_end {
       type: time
       sql: ${session_data}.session_end ;;
       timeframes: [raw,time,hour,hour_of_day,date,day_of_week,day_of_week_index,week,month,year]
       label: "Session End"
     }
-
     dimension_group: session_data_session_start {
       type: time
       sql: ${session_data}.session_start ;;
       timeframes: [raw,time,hour,hour_of_day,date,day_of_week,day_of_week_index,week,month,year]
       label: "Session Start"
     }
-
     dimension: session_data_session_duration {
       type: number
       sql: ((TIMESTAMP_DIFF(${session_data_session_end_raw}, ${session_data_session_start_raw}, second))/86400.0)  ;;
       value_format_name: hour_format
       label: "Session Duration"
     }
-
     dimension: session_data_session_duration_tier {
       label: "Session Duration Tiers"
       description: "The length (returned as a string) of a session measured in seconds and reported in second increments."
@@ -414,7 +400,6 @@ left join device_geo d
       tiers: [10,30,60,120,180,240,300,600]
       style: integer
     }
-
     dimension: session_data_is_bounce {
       type: yesno
       sql: ${session_data_session_duration} = 0 ;;
@@ -430,18 +415,16 @@ left join device_geo d
     ## This is the Parent Struct that contains the session_attribution elements. It is not directly useably as a dimension.
     ## It is referred to by its child dimensions in their sql definition.
   }
-
     dimension: session_attribution_page_referrer {
       # group_label: "Attribution"
       # label: "Page Referrer"
       view_label: "Acquisition"
-      group_label: "Advertising"
+      group_label: "Session Traffic Source"
       label: "Full Referrer"
       description: "The full referring URL including the hostname and path."
       type: string
       sql: ${session_attribution}.page_referrer ;;
     }
-
     dimension: session_attribution_campaign {
       view_label: "Acquisition"
       group_label: "Advertising"
@@ -450,34 +433,30 @@ left join device_geo d
       type: string
       sql: ${session_attribution}.campaign ;;
     }
-
     dimension: session_attribution_source {
       view_label: "Acquisition"
-      group_label: "Advertising"
+      group_label: "Session Traffic Source"
       label: "Source"
       type: string
       sql: ${session_attribution}.source ;;
     }
-
     dimension: session_attribution_medium {
       view_label: "Acquisition"
-      group_label: "Advertising"
+      group_label: "Session Traffic Source"
       label: "Medium"
       type: string
       sql: ${session_attribution}.medium ;;
     }
-
     dimension: session_attribution_source_medium {
       view_label: "Acquisition"
-      group_label: "Advertising"
+      group_label: "Session Traffic Source"
       label: "Source Medium"
       type: string
       sql: ${session_attribution}.source||' '||${session_attribution}.medium ;;
     }
-
     dimension: session_attribution_channel {
       view_label: "Acquisition"
-      group_label: "Advertising"
+      group_label: "Session Traffic Source"
       label: "Channel"
       description: "Default Channel Grouping as defined in https://support.google.com/analytics/answer/9756891?hl=en"
       sql: case when ${session_attribution_source} = '(direct)'
@@ -515,7 +494,6 @@ left join device_geo d
     ## This is the Parent Struct that contains the device_data elements. It is not directly useably as a dimension.
     ## It is referred to by its child dimensions in their sql definition.
   }
-
     dimension: device_data_device_category {
       view_label: "Audience"
       group_label: "Mobile"
@@ -523,7 +501,6 @@ left join device_geo d
       type: string
       sql: ${device_data}.device__category ;;
     }
-
     dimension: device_data_mobile_brand_name {
       view_label: "Audience"
       group_label: "Mobile"
@@ -531,7 +508,6 @@ left join device_geo d
       type: string
       sql: ${device_data}.device__mobile_brand_name ;;
     }
-
     dimension: device_data_mobile_model_name {
       view_label: "Audience"
       group_label: "Mobile"
@@ -539,7 +515,6 @@ left join device_geo d
       type: string
       sql: ${device_data}.device__mobile_model_name ;;
     }
-
     dimension: device_data_mobile_device_info {
       view_label: "Audience"
       group_label: "Mobile"
@@ -547,7 +522,6 @@ left join device_geo d
       type: string
       sql: ${device_data}.device__mobile_device_info ;;
     }
-
     dimension: device_data_mobile_marketing_name {
       view_label: "Audience"
       group_label: "Mobile"
@@ -555,7 +529,6 @@ left join device_geo d
       type: string
       sql: ${device_data}.device__mobile_marketing_name ;;
     }
-
     dimension: device_data_mobile_os_hardware_model {
       view_label: "Audience"
       group_label: "Mobile"
@@ -563,7 +536,6 @@ left join device_geo d
       type: string
       sql: ${device_data}.device__mobile_os_hardware_model ;;
     }
-
     dimension: device_data_operating_system {
       view_label: "Audience"
       group_label: "Technology"
@@ -571,7 +543,6 @@ left join device_geo d
       type: string
       sql: ${device_data}.device__operating_system ;;
     }
-
     dimension: device_data_operating_system_version {
       view_label: "Audience"
       group_label: "Technology"
@@ -579,7 +550,6 @@ left join device_geo d
       type: string
       sql: ${device_data}.device__operating_system_version ;;
     }
-
     dimension: device_data_vendor_id {
       hidden: yes
       group_label: "Device"
@@ -587,7 +557,6 @@ left join device_geo d
       type: string
       sql: ${device_data}.device__vendor_id ;;
     }
-
     dimension: device_data_advertising_id {
       hidden: yes
       group_label: "Device"
@@ -595,7 +564,6 @@ left join device_geo d
       type: string
       sql: ${device_data}.device__advertising_id ;;
     }
-
     dimension: device_data_language {
       view_label: "Audience"
       group_label: "User"
@@ -603,21 +571,18 @@ left join device_geo d
       type: string
       sql: ${device_data}.device__language ;;
     }
-
     dimension: device_data_time_zone_offset_seconds {
       group_label: "Device"
       label: "Time Zone Offset Seconds"
       type: number
       sql: ${device_data}.device__time_zone_offset_seconds ;;
     }
-
     dimension: device_data_is_limited_ad_tracking {
       group_label: "Device"
       label: "Is Limited Ad Tracking?"
       type: string
       sql: ${device_data}.device__is_limited_ad_tracking ;;
     }
-
     dimension: device_data_web_info_browser {
       view_label: "Audience"
       group_label: "Technology"
@@ -625,7 +590,6 @@ left join device_geo d
       type: string
       sql: ${device_data}.device__web_info_browser ;;
     }
-
     dimension: device_data_web_info_browser_version {
       view_label: "Audience"
       group_label: "Technology"
@@ -633,7 +597,6 @@ left join device_geo d
       type: string
       sql: ${device_data}.device__web_info_browser_version ;;
     }
-
     dimension: device_data_web_info_hostname {
       #group_label: "Device"
       view_label: "Behavior"
@@ -652,7 +615,6 @@ left join device_geo d
     ## This is the Parent Struct that contains the geo_data elements. It is not directly useably as a dimension.
     ## It is referred to by its child dimensions in their sql definition.
   }
-
     dimension: geo_data_continent {
       view_label: "Audience"
       group_label: "Geo"
@@ -660,7 +622,6 @@ left join device_geo d
       type: string
       sql: ${geo_data}.geo__continent ;;
     }
-
     dimension: geo_data_country {
       view_label: "Audience"
       group_label: "Geo"
@@ -669,7 +630,6 @@ left join device_geo d
       sql: ${geo_data}.geo__country ;;
       map_layer_name: countries
     }
-
     dimension: geo_data_city {
       view_label: "Audience"
       group_label: "Geo"
@@ -677,7 +637,6 @@ left join device_geo d
       type: string
       sql: ${geo_data}.geo__city ;;
     }
-
     dimension: geo_data_metro {
       view_label: "Audience"
       group_label: "Geo"
@@ -685,7 +644,6 @@ left join device_geo d
       type: string
       sql: ${geo_data}.geo__metro ;;
     }
-
     dimension: geo_data_sub_continent {
       view_label: "Audience"
       group_label: "Geo"
@@ -693,7 +651,6 @@ left join device_geo d
       type: string
       sql: ${geo_data}.geo__sub_continent ;;
     }
-
     dimension: geo_data_region {
       view_label: "Audience"
       group_label: "Geo"
@@ -707,16 +664,18 @@ left join device_geo d
 ## Measures
 
   measure: total_sessions {
-    view_label: "Metrics"
     group_label: "Session"
+    label: "Sessions"
+    description: "Total Number of Sessions (Count)"
     type: count_distinct
     sql: ${sl_key} ;;
     value_format_name: formatted_number
   }
 
   measure: total_first_visit_sessions {
-    view_label: "Metrics"
     group_label: "Session"
+    label: "New Sessions"
+    description: "Total Number of 'First Visit' Sessions (Count)"
     type: count_distinct
     sql: ${sl_key} ;;
     filters: [session_data_is_first_visit_session: "yes"]
@@ -724,16 +683,18 @@ left join device_geo d
   }
 
   measure: total_first_visit_sessions_percentage {
-    view_label: "Metrics"
     group_label: "Session"
+    label: "New Sessions %"
+    description: "Percentage of New Sessions out of All Sessions"
     type: number
     sql: ${total_first_visit_sessions}/nullif(${total_sessions},0) ;;
     value_format_name: percent_2
   }
 
   measure: total_engaged_sessions {
-    view_label: "Metrics"
     group_label: "Session"
+    label: "Engaged Sessions"
+    description: "Total Number of Sessions w/ Engaged Event"
     type: count_distinct
     sql: ${sl_key} ;;
     filters: [session_data_is_engaged_session: "yes"]
@@ -741,25 +702,26 @@ left join device_geo d
   }
 
   measure: total_engaged_sessions_percentage {
-    view_label: "Metrics"
     group_label: "Session"
+    label: "Engaged Sessions %"
     type: number
     sql: ${total_engaged_sessions}/nullif(${total_sessions},0) ;;
     value_format_name: percent_2
   }
 
   measure: average_page_views_per_session {
-    view_label: "Metrics"
     group_label: "Session"
     label: "Avg. Page Views per Session"
+    description: "Average Count of 'Page_View' events within each Session."
     type: average
     sql: ${session_data_page_view_count} ;;
     value_format_name: decimal_2
   }
 
   measure: total_bounced_sessions {
-    view_label: "Metrics"
     group_label: "Session"
+    label: "Bounces"
+    description: "Total Number of Sessions with 0 Duration w/out Engagement"
     type: count_distinct
     sql: ${sl_key} ;;
     filters: [session_data_is_bounce: "yes"]
@@ -767,27 +729,28 @@ left join device_geo d
   }
 
   measure: total_bounced_sessions_percentage {
-    view_label: "Metrics"
     group_label: "Session"
+    label: "Bounce Rate"
+    description: "Percentage of Bounce Sessions out of All Sessions"
     type: number
     sql: ${total_bounced_sessions}/nullif(${total_sessions},0) ;;
     value_format_name: percent_2
   }
 
   measure: average_session_duration {
-    view_label: "Metrics"
     group_label: "Session"
+    label: "Avg. Session Duration"
+    description: "The Average Session Duration in HH:MM:SS Format"
     type: average
     sql: ${session_data_session_duration} ;;
     value_format_name: hour_format
-    label: "Average Session Duration (HH:MM:SS)"
   }
 
   measure: total_users {
-    view_label: "Metrics"
-    group_label: "Session"
-    label: "Total Users"
-    description: "Distinct/Unique count of User Pseudo ID"
+    view_label: "Audience"
+    group_label: "User"
+    label: "Users"
+    description: "Distinct/Unique count of Users"
     type: count_distinct
     sql: ${user_pseudo_id} ;;
     value_format_name: formatted_number

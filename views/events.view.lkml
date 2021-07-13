@@ -78,12 +78,6 @@ view: events {
     sql: ${event_name}||': '||coalesce(${events.event_param_page},"") ;;
   }
 
-  dimension: event_params {
-    hidden: yes
-    sql: ${TABLE}.event_params ;;
-    ## This is the parent dimension for the event_params fields within the event_data_event_params view.
-  }
-
   dimension: event_bundle_sequence_id {
     type: number
     sql: ${TABLE}.event_bundle_sequence_id ;;
@@ -121,7 +115,6 @@ view: events {
     type: string
     sql: ${TABLE}.platform ;;
   }
-
   dimension: stream_id {
     type: string
     sql: ${TABLE}.stream_id ;;
@@ -425,16 +418,17 @@ view: events {
     view_label: "Acquisition"
     type: string
     sql: ${TABLE}.traffic_source.medium ;;
-    group_label: "Traffic Source"
+    group_label: "User Traffic Source"
     group_item_label: "Medium"
-    description: "The medium of the traffic source. Could be 'organic', 'cpc', 'referral', or the value of the utm_medium URL parameter."
+    description: "The medium of the traffic source for the user's original first visit (Saved up to 1 Year by Default)."
   }
 
   dimension: traffic_source__name {
     view_label: "Acquisition"
     type: string
     sql: ${TABLE}.traffic_source.name ;;
-    group_label: "Traffic Source"
+    group_label: "User Traffic Source"
+    description: "The name of the traffic source for the user's original first visit (Saved up to 1 Year by Default)."
     group_item_label: "Name"
   }
 
@@ -442,9 +436,9 @@ view: events {
     view_label: "Acquisition"
     type: string
     sql: ${TABLE}.traffic_source.source ;;
-    group_label: "Traffic Source"
+    group_label: "User Traffic Source"
     group_item_label: "Source"
-    description: "The source of the traffic source. Could be the name of the search engine, the referring hostname, or a value of the utm_source URL parameter."
+    description: "The source of the traffic source for the user's original first visit (Saved up to 1 Year by Default)."
   }
 
 
@@ -529,31 +523,36 @@ view: events {
     value_format_name: formatted_number
   }
 
-  measure: total_unique_page_views_percentage {
-    view_label: "Metrics"
-    group_label: "Event Data"
-    label: "Total Unique Page Views Percentage"
-    type: number
-    sql: ${total_unique_page_views}/nullif(${total_page_views},0) ;;
-    value_format_name: percent_2
-    required_fields: [total_unique_page_views]
+  measure: total_engaged_events {
+    type: count_distinct
+    view_label: "Behavior"
+    group_label: "Events"
+    label: "Engaged Events"
+    #description: ""
+    filters: [event_param_engaged_session_event: ">0"]
   }
 
   ## ECommerce
 
     measure: total_transactions {
+      group_label: "Ecommerce"
+      label: "Transactions"
       type: count_distinct
       sql: ${ecommerce__transaction_id} ;;
       filters: [ecommerce__transaction_id: "-(not set)"]
     }
 
     measure: transaction_conversion_rate {
+      group_label: "Ecommerce"
+      label: "Transaction Conversion Rate"
       type: number
       sql: 1.0 * (${total_transactions}/NULLIF(${sessions.total_sessions},0)) ;;
       value_format_name: percent_2
     }
 
     measure: total_purchase_revenue {
+      group_label: "Ecommerce"
+      label: "Purchase Revenue"
       type: sum_distinct
       sql: ${ecommerce__purchase_revenue} ;;
       sql_distinct_key: ${ecommerce__transaction_id} ;;
@@ -561,6 +560,8 @@ view: events {
     }
 
     measure: total_purchase_revenue_usd {
+      group_label: "Ecommerce"
+      label: "Purchase Revenue (USD)"
       type: sum
       sql: ${ecommerce__purchase_revenue_in_usd} ;;
       # sql_distinct_key: ${ecommerce__transaction_id} ;;
@@ -568,6 +569,8 @@ view: events {
     }
 
     measure: total_refund_value {
+      group_label: "Ecommerce"
+      label: "Refund Value"
       type: sum_distinct
       sql: ${ecommerce__refund_value} ;;
       sql_distinct_key: ${ecommerce__transaction_id} ;;
@@ -575,6 +578,8 @@ view: events {
     }
 
     measure: total_refund_value_usd {
+      group_label: "Ecommerce"
+      label: "Refund Value (USD)"
       type: sum_distinct
       sql: ${ecommerce__refund_value_in_usd} ;;
       sql_distinct_key: ${ecommerce__transaction_id} ;;
@@ -582,6 +587,8 @@ view: events {
     }
 
     measure: total_shipping_value {
+      group_label: "Ecommerce"
+      label: "Shipping Value"
       type: sum_distinct
       sql: ${ecommerce__shipping_value} ;;
       sql_distinct_key: ${ecommerce__transaction_id} ;;
@@ -589,6 +596,8 @@ view: events {
     }
 
     measure: total_shipping_value_usd {
+      group_label: "Ecommerce"
+      label: "Shipping Value (USD)"
       type: sum_distinct
       sql: ${ecommerce__shipping_value_in_usd} ;;
       sql_distinct_key: ${ecommerce__transaction_id} ;;
@@ -596,6 +605,8 @@ view: events {
     }
 
     measure: total_tax_value {
+      group_label: "Ecommerce"
+      label: "Tax Value"
       type: sum_distinct
       sql: ${ecommerce__tax_value} ;;
       sql_distinct_key: ${ecommerce__transaction_id} ;;
@@ -603,6 +614,8 @@ view: events {
     }
 
     measure: total_tax_value_usd {
+      group_label: "Ecommerce"
+      label: "Tax Value (USD)"
       type: sum_distinct
       sql: ${ecommerce__tax_value_in_usd} ;;
       sql_distinct_key: ${ecommerce__transaction_id} ;;
@@ -610,6 +623,8 @@ view: events {
     }
 
     measure: total_item_quantity {
+      group_label: "Ecommerce"
+      label: "Transaction Items"
       type: sum_distinct
       sql: ${ecommerce__total_item_quantity} ;;
       sql_distinct_key: ${ecommerce__transaction_id} ;;
@@ -617,6 +632,8 @@ view: events {
     }
 
     measure: total_unique_items {
+      group_label: "Ecommerce"
+      label: "Unique Items"
       type: sum_distinct
       sql: ${ecommerce__unique_items} ;;
       sql_distinct_key: ${ecommerce__transaction_id} ;;
