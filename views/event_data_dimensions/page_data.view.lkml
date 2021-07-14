@@ -370,7 +370,7 @@ view: page_data {
     value_format_name: percent_2
   }
 
-  measure: average_time_to_next_event {
+  measure: average_time_to_next_page {
     # view_label: "Metrics"
     # group_label: "Event Data"
     view_label: "Behavior"
@@ -378,7 +378,7 @@ view: page_data {
     label: "Average Time on Page"
     description: "Avg time a user spent on a specific page."
     type: average
-    sql: ${time_to_next_event} ;;
+    sql: ${time_to_next_page} ;;
     value_format_name: hour_format
   }
 }
