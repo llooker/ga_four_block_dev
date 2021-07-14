@@ -266,34 +266,6 @@ left join device_geo d
     sql: ${TABLE}.user_pseudo_id ;;
   }
 
-  dimension: user_previous_session_start {
-    sql: ${TABLE}.user_previous_session_start ;;
-  }
-
-  dimension: user_previous_session_end {
-    sql: ${TABLE}.user_previous_session_end ;;
-  }
-
-  dimension_group: since_previous_session {
-    view_label: "Audience"
-    group_label: "User"
-    type: duration
-    # intervals: [second,hour,minute,day,week]
-    intervals: [day]
-    sql_start: ${user_previous_session_end} ;;
-    sql_end: ${session_data_session_start_raw} ;;
-  }
-
-  dimension: days_since_previous_session_tier {
-    view_label: "Audience"
-    group_label: "User"
-    description: "Days since the previous session. 0 if user only has 1 session."
-    type: tier
-    style: integer
-    tiers: [1,2,4,8,15,31,61,121,365]
-    sql: ${days_since_previous_session};;
-  }
-
   dimension: event_data {
     hidden: yes
     type: string
