@@ -21,6 +21,8 @@ session_list_with_event_history as (
         else 0 end as page_view_rank
       , case when events.event_name = 'page_view' then rank() over (partition by (timestamp(PARSE_DATE('%Y%m%d', REGEXP_EXTRACT(_TABLE_SUFFIX,r'[0-9]+')))||(select value.int_value from UNNEST(events.event_params) where key = "ga_session_id")||(select value.int_value from UNNEST(events.event_params) where key = "ga_session_number")||events.user_pseudo_id), case when events.event_name = 'page_view' then true else false end order by events.event_timestamp desc)
         else 0 end as page_view_reverse_rank
+      , case when events.event_name = 'page_view' then (TIMESTAMP_DIFF(TIMESTAMP_MICROS(LEAD(events.event_timestamp) OVER (PARTITION BY timestamp(PARSE_DATE('%Y%m%d', REGEXP_EXTRACT(_TABLE_SUFFIX,r'[0-9]+')))||(select value.int_value from UNNEST(events.event_params) where key = "ga_session_id")||(select value.int_value from UNNEST(events.event_params) where key = "ga_session_number")||events.user_pseudo_id , case when events.event_name = 'page_view' then true else false end ORDER BY events.event_timestamp asc))
+         ,TIMESTAMP_MICROS(events.event_timestamp),second)/86400.0) else null end as time_to_next_page
       -- raw event data:
       , events.event_date
       , events.event_timestamp
@@ -67,15 +69,15 @@ session_facts as (
   group by 1
   ),
 
--- Retrieves the last non-direct medium, source, and campaign from the session's page_view and user_engagement events.
+-- Retrieves the last non-direct medium, source, and campaign from the session's page_view events.
 session_tags as (
-  select sl.sl_key
-      ,  last_value((select value.string_value from unnest(sl.event_params) where key = 'medium')) over (partition by sl.sl_key order by sl.event_timestamp) medium
-      ,  last_value((select value.string_value from unnest(sl.event_params) where key = 'source')) over (partition by sl.sl_key order by sl.event_timestamp) source
-      ,  last_value((select value.string_value from unnest(sl.event_params) where key = 'campaign')) over (partition by sl.sl_key order by sl.event_timestamp) campaign
-      ,  last_value((select value.string_value from unnest(sl.event_params) where key = 'page_referrer')) over (partition by sl.sl_key order by sl.event_timestamp) page_referrer
+  select distinct sl.sl_key
+      ,  first_value((select value.string_value from unnest(sl.event_params) where key = 'medium')) over (partition by sl.sl_key order by sl.event_timestamp desc) medium
+      ,  first_value((select value.string_value from unnest(sl.event_params) where key = 'source')) over (partition by sl.sl_key order by sl.event_timestamp desc) source
+      ,  first_value((select value.string_value from unnest(sl.event_params) where key = 'campaign')) over (partition by sl.sl_key order by sl.event_timestamp desc) campaign
+      ,  first_value((select value.string_value from unnest(sl.event_params) where key = 'page_referrer')) over (partition by sl.sl_key order by sl.event_timestamp desc) page_referrer
   from session_list_with_event_history sl
-  where sl.event_name in ('page_view','user_engagement')
+  where sl.event_name in ('page_view')
     and (select value.string_value from unnest(sl.event_params) where key = 'medium') is not null -- NULL medium is direct, filtering out nulls to ensure last non-direct.
   ),
 
@@ -121,6 +123,7 @@ session_event_packing as (
                           , sl.page_view_rank
                           , sl.page_view_reverse_rank
                           , sl.time_to_next_event
+                          , sl.time_to_next_page
                           , sl.event_date
                           , sl.event_timestamp
                           , sl.event_name
@@ -189,8 +192,6 @@ select se.session_date session_date
                       ,  d.geo__metro
                       ,  d.geo__sub_continent
                       ,  d.geo__region) geo_data
-    ,  lag(sf.session_start) over (partition by se.user_pseudo_id order by se.ga_session_number) user_previous_session_start
-    ,  lag(sf.session_end) over (partition by se.user_pseudo_id order by se.ga_session_number) user_previous_session_end
     ,  se.event_data event_data
 from session_event_packing se
 left join session_tags sa

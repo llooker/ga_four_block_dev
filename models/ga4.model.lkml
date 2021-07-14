@@ -36,4 +36,10 @@ explore: sessions {
     required_joins: [events]
   }
 
+  join: user_previous_session {
+    view_label: "GA4 Sessions"
+    sql_on: ${sessions.sl_key} = ${user_previous_session.sl_key} ;;
+    relationship: one_to_one
+  }
+
 }

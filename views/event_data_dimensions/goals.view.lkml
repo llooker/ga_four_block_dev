@@ -1,5 +1,42 @@
 # Purpose: To house the fields used to generate Custom Goals. This file is extended into the `event_data` view.
 
+###
+# Adding New Goals:
+# To create a new goal type, a new filter will be created. This filter will be used to compare values of an existing dimension.
+# Each filter should correspond to an existing dimension (to be used in place of ${new_dimension_to_be_filtered} in Step 2 below).
+#
+# 1. Add a Filter -
+#      filter: new_filter_name {
+#        label: "New Filter Label"
+#        view_label: "Goals"
+#        group_label: "Goal Selection"
+#        description: "New Goal Description"
+#
+# 2. Add your new filter to the sql parameter of the dynamic_goal, goal_in_query, and has_completed_goal dimensions -
+#        dimension: dynamic_goal {
+#          sql: IF( ${has_completed_goal}, CONCAT(
+#                      IF({{ event_name_goal_selection._in_query }}, CONCAT(${event_name}, " "), "")
+#                    , IF({{ page_goal_selection._in_query }}, CONCAT("on ", ${event_param_page}), "")
+# ---->              , IF({{ new_filter_name._in_query }}, CONCAT(${new_dimension_to_be_filtered}), "")
+#                    ), null );; }
+#
+#        dimension: goal_in_query {
+#          sql: {{ event_name_goal_selection._in_query }}
+#            OR {{ page_goal_selection._in_query }}
+# ---->      OR {{ new_filter_name._in_query }} ;; }
+#
+#        dimension: has_completed_goal {
+#          sql:if(
+#                  ${goal_in_query}
+#                  , {% condition event_name_goal_selection %} ${event_name} {% endcondition %}
+#                      AND {% condition page_goal_selection %} ${event_param_page} {% endcondition %}
+# ---->                AND {% condition new_filter_name %} ${new_dimension_to_be_filtered} {% endcondition %}
+#                  , false
+#                );; }
+#
+# 3. Add the newly created Filter to the Custom Goals Conversion dashboard and apply to all tiles.
+###
+
 view: goals {
   extension: required
 
