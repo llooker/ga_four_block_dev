@@ -1,4 +1,5 @@
 view: event_data_user_properties {
+  extension: required
 
 ## Dimensions
   dimension: user_property_age {

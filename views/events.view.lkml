@@ -4,12 +4,14 @@
 ##   - event_data
 ##   - event_data_event_params
 ##   - event_data_user_properties
-##   - event_data_items
+##   - goals
+##   - page_data
+##   - event_path
 
 include: "event_data_dimensions/*.view"
 
 view: events {
-  extends: [event_data_event_params, goals, page_data, event_path]
+  extends: [event_data_event_params, event_data_user_properties, goals, page_data, event_path]
 
 ## Dimensions
 

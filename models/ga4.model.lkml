@@ -1,4 +1,4 @@
-connection: "looker-demos"
+connection: "@{GA4_CONNECTION}"
 
 label: "Google Analytics 4"
 

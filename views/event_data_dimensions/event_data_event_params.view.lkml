@@ -1,4 +1,6 @@
 view: event_data_event_params {
+  extension: required
+
   ## Event Parameters
   ## Because there are multiple "key"/"value" rows per event, these are unnested at the dimension level.
   ## This view is included in event_data.view, and not directly joined on the model.
