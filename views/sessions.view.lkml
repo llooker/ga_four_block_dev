@@ -157,7 +157,7 @@ select se.session_date session_date
     ,  se.user_pseudo_id user_pseudo_id
     ,  se.sl_key
     -- packing session-level data into structs by category
-    ,  (SELECT AS STRUCT coalesce(sa.medium,'(none)') medium
+    ,  (SELECT AS STRUCT coalesce(sa.medium,'(none)') medium -- sessions missing last-non-direct are direct
                       ,  coalesce(sa.source,'(direct)') source
                       ,  coalesce(sa.campaign,'(direct)') campaign
                       ,  sa.page_referrer) session_attribution
