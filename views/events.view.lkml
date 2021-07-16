@@ -33,6 +33,7 @@ view: events {
     type: number
     sql: ${TABLE}.event_rank ;;
     description: "Event Rank in Session, 1st Event = Event Rank 1."
+    full_suggestions: yes
   }
 
   dimension: reverse_event_rank {
@@ -40,6 +41,7 @@ view: events {
     type: number
     sql: ${TABLE}.reverse_event_rank ;;
     description: "Reverse Event Rank in Session. Last Event = Reverse Event Rank 1."
+    full_suggestions: yes
   }
 
   # dimension_group: event {
@@ -71,6 +73,7 @@ view: events {
     label: "Event Name"
     type: string
     sql: ${TABLE}.event_name ;;
+    full_suggestions: yes
   }
 
   dimension: full_event {
@@ -78,11 +81,13 @@ view: events {
     ## Customize with your specific event parameters that encompass the specific points of interest in your event.
     type: string
     sql: ${event_name}||': '||coalesce(${events.event_param_page},"") ;;
+    full_suggestions: yes
   }
 
   dimension: event_bundle_sequence_id {
     type: number
     sql: ${TABLE}.event_bundle_sequence_id ;;
+    full_suggestions: yes
   }
 
   dimension: event_dimensions__hostname {
@@ -90,21 +95,25 @@ view: events {
     sql: ${TABLE}.event_dimensions.hostname ;;
     group_label: "Event Dimensions"
     group_item_label: "Hostname"
+    full_suggestions: yes
   }
 
   dimension: event_previous_timestamp {
     type: number
     sql: ${TABLE}.event_previous_timestamp ;;
+    full_suggestions: yes
   }
 
   dimension: event_server_timestamp_offset {
     type: number
     sql: ${TABLE}.event_server_timestamp_offset ;;
+    full_suggestions: yes
   }
 
   dimension: event_value_in_usd {
     type: number
     sql: ${TABLE}.event_value_in_usd ;;
+    full_suggestions: yes
   }
 
   dimension: items {
@@ -116,16 +125,19 @@ view: events {
   dimension: platform {
     type: string
     sql: ${TABLE}.platform ;;
+    full_suggestions: yes
   }
   dimension: stream_id {
     type: string
     sql: ${TABLE}.stream_id ;;
+    full_suggestions: yes
   }
 
   ## App Info Fields
   dimension: app_info__firebase_app_id {
     type: string
     sql: ${TABLE}.app_info.firebase_app_id ;;
+    full_suggestions: yes
     group_label: "App Info"
     group_item_label: "Firebase App ID"
   }
@@ -133,6 +145,7 @@ view: events {
   dimension: app_info__id {
     type: string
     sql: ${TABLE}.app_info.id ;;
+    full_suggestions: yes
     group_label: "App Info"
     group_item_label: "ID"
   }
@@ -140,6 +153,7 @@ view: events {
   dimension: app_info__install_source {
     type: string
     sql: ${TABLE}.app_info.install_source ;;
+    full_suggestions: yes
     group_label: "App Info"
     group_item_label: "Install Source"
   }
@@ -147,6 +161,7 @@ view: events {
   dimension: app_info__install_store {
     type: string
     sql: ${TABLE}.app_info.install_store ;;
+    full_suggestions: yes
     group_label: "App Info"
     group_item_label: "Install Store"
   }
@@ -154,6 +169,7 @@ view: events {
   dimension: app_info__version {
     type: string
     sql: ${TABLE}.app_info.version ;;
+    full_suggestions: yes
     group_label: "App Info"
     group_item_label: "Version"
   }
@@ -163,6 +179,7 @@ view: events {
   dimension: device__advertising_id {
     type: string
     sql: ${TABLE}.device.advertising_id ;;
+    full_suggestions: yes
     group_label: "Device"
     group_item_label: "Advertising ID"
   }
@@ -170,6 +187,7 @@ view: events {
   dimension: device__browser {
     type: string
     sql: ${TABLE}.device.browser ;;
+    full_suggestions: yes
     group_label: "Device"
     group_item_label: "Browser"
   }
@@ -177,6 +195,7 @@ view: events {
   dimension: device__browser_version {
     type: string
     sql: ${TABLE}.device.browser_version ;;
+    full_suggestions: yes
     group_label: "Device"
     group_item_label: "Browser Version"
   }
@@ -184,6 +203,7 @@ view: events {
   dimension: device__category {
     type: string
     sql: ${TABLE}.device.category ;;
+    full_suggestions: yes
     group_label: "Device"
     group_item_label: "Category"
   }
@@ -191,6 +211,7 @@ view: events {
   dimension: device__is_limited_ad_tracking {
     type: string
     sql: ${TABLE}.device.is_limited_ad_tracking ;;
+    full_suggestions: yes
     group_label: "Device"
     group_item_label: "Is Limited Ad Tracking"
   }
@@ -198,6 +219,7 @@ view: events {
   dimension: device__language {
     type: string
     sql: ${TABLE}.device.language ;;
+    full_suggestions: yes
     group_label: "Device"
     group_item_label: "Language"
   }
@@ -205,6 +227,7 @@ view: events {
   dimension: device__mobile_brand_name {
     type: string
     sql: ${TABLE}.device.mobile_brand_name ;;
+    full_suggestions: yes
     group_label: "Device"
     group_item_label: "Mobile Brand Name"
   }
@@ -212,6 +235,7 @@ view: events {
   dimension: device__mobile_marketing_name {
     type: string
     sql: ${TABLE}.device.mobile_marketing_name ;;
+    full_suggestions: yes
     group_label: "Device"
     group_item_label: "Mobile Marketing Name"
   }
@@ -219,6 +243,7 @@ view: events {
   dimension: device__mobile_model_name {
     type: string
     sql: ${TABLE}.device.mobile_model_name ;;
+    full_suggestions: yes
     group_label: "Device"
     group_item_label: "Mobile Model Name"
   }
@@ -226,6 +251,7 @@ view: events {
   dimension: device__mobile_os_hardware_model {
     type: string
     sql: ${TABLE}.device.mobile_os_hardware_model ;;
+    full_suggestions: yes
     group_label: "Device"
     group_item_label: "Mobile OS Hardware Model"
   }
@@ -233,6 +259,7 @@ view: events {
   dimension: device__operating_system {
     type: string
     sql: ${TABLE}.device.operating_system ;;
+    full_suggestions: yes
     group_label: "Device"
     group_item_label: "Operating System"
   }
@@ -240,6 +267,7 @@ view: events {
   dimension: device__operating_system_version {
     type: string
     sql: ${TABLE}.device.operating_system_version ;;
+    full_suggestions: yes
     group_label: "Device"
     group_item_label: "Operating System Version"
   }
@@ -254,6 +282,7 @@ view: events {
   dimension: device__vendor_id {
     type: string
     sql: ${TABLE}.device.vendor_id ;;
+    full_suggestions: yes
     group_label: "Device"
     group_item_label: "Vendor ID"
   }
@@ -261,6 +290,7 @@ view: events {
   dimension: device__web_info__browser {
     type: string
     sql: ${TABLE}.device.web_info.browser ;;
+    full_suggestions: yes
     group_label: "Device Web Info"
     group_item_label: "Browser"
   }
@@ -268,6 +298,7 @@ view: events {
   dimension: device__web_info__browser_version {
     type: string
     sql: ${TABLE}.device.web_info.browser_version ;;
+    full_suggestions: yes
     group_label: "Device Web Info"
     group_item_label: "Browser Version"
   }
@@ -275,6 +306,7 @@ view: events {
   dimension: device__web_info__hostname {
     type: string
     sql: ${TABLE}.device.web_info.hostname ;;
+    full_suggestions: yes
     group_label: "Device Web Info"
     group_item_label: "Hostname"
   }
@@ -356,6 +388,7 @@ view: events {
   dimension: ecommerce__transaction_id {
     type: string
     sql: ${TABLE}.ecommerce.transaction_id ;;
+    full_suggestions: yes
     group_label: "Ecommerce"
     group_item_label: "Transaction ID"
   }
@@ -373,6 +406,7 @@ view: events {
   dimension: geo__city {
     type: string
     sql: ${TABLE}.geo.city ;;
+    full_suggestions: yes
     group_label: "Geo"
     group_item_label: "City"
   }
@@ -380,6 +414,7 @@ view: events {
   dimension: geo__continent {
     type: string
     sql: ${TABLE}.geo.continent ;;
+    full_suggestions: yes
     group_label: "Geo"
     group_item_label: "Continent"
   }
@@ -387,6 +422,7 @@ view: events {
   dimension: geo__country {
     type: string
     sql: ${TABLE}.geo.country ;;
+    full_suggestions: yes
     group_label: "Geo"
     group_item_label: "Country"
     map_layer_name: countries
@@ -395,6 +431,7 @@ view: events {
   dimension: geo__metro {
     type: string
     sql: ${TABLE}.geo.metro ;;
+    full_suggestions: yes
     group_label: "Geo"
     group_item_label: "Metro"
   }
@@ -402,6 +439,7 @@ view: events {
   dimension: geo__region {
     type: string
     sql: ${TABLE}.geo.region ;;
+    full_suggestions: yes
     group_label: "Geo"
     group_item_label: "Region"
     map_layer_name: us_states
@@ -410,6 +448,7 @@ view: events {
   dimension: geo__sub_continent {
     type: string
     sql: ${TABLE}.geo.sub_continent ;;
+    full_suggestions: yes
     group_label: "Geo"
     group_item_label: "Sub Continent"
   }
@@ -420,6 +459,7 @@ view: events {
     view_label: "Acquisition"
     type: string
     sql: ${TABLE}.traffic_source.medium ;;
+    full_suggestions: yes
     group_label: "User Traffic Source"
     group_item_label: "Medium"
     description: "The medium of the traffic source for the user's original first visit (Saved up to 1 Year by Default)."
@@ -429,6 +469,7 @@ view: events {
     view_label: "Acquisition"
     type: string
     sql: ${TABLE}.traffic_source.name ;;
+    full_suggestions: yes
     group_label: "User Traffic Source"
     description: "The name of the traffic source for the user's original first visit (Saved up to 1 Year by Default)."
     group_item_label: "Name"
@@ -438,6 +479,7 @@ view: events {
     view_label: "Acquisition"
     type: string
     sql: ${TABLE}.traffic_source.source ;;
+    full_suggestions: yes
     group_label: "User Traffic Source"
     group_item_label: "Source"
     description: "The source of the traffic source for the user's original first visit (Saved up to 1 Year by Default)."
@@ -453,6 +495,7 @@ view: events {
   dimension: user_ltv__currency {
     type: string
     sql: ${TABLE}.user_ltv.currency ;;
+    full_suggestions: yes
     group_label: "User Ltv"
     group_item_label: "Currency"
   }
@@ -472,6 +515,7 @@ view: events {
   dimension: user_pseudo_id {
     type: string
     sql: ${TABLE}.user_pseudo_id ;;
+    full_suggestions: yes
   }
 
   # dimension: user_id

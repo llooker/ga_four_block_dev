@@ -7,6 +7,7 @@ view: event_data_user_properties {
     label: "Age"
     type: string
     sql: (SELECT value.string_value FROM UNNEST(event_params) WHERE key = "age") ;;
+    full_suggestions: yes
   }
 
   dimension: user_property_country {
@@ -14,6 +15,7 @@ view: event_data_user_properties {
     label: "Country"
     type: string
     sql: (SELECT value.string_value FROM UNNEST(event_params) WHERE key = "country") ;;
+    full_suggestions: yes
   }
 
   dimension: user_property_device_category {
@@ -21,6 +23,7 @@ view: event_data_user_properties {
     label: "Device Category"
     type: string
     sql: (SELECT value.string_value FROM UNNEST(event_params) WHERE key = "device_category") ;;
+    full_suggestions: yes
   }
 
   dimension: user_property_device_model {
@@ -28,6 +31,7 @@ view: event_data_user_properties {
     label: "Device Model"
     type: string
     sql: (SELECT value.string_value FROM UNNEST(event_params) WHERE key = "device_model") ;;
+    full_suggestions: yes
   }
 
   dimension: user_property_gender {
@@ -35,6 +39,7 @@ view: event_data_user_properties {
     label: "Gender"
     type: string
     sql: (SELECT value.string_value FROM UNNEST(event_params) WHERE key = "gender") ;;
+    full_suggestions: yes
   }
 
   dimension: user_property_interests {
@@ -42,6 +47,7 @@ view: event_data_user_properties {
     label: "Interests"
     type: string
     sql: (SELECT value.string_value FROM UNNEST(event_params) WHERE key = "interests") ;;
+    full_suggestions: yes
   }
 
   dimension: user_property_language {
@@ -49,6 +55,7 @@ view: event_data_user_properties {
     label: "Language"
     type: string
     sql: (SELECT value.string_value FROM UNNEST(event_params) WHERE key = "language") ;;
+    full_suggestions: yes
   }
 
   # dimension: key {
