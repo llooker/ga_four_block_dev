@@ -80,6 +80,7 @@ view: event_data_event_params {
     group_label: "Event: Parameters"
     label: "Page"
     description: "The url of the page."
+    full_suggestions: yes
     type: string
     sql: (SELECT value.string_value FROM UNNEST(event_params) WHERE key = "page") ;;
   }

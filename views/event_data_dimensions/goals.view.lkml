@@ -47,6 +47,9 @@ view: goals {
     view_label: "Goals"
     group_label: "Goal Selection"
     description: "Enter Event Name to be used with Total Conversion measures."
+    suggest_explore: sessions
+    suggest_dimension: events.event_name
+    suggest_persist_for: "0 seconds"
     type: string
   }
 
@@ -55,6 +58,8 @@ view: goals {
     view_label: "Goals"
     group_label: "Goal Selection"
     description: "Enter Page Path to be used with Conversion measures (format should be: '/<page>'). Should not include Hostname."
+    suggest_explore: sessions
+    suggest_dimension: events.event_param_page
     type: string
   }
 
