@@ -1,7 +1,7 @@
 # Purpose: To house the fields used to generate Custom Goals. This file is extended into the `event_data` view.
 
 ###
-# Adding New Goals:
+# Adding New Goal Types:
 # To create a new goal type, a new filter will be created. This filter will be used to compare values of an existing dimension.
 # Each filter should correspond to an existing dimension (to be used in place of ${new_dimension_to_be_filtered} in Step 2 below).
 #

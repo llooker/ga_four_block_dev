@@ -25,7 +25,7 @@ view: page_data {
     view_label: "Behavior"
     group_label: "Time on Page"
     label: "Time on Page"
-    description: "Time user spent on page. If it was the last page they visited before exiting, then time from when they entered and their last event on the page"
+    description: "Time user spent on page. Single page_view Sessions have 0 Duration."
     type: number
     sql: ${TABLE}.time_to_next_page ;;
     value_format_name: hour_format
@@ -371,14 +371,13 @@ view: page_data {
   }
 
   measure: average_time_to_next_page {
-    # view_label: "Metrics"
-    # group_label: "Event Data"
     view_label: "Behavior"
     group_label: "Pages"
     label: "Average Time on Page"
-    description: "Avg time a user spent on a specific page."
+    description: "Avg time a user spent on a specific page. Note that Single Page_View Sessions are excluded from this measure."
     type: average
-    sql: ${time_to_next_page} ;;
+    sql: coalesce(${time_to_next_page},0) ;;
+    filters: [time_to_next_page: ">0"] ## Filtering out 0 Duration Page View Events, which occurs when a session only has one page_view.
     value_format_name: hour_format
   }
 }
