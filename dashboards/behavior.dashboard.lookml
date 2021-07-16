@@ -1,5 +1,5 @@
 - dashboard: behavior
-  title: Behavior
+  title: "[GA4] Behavior"
   layout: newspaper
   preferred_viewer: dashboards-next
   elements:

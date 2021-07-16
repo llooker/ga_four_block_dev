@@ -1,5 +1,5 @@
 - dashboard: overview
-  title: GA4 Overview
+  title: "[GA4] Overview"
   layout: newspaper
   preferred_viewer: dashboards-next
   elements:
