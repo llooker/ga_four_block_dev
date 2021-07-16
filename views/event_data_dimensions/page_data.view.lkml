@@ -37,6 +37,7 @@ view: page_data {
     description: "Use to filter for first pageview of a session. Use with Page dimensions."
     type: yesno
     sql: ${page_view_rank} = 1 ;;
+    full_suggestions: yes
   }
 
   dimension: is_exit_page {
@@ -45,6 +46,7 @@ view: page_data {
     description: "If this hit was the last pageview or screenview hit of a session, this is set to true."
     type: yesno
     sql: ${page_view_reverse_rank} = 1 ;;
+    full_suggestions: yes
   }
 
   dimension: is_bounce {
@@ -54,6 +56,7 @@ view: page_data {
     description: "If this hit was the last pageview or screenview hit of a session, this is set to true."
     type: yesno
     sql: ${sessions.session_data_page_view_count} = 1 ;;
+    full_suggestions: yes
   }
 
   ## Page Path Dimensions
@@ -63,6 +66,7 @@ view: page_data {
     description: "1st Page in Session."
     type: string
     sql: case when ${page_view_rank} = 1 then ${event_param_page} else null end ;;
+    full_suggestions: yes
   }
   dimension: page_path_2 {
     view_label: "Page Flow"
@@ -70,6 +74,7 @@ view: page_data {
     description: "2nd Page in Session."
     type: string
     sql: case when ${page_view_rank} = 2 then ${event_param_page} else null end ;;
+    full_suggestions: yes
   }
   dimension: page_path_3 {
     view_label: "Page Flow"
@@ -77,6 +82,7 @@ view: page_data {
     description: "3rd Page in Session."
     type: string
     sql: case when ${page_view_rank} = 3 then ${event_param_page} else null end ;;
+    full_suggestions: yes
   }
   dimension: page_path_4 {
     view_label: "Page Flow"
@@ -84,6 +90,7 @@ view: page_data {
     description: "4th Page in Session."
     type: string
     sql: case when ${page_view_rank} = 4 then ${event_param_page} else null end ;;
+    full_suggestions: yes
   }
   dimension: page_path_5 {
     view_label: "Page Flow"
@@ -91,6 +98,7 @@ view: page_data {
     description: "5th Page in Session."
     type: string
     sql: case when ${page_view_rank} = 5 then ${event_param_page} else null end ;;
+    full_suggestions: yes
   }
   dimension: page_path_6 {
     view_label: "Page Flow"
@@ -98,6 +106,7 @@ view: page_data {
     description: "6th Page in Session."
     type: string
     sql: case when ${page_view_rank} = 6 then ${event_param_page} else null end ;;
+    full_suggestions: yes
   }
   dimension: page_path_7 {
     view_label: "Page Flow"
@@ -105,6 +114,7 @@ view: page_data {
     description: "4th Page in Session."
     type: string
     sql: case when ${page_view_rank} = 7 then ${event_param_page} else null end ;;
+    full_suggestions: yes
   }
   dimension: page_path_8 {
     view_label: "Page Flow"
@@ -112,6 +122,7 @@ view: page_data {
     description: "5th Page in Session."
     type: string
     sql: case when ${page_view_rank} = 8 then ${event_param_page} else null end ;;
+    full_suggestions: yes
   }
   dimension: page_path_9 {
     view_label: "Page Flow"
@@ -119,6 +130,7 @@ view: page_data {
     description: "6th Page in Session."
     type: string
     sql: case when ${page_view_rank} = 9 then ${event_param_page} else null end ;;
+    full_suggestions: yes
   }
 
   ## Relative Page Path Dimensions
@@ -130,6 +142,7 @@ view: page_data {
           from UNNEST(${sessions.event_data}) as event_history
           where event_history.page_view_rank = (${TABLE}.page_view_rank + 1)
           and event_history.event_name = "page_view" limit 1) ;;
+    full_suggestions: yes
     type: string
   }
   dimension: current_page_plus_2 {
@@ -140,6 +153,7 @@ view: page_data {
           from UNNEST(${sessions.event_data}) as event_history
           where event_history.page_view_rank = (${TABLE}.page_view_rank + 2)
           and event_history.event_name = "page_view" limit 1) ;;
+    full_suggestions: yes
     type: string
   }
   dimension: current_page_plus_3 {
@@ -150,6 +164,7 @@ view: page_data {
           from UNNEST(${sessions.event_data}) as event_history
           where event_history.page_view_rank = (${TABLE}.page_view_rank + 3)
           and event_history.event_name = "page_view" limit 1) ;;
+    full_suggestions: yes
     type: string
   }
   dimension: current_page_plus_4 {
@@ -160,6 +175,7 @@ view: page_data {
           from UNNEST(${sessions.event_data}) as event_history
           where event_history.page_view_rank = (${TABLE}.page_view_rank + 4)
           and event_history.event_name = "page_view" limit 1) ;;
+    full_suggestions: yes
     type: string
   }
   dimension: current_page_plus_5 {
@@ -170,6 +186,7 @@ view: page_data {
           from UNNEST(${sessions.event_data}) as event_history
           where event_history.page_view_rank = (${TABLE}.page_view_rank + 5)
           and event_history.event_name = "page_view" limit 1) ;;
+    full_suggestions: yes
     type: string
   }
   dimension: current_page_plus_6 {
@@ -180,6 +197,7 @@ view: page_data {
           from UNNEST(${sessions.event_data}) as event_history
           where event_history.page_view_rank = (${TABLE}.page_view_rank + 6)
           and event_history.event_name = "page_view" limit 1) ;;
+    full_suggestions: yes
     type: string
   }
   dimension: current_page_plus_7 {
@@ -190,6 +208,7 @@ view: page_data {
           from UNNEST(${sessions.event_data}) as event_history
           where event_history.page_view_rank = (${TABLE}.page_view_rank + 7)
           and event_history.event_name = "page_view" limit 1) ;;
+    full_suggestions: yes
     type: string
   }
   dimension: current_page_plus_8 {
@@ -200,6 +219,7 @@ view: page_data {
           from UNNEST(${sessions.event_data}) as event_history
           where event_history.page_view_rank = (${TABLE}.page_view_rank + 8)
           and event_history.event_name = "page_view" limit 1) ;;
+    full_suggestions: yes
     type: string
   }
   dimension: current_page_plus_9 {
@@ -210,6 +230,7 @@ view: page_data {
           from UNNEST(${sessions.event_data}) as event_history
           where event_history.page_view_rank = (${TABLE}.page_view_rank + 9)
           and event_history.event_name = "page_view" limit 1) ;;
+    full_suggestions: yes
     type: string
   }
 
@@ -223,6 +244,7 @@ view: page_data {
           from UNNEST(${sessions.event_data}) as event_history
           where event_history.page_view_rank = (${TABLE}.page_view_rank - 1)
           and event_history.event_name = "page_view" limit 1) ;;
+    full_suggestions: yes
     type: string
   }
   dimension: current_page_minus_2 {
@@ -233,6 +255,7 @@ view: page_data {
           from UNNEST(${sessions.event_data}) as event_history
           where event_history.page_view_rank = (${TABLE}.page_view_rank - 2)
           and event_history.event_name = "page_view" limit 1) ;;
+    full_suggestions: yes
     type: string
   }
   dimension: current_page_minus_3 {
@@ -243,6 +266,7 @@ view: page_data {
           from UNNEST(${sessions.event_data}) as event_history
           where event_history.page_view_rank = (${TABLE}.page_view_rank - 3)
           and event_history.event_name = "page_view" limit 1) ;;
+    full_suggestions: yes
     type: string
   }
   dimension: current_page_minus_4 {
@@ -253,6 +277,7 @@ view: page_data {
           from UNNEST(${sessions.event_data}) as event_history
           where event_history.page_view_rank = (${TABLE}.page_view_rank - 4)
           and event_history.event_name = "page_view" limit 1) ;;
+    full_suggestions: yes
     type: string
   }
   dimension: current_page_minus_5 {
@@ -263,6 +288,7 @@ view: page_data {
           from UNNEST(${sessions.event_data}) as event_history
           where event_history.page_view_rank = (${TABLE}.page_view_rank - 5)
           and event_history.event_name = "page_view" limit 1) ;;
+    full_suggestions: yes
     type: string
   }
   dimension: current_page_minus_6 {
@@ -273,6 +299,7 @@ view: page_data {
           from UNNEST(${sessions.event_data}) as event_history
           where event_history.page_view_rank = (${TABLE}.page_view_rank - 6)
           and event_history.event_name = "page_view" limit 1) ;;
+    full_suggestions: yes
     type: string
   }
   dimension: current_page_minus_7 {
@@ -283,6 +310,7 @@ view: page_data {
           from UNNEST(${sessions.event_data}) as event_history
           where event_history.page_view_rank = (${TABLE}.page_view_rank - 7)
           and event_history.event_name = "page_view" limit 1) ;;
+    full_suggestions: yes
     type: string
   }
   dimension: current_page_minus_8 {
@@ -293,6 +321,7 @@ view: page_data {
           from UNNEST(${sessions.event_data}) as event_history
           where event_history.page_view_rank = (${TABLE}.page_view_rank - 8)
           and event_history.event_name = "page_view" limit 1) ;;
+    full_suggestions: yes
     type: string
   }
   dimension: current_page_minus_9 {
@@ -303,6 +332,7 @@ view: page_data {
           from UNNEST(${sessions.event_data}) as event_history
           where event_history.page_view_rank = (${TABLE}.page_view_rank - 9)
           and event_history.event_name = "page_view" limit 1) ;;
+    full_suggestions: yes
     type: string
   }
 
