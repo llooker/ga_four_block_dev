@@ -87,7 +87,6 @@ view: event_data_event_params {
     full_suggestions: yes
     type: string
     sql: (SELECT value.string_value FROM UNNEST(event_params) WHERE key = "page") ;;
-    full_suggestions: yes
   }
 
   dimension: event_param_page_location {
