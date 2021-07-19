@@ -17,7 +17,7 @@
     height: 4
   - title: Sessions
     name: Sessions
-    model: ga4
+    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     type: single_value
     fields: [sessions.total_sessions, sessions.total_first_visit_sessions_percentage]
@@ -89,7 +89,7 @@
     height: 3
   - title: Users
     name: Users
-    model: ga4
+    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     type: single_value
     fields: [sessions.total_users]
@@ -161,7 +161,7 @@
     height: 3
   - title: Page Views
     name: Page Views
-    model: ga4
+    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     type: single_value
     fields: [events.total_page_views]
@@ -231,7 +231,7 @@
     height: 3
   - title: Sessions by Cohort
     name: Sessions by Cohort
-    model: ga4
+    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     type: looker_bar
     fields: [sessions.total_sessions, sessions.audience_trait]
@@ -312,7 +312,7 @@
     height: 10
   - title: Users by Cohort
     name: Users by Cohort
-    model: ga4
+    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     type: looker_bar
     fields: [sessions.total_users, sessions.audience_trait]
@@ -384,7 +384,7 @@
     height: 10
   - title: Page Views by Cohort
     name: Page Views by Cohort
-    model: ga4
+    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     type: looker_bar
     fields: [events.total_page_views, sessions.audience_trait]
@@ -454,7 +454,7 @@
     height: 10
   - title: Session Breakdown
     name: Session Breakdown
-    model: ga4
+    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     type: looker_bar
     fields: [sessions.audience_trait, sessions.total_sessions, audience_cohorts.rank]
@@ -506,7 +506,7 @@
     height: 7
   - title: Session by Week
     name: Session by Week
-    model: ga4
+    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     type: looker_column
     fields: [sessions.audience_trait, sessions.total_sessions, audience_cohorts.rank,
@@ -561,7 +561,7 @@
     height: 10
   - title: Engagement
     name: Engagement
-    model: ga4
+    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     type: looker_grid
     fields: [sessions.total_sessions, sessions.audience_trait, sessions.total_first_visit_sessions_percentage,
@@ -688,7 +688,7 @@
     height: 4
   - title: Top Referrers
     name: Top Referrers
-    model: ga4
+    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     type: looker_bar
     fields: [sessions.session_attribution_source, sessions.total_sessions]
@@ -750,7 +750,7 @@
     height: 10
   - title: Top Landing Page
     name: Top Landing Page
-    model: ga4
+    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     type: looker_bar
     fields: [sessions.total_sessions, events.event_param_page]
@@ -866,7 +866,7 @@
       type: relative_timeframes
       display: inline
       options: []
-    model: ga4
+    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     listens_to_filters: []
     field: sessions.session_date
@@ -884,7 +884,7 @@
       - Medium
       - Source
       - Source Medium
-    model: ga4
+    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     listens_to_filters: []
     field: sessions.audience_selector
@@ -898,7 +898,7 @@
       type: tag_list
       display: popover
       options: []
-    model: ga4
+    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     listens_to_filters: []
     field: sessions.geo_data_country
@@ -912,7 +912,7 @@
       type: checkboxes
       display: popover
       options: []
-    model: ga4
+    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     listens_to_filters: []
     field: sessions.geo_data_continent
@@ -926,7 +926,7 @@
       type: tag_list
       display: popover
       options: []
-    model: ga4
+    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     listens_to_filters: []
     field: sessions.session_attribution_source
@@ -940,7 +940,7 @@
       type: tag_list
       display: popover
       options: []
-    model: ga4
+    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     listens_to_filters: []
     field: sessions.session_attribution_source_medium
@@ -954,7 +954,7 @@
       type: tag_list
       display: popover
       options: []
-    model: ga4
+    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     listens_to_filters: []
     field: sessions.session_attribution_medium
@@ -968,7 +968,7 @@
       type: checkboxes
       display: popover
       options: []
-    model: ga4
+    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     listens_to_filters: []
     field: sessions.session_attribution_channel

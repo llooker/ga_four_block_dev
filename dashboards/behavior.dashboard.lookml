@@ -5,7 +5,7 @@
   elements:
   - title: Page Views
     name: Page Views
-    model: ga4
+    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     type: single_value
     fields: [events.total_page_views, events.total_unique_page_views]
@@ -66,7 +66,7 @@
     height: 4
   - title: Top Pages
     name: Top Pages
-    model: ga4
+    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     type: looker_bar
     fields: [events.total_page_views, events.total_unique_page_views, events.event_param_page]
@@ -144,7 +144,7 @@
     height: 10
   - title: Top Page Detail
     name: Top Page Detail
-    model: ga4
+    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     type: looker_grid
     fields: [events.event_param_page, events.total_page_views, events.total_unique_page_views,
@@ -268,7 +268,7 @@
     height: 3
   - title: Top Landing Page
     name: Top Landing Page
-    model: ga4
+    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     type: looker_bar
     fields: [sessions.total_sessions, sessions.landing_page, sessions.percentage_new_users]
@@ -334,7 +334,7 @@
     height: 14
   - title: Landing Page Detail
     name: Landing Page Detail
-    model: ga4
+    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     type: looker_grid
     fields: [sessions.landing_page, sessions.total_sessions, events.total_purchase_revenue_usd,
@@ -459,7 +459,7 @@
     height: 14
   - title: Top Keyword Searches
     name: Top Keyword Searches
-    model: ga4
+    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     type: looker_bar
     fields: [sessions.total_sessions, events.event_param_term]
@@ -526,7 +526,7 @@
     height: 10
   - title: Top Events
     name: Top Events
-    model: ga4
+    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     type: looker_bar
     fields: [events.total_events, events.total_unique_events, events.full_event]
@@ -671,7 +671,7 @@
       type: relative_timeframes
       display: inline
       options: []
-    model: ga4
+    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     listens_to_filters: []
     field: sessions.session_date
@@ -685,7 +685,7 @@
       type: tag_list
       display: popover
       options: []
-    model: ga4
+    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     listens_to_filters: []
     field: sessions.landing_page
