@@ -544,6 +544,13 @@ view: events {
       filters: [ecommerce__transaction_id: "-(not set)"]
     }
 
+    measure: transaction_revenue_per_user {
+      group_label: "Ecommerce"
+      type: number
+      sql: 1.0 * (${total_purchase_revenue}/NULLIF(${sessions.total_users},0)) ;;
+      value_format_name: usd
+    }
+
     measure: transaction_conversion_rate {
       group_label: "Ecommerce"
       label: "Transaction Conversion Rate"
