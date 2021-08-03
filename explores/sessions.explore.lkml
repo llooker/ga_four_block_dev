@@ -25,10 +25,22 @@ explore: sessions {
     required_joins: [events]
   }
 
+  join: event_action_funnel {
+    type: left_outer
+    sql_on: ${event_action_funnel.event1_session_id} = ${sessions.ga_session_id} ;;
+    relationship: one_to_one
+  }
+
   join: user_previous_session {
     view_label: "GA4 Sessions"
     sql_on: ${sessions.sl_key} = ${user_previous_session.sl_key} ;;
     relationship: one_to_one
+  }
+
+  join: user_segment {
+    type: left_outer
+    sql_on: ${sessions.user_pseudo_id} = ${user_segment.user_pseudo_id} ;;
+    relationship: many_to_one
   }
 
 }
