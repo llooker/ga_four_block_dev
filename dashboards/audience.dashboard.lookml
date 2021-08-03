@@ -1,5 +1,5 @@
 - dashboard: audience
-  title: Audience
+  title: "[GA4] Audience"
   layout: newspaper
   preferred_viewer: dashboards-next
   elements:
@@ -17,7 +17,7 @@
     height: 4
   - title: Sessions
     name: Sessions
-    model: ga4
+    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     type: single_value
     fields: [sessions.total_sessions, sessions.total_first_visit_sessions_percentage]
@@ -89,7 +89,7 @@
     height: 3
   - title: Users
     name: Users
-    model: ga4
+    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     type: single_value
     fields: [sessions.total_users]
@@ -161,7 +161,7 @@
     height: 3
   - title: Page Views
     name: Page Views
-    model: ga4
+    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     type: single_value
     fields: [events.total_page_views]
@@ -231,7 +231,7 @@
     height: 3
   - title: Sessions by Cohort
     name: Sessions by Cohort
-    model: ga4
+    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     type: looker_bar
     fields: [sessions.total_sessions, sessions.audience_trait]
@@ -312,7 +312,7 @@
     height: 10
   - title: Users by Cohort
     name: Users by Cohort
-    model: ga4
+    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     type: looker_bar
     fields: [sessions.total_users, sessions.audience_trait]
@@ -384,7 +384,7 @@
     height: 10
   - title: Page Views by Cohort
     name: Page Views by Cohort
-    model: ga4
+    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     type: looker_bar
     fields: [events.total_page_views, sessions.audience_trait]
@@ -454,7 +454,7 @@
     height: 10
   - title: Session Breakdown
     name: Session Breakdown
-    model: ga4
+    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     type: looker_bar
     fields: [sessions.audience_trait, sessions.total_sessions, audience_cohorts.rank]
@@ -506,7 +506,7 @@
     height: 7
   - title: Session by Week
     name: Session by Week
-    model: ga4
+    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     type: looker_column
     fields: [sessions.audience_trait, sessions.total_sessions, audience_cohorts.rank,
@@ -572,7 +572,7 @@
     height: 4
   - title: How many people return?
     name: How many people return?
-    model: ga4
+    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     type: looker_column
     fields: [sessions.total_users, sessions.ga_session_number_tier]
@@ -661,7 +661,7 @@
     height: 3
   - title: Session Duration Tiers (Seconds)
     name: Session Duration Tiers (Seconds)
-    model: ga4
+    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     type: looker_column
     fields: [sessions.session_data_session_duration_tier, sessions.total_sessions]
@@ -751,7 +751,7 @@
     height: 10
   - title: Days Since Previous Session
     name: Days Since Previous Session
-    model: ga4
+    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     type: looker_column
     fields: [user_previous_session.days_since_previous_session_tier, sessions.total_sessions]
@@ -810,7 +810,7 @@
     height: 11
   - title: Pages Visited in Session
     name: Pages Visited in Session
-    model: ga4
+    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     type: looker_column
     fields: [sessions.session_data_page_view_count, sessions.total_sessions]
@@ -875,7 +875,7 @@
     height: 10
   - title: When are People Visiting?
     name: When are People Visiting?
-    model: ga4
+    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     type: looker_grid
     fields: [sessions.session_data_session_start_hour_of_day, sessions.total_sessions,
@@ -980,7 +980,7 @@
     height: 3
   - title: Continents
     name: Continents
-    model: ga4
+    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     type: looker_bar
     fields: [sessions.total_sessions, sessions.geo_data_continent]
@@ -1130,7 +1130,7 @@
     height: 6
   - title: Languages (Top 10)
     name: Languages (Top 10)
-    model: ga4
+    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     type: looker_column
     fields: [sessions.total_sessions, sessions.device_data_language]
@@ -1257,7 +1257,7 @@
     height: 6
   - title: Non-US Traffic
     name: Non-US Traffic
-    model: ga4
+    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     type: looker_map
     fields: [sessions.total_sessions, sessions.geo_data_country]
@@ -1406,7 +1406,7 @@
     height: 9
   - title: United States Traffic
     name: United States Traffic
-    model: ga4
+    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     type: looker_map
     fields: [sessions.total_sessions, sessions.geo_data_region]
@@ -1604,7 +1604,7 @@
       type: relative_timeframes
       display: inline
       options: []
-    model: ga4
+    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     listens_to_filters: []
     field: sessions.session_date
@@ -1625,7 +1625,7 @@
       - Metro
       - Language
       - Browser
-    model: ga4
+    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     listens_to_filters: []
     field: sessions.audience_selector
@@ -1639,7 +1639,7 @@
       type: tag_list
       display: popover
       options: []
-    model: ga4
+    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     listens_to_filters: []
     field: sessions.geo_data_country
@@ -1653,7 +1653,7 @@
       type: checkboxes
       display: popover
       options: []
-    model: ga4
+    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     listens_to_filters: []
     field: sessions.geo_data_continent
@@ -1667,7 +1667,7 @@
       type: tag_list
       display: popover
       options: []
-    model: ga4
+    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     listens_to_filters: []
     field: sessions.session_attribution_source
@@ -1681,7 +1681,7 @@
       type: tag_list
       display: popover
       options: []
-    model: ga4
+    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     listens_to_filters: []
     field: sessions.session_attribution_source_medium
@@ -1695,7 +1695,7 @@
       type: tag_list
       display: popover
       options: []
-    model: ga4
+    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     listens_to_filters: []
     field: sessions.session_attribution_medium
@@ -1709,7 +1709,7 @@
       type: checkboxes
       display: popover
       options: []
-    model: ga4
+    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     listens_to_filters: []
     field: sessions.session_attribution_channel

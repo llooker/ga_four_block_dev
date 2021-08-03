@@ -1,7 +1,7 @@
 # Purpose: To house the fields used to generate Custom Goals. This file is extended into the `event_data` view.
 
 ###
-# Adding New Goals:
+# Adding New Goal Types:
 # To create a new goal type, a new filter will be created. This filter will be used to compare values of an existing dimension.
 # Each filter should correspond to an existing dimension (to be used in place of ${new_dimension_to_be_filtered} in Step 2 below).
 #
@@ -47,6 +47,9 @@ view: goals {
     view_label: "Goals"
     group_label: "Goal Selection"
     description: "Enter Event Name to be used with Total Conversion measures."
+    suggest_explore: sessions
+    suggest_dimension: events.event_name
+    suggest_persist_for: "0 seconds"
     type: string
   }
 
@@ -55,6 +58,8 @@ view: goals {
     view_label: "Goals"
     group_label: "Goal Selection"
     description: "Enter Page Path to be used with Conversion measures (format should be: '/<page>'). Should not include Hostname."
+    suggest_explore: sessions
+    suggest_dimension: events.event_param_page
     type: string
   }
 

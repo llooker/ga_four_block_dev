@@ -1,5 +1,5 @@
 - dashboard: custom_goal_conversions
-  title: Custom Goal Conversions
+  title: "[GA4] Custom Goal Conversions"
   layout: newspaper
   preferred_viewer: dashboards-next
   elements:
@@ -30,7 +30,7 @@
     height: 2
   - title: Sessions
     name: Sessions
-    model: ga4
+    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     type: single_value
     fields: [sessions.total_sessions]
@@ -95,7 +95,7 @@
     height: 2
   - title: Sessions with Conversion
     name: Sessions with Conversion
-    model: ga4
+    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     type: single_value
     fields: [events.sessions_with_conversions]
@@ -172,7 +172,7 @@
     height: 2
   - title: Session CNV Rate
     name: Session CNV Rate
-    model: ga4
+    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     type: single_value
     fields: [events.session_conversion_rate]
@@ -239,7 +239,7 @@
     height: 2
   - title: Custom Goal Conversion Rate
     name: Custom Goal Conversion Rate
-    model: ga4
+    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     type: looker_column
     fields: [sessions.total_sessions, sessions.session_date, events.has_completed_goal]
@@ -345,7 +345,7 @@
     height: 10
   - title: Session Conversion Rate by Audience Cohort
     name: Session Conversion Rate by Audience Cohort
-    model: ga4
+    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     type: looker_bar
     fields: [events.sessions_with_conversions, sessions.audience_trait, events.session_conversion_rate]
@@ -434,7 +434,7 @@
     height: 4
   - title: Events with Conversion
     name: Events with Conversion
-    model: ga4
+    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     type: single_value
     fields: [events.conversion_count]
@@ -510,7 +510,7 @@
     height: 2
   - title: Top Goal Completion Page(s)
     name: Top Goal Completion Page(s)
-    model: ga4
+    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     type: looker_bar
     fields: [events.conversion_count, events.event_param_page, events.session_conversion_rate]
@@ -591,7 +591,7 @@
     height: 11
   - title: Top Events
     name: Top Events
-    model: ga4
+    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     type: looker_bar
     fields: [events.conversion_count, events.full_event]
@@ -689,7 +689,7 @@
     height: 5
   - title: Reverse Goal Path
     name: Reverse Goal Path
-    model: ga4
+    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     type: looker_grid
     fields: [events.current_page_minus_1, events.current_page_minus_2, events.current_page_minus_3,
@@ -770,7 +770,7 @@
     height: 11
   - title: Reverse Event Action Path
     name: Reverse Event Action Path
-    model: ga4
+    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     type: looker_grid
     fields: [events.current_event_minus_3, events.current_event_minus_2, events.current_event_minus_1,
@@ -900,7 +900,7 @@
       type: relative_timeframes
       display: inline
       options: []
-    model: ga4
+    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     listens_to_filters: []
     field: sessions.session_date
@@ -913,7 +913,7 @@
     ui_config:
       type: advanced
       display: popover
-    model: ga4
+    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     listens_to_filters: []
     field: events.event_name_goal_selection
@@ -926,7 +926,7 @@
     ui_config:
       type: advanced
       display: popover
-    model: ga4
+    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     listens_to_filters: []
     field: events.page_goal_selection
@@ -940,7 +940,7 @@
       type: dropdown_menu
       display: inline
       options: []
-    model: ga4
+    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     listens_to_filters: []
     field: sessions.audience_selector

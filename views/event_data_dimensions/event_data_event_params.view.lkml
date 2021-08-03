@@ -18,6 +18,7 @@ view: event_data_event_params {
     description: "The campaign value. Usually set by the utm_campaign URL parameter."
     type: string
     sql: (SELECT value.string_value FROM UNNEST(event_params) WHERE key = "campaign") ;;
+    full_suggestions: yes
   }
 
   dimension: event_param_clean_event {
@@ -25,6 +26,7 @@ view: event_data_event_params {
     label: "Clean Event"
     type: string
     sql: (SELECT value.string_value FROM UNNEST(event_params) WHERE key = "clean_event") ;;
+    full_suggestions: yes
   }
 
   dimension: event_param_debug_mode {
@@ -60,6 +62,7 @@ view: event_data_event_params {
     label: "GA Session ID"
     type: number
     sql: (SELECT value.int_value FROM UNNEST(event_params) WHERE key = "ga_session_id") ;;
+    full_suggestions: yes
   }
 
   dimension: event_param_ga_session_number {
@@ -74,12 +77,14 @@ view: event_data_event_params {
     label: "Medium"
     type: string
     sql: (SELECT value.string_value FROM UNNEST(event_params) WHERE key = "medium") ;;
+    full_suggestions: yes
   }
 
   dimension: event_param_page {
     group_label: "Event: Parameters"
     label: "Page"
     description: "The url of the page."
+    full_suggestions: yes
     type: string
     sql: (SELECT value.string_value FROM UNNEST(event_params) WHERE key = "page") ;;
   }
@@ -89,6 +94,7 @@ view: event_data_event_params {
     label: "Page Location"
     type: string
     sql: (SELECT value.string_value FROM UNNEST(event_params) WHERE key = "page_location") ;;
+    full_suggestions: yes
   }
 
   dimension: event_param_page_referrer {
@@ -96,6 +102,7 @@ view: event_data_event_params {
     label: "Page Referrer"
     type: string
     sql: (SELECT value.string_value FROM UNNEST(event_params) WHERE key = "page_referrer") ;;
+    full_suggestions: yes
   }
 
   dimension: event_param_page_title {
@@ -104,6 +111,7 @@ view: event_data_event_params {
     description: "The page's title. Multiple pages might have the same page title."
     type: string
     sql: (SELECT value.string_value FROM UNNEST(event_params) WHERE key = "page_title") ;;
+    full_suggestions: yes
   }
 
   dimension: event_param_percent_scrolled {
@@ -125,6 +133,7 @@ view: event_data_event_params {
     label: "Source"
     type: string
     sql: (SELECT value.string_value FROM UNNEST(event_params) WHERE key = "source") ;;
+    full_suggestions: yes
   }
 
   dimension: event_param_synthetic_bundle {
@@ -143,6 +152,7 @@ view: event_data_event_params {
     description: "The Event keyword of the traffic source, usually set when the trafficSource.medium is 'organic' or 'cpc'. Can be set by the utm_term URL parameter."
     type: string
     sql: (SELECT value.string_value FROM UNNEST(event_params) WHERE key = "term") ;;
+    full_suggestions: yes
   }
 
 }

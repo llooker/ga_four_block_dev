@@ -11,6 +11,7 @@ view: event_path {
     description: "1st Event in Session."
     type: string
     sql: case when ${event_rank} = 1 then ${full_event} else null end ;;
+    full_suggestions: yes
   }
   dimension: event_path_2 {
     view_label: "Event Flow"
@@ -18,6 +19,7 @@ view: event_path {
     description: "2nd Event in Session."
     type: string
     sql: case when ${event_rank} = 2 then ${full_event} else null end ;;
+    full_suggestions: yes
   }
   dimension: event_path_3 {
     view_label: "Event Flow"
@@ -25,6 +27,7 @@ view: event_path {
     description: "3rd Event in Session."
     type: string
     sql: case when ${event_rank} = 3 then ${full_event} else null end ;;
+    full_suggestions: yes
   }
   dimension: event_path_4 {
     view_label: "Event Flow"
@@ -32,6 +35,7 @@ view: event_path {
     description: "4th Event in Session."
     type: string
     sql: case when ${event_rank} = 4 then ${full_event} else null end ;;
+    full_suggestions: yes
   }
   dimension: event_path_5 {
     view_label: "Event Flow"
@@ -39,6 +43,7 @@ view: event_path {
     description: "5th Event in Session."
     type: string
     sql: case when ${event_rank} = 5 then ${full_event} else null end ;;
+    full_suggestions: yes
   }
   dimension: event_path_6 {
     view_label: "Event Flow"
@@ -46,6 +51,7 @@ view: event_path {
     description: "6th Event in Session."
     type: string
     sql: case when ${event_rank} = 6 then ${full_event} else null end ;;
+    full_suggestions: yes
   }
   dimension: event_path_7 {
     view_label: "Event Flow"
@@ -53,6 +59,7 @@ view: event_path {
     description: "7th Event in Session."
     type: string
     sql: case when ${event_rank} = 7 then ${full_event} else null end ;;
+    full_suggestions: yes
   }
   dimension: event_path_8 {
     view_label: "Event Flow"
@@ -60,6 +67,7 @@ view: event_path {
     description: "8th Event in Session."
     type: string
     sql: case when ${event_rank} = 8 then ${full_event} else null end ;;
+    full_suggestions: yes
   }
   dimension: event_path_9 {
     view_label: "Event Flow"
@@ -67,6 +75,7 @@ view: event_path {
     description: "9th Event in Session."
     type: string
     sql: case when ${event_rank} = 9 then ${full_event} else null end ;;
+    full_suggestions: yes
   }
 
   ## Relative full_event Path Dimensions
@@ -77,6 +86,7 @@ view: event_path {
     sql: (select (select value.string_value FROM UNNEST(event_history.event_params) WHERE key = "full_event")
           from UNNEST(${sessions.event_data}) as event_history
           where event_history.event_rank = (${TABLE}.event_rank + 1) limit 1) ;;
+    full_suggestions: yes
     type: string
   }
   dimension: current_event_plus_2 {
@@ -86,6 +96,7 @@ view: event_path {
     sql: (select (select value.string_value FROM UNNEST(event_history.event_params) WHERE key = "full_event")
           from UNNEST(${sessions.event_data}) as event_history
           where event_history.event_rank = (${TABLE}.event_rank + 2) limit 1) ;;
+    full_suggestions: yes
     type: string
   }
   dimension: current_event_plus_3 {
@@ -95,6 +106,7 @@ view: event_path {
     sql: (select (select value.string_value FROM UNNEST(event_history.event_params) WHERE key = "full_event")
           from UNNEST(${sessions.event_data}) as event_history
           where event_history.event_rank = (${TABLE}.event_rank + 3) limit 1) ;;
+    full_suggestions: yes
     type: string
   }
   dimension: current_event_plus_4 {
@@ -104,6 +116,7 @@ view: event_path {
     sql: (select (select value.string_value FROM UNNEST(event_history.event_params) WHERE key = "full_event")
           from UNNEST(${sessions.event_data}) as event_history
           where event_history.event_rank = (${TABLE}.event_rank + 4) limit 1) ;;
+    full_suggestions: yes
     type: string
   }
   dimension: current_event_plus_5 {
@@ -113,6 +126,7 @@ view: event_path {
     sql: (select (select value.string_value FROM UNNEST(event_history.event_params) WHERE key = "full_event")
           from UNNEST(${sessions.event_data}) as event_history
           where event_history.event_rank = (${TABLE}.event_rank + 5) limit 1) ;;
+    full_suggestions: yes
     type: string
   }
   dimension: current_event_plus_6 {
@@ -122,6 +136,7 @@ view: event_path {
     sql: (select (select value.string_value FROM UNNEST(event_history.event_params) WHERE key = "full_event")
           from UNNEST(${sessions.event_data}) as event_history
           where event_history.event_rank = (${TABLE}.event_rank + 6) limit 1) ;;
+    full_suggestions: yes
     type: string
   }
   dimension: current_event_plus_7 {
@@ -131,6 +146,7 @@ view: event_path {
     sql: (select (select value.string_value FROM UNNEST(event_history.event_params) WHERE key = "full_event")
           from UNNEST(${sessions.event_data}) as event_history
           where event_history.event_rank = (${TABLE}.event_rank + 7) limit 1) ;;
+    full_suggestions: yes
     type: string
   }
   dimension: current_event_plus_8 {
@@ -140,6 +156,7 @@ view: event_path {
     sql: (select (select value.string_value FROM UNNEST(event_history.event_params) WHERE key = "full_event")
           from UNNEST(${sessions.event_data}) as event_history
           where event_history.event_rank = (${TABLE}.event_rank + 8) limit 1) ;;
+    full_suggestions: yes
     type: string
   }
   dimension: current_event_plus_9 {
@@ -149,6 +166,7 @@ view: event_path {
     sql: (select (select value.string_value FROM UNNEST(event_history.event_params) WHERE key = "full_event")
           from UNNEST(${sessions.event_data}) as event_history
           where event_history.event_rank = (${TABLE}.event_rank + 9) limit 1) ;;
+    full_suggestions: yes
     type: string
   }
 
@@ -161,6 +179,7 @@ view: event_path {
     sql: (select (select value.string_value FROM UNNEST(event_history.event_params) WHERE key = "full_event")
           from UNNEST(${sessions.event_data}) as event_history
           where event_history.event_rank = (${TABLE}.event_rank - 1) limit 1) ;;
+    full_suggestions: yes
     type: string
   }
   dimension: current_event_minus_2 {
@@ -170,6 +189,7 @@ view: event_path {
     sql: (select (select value.string_value FROM UNNEST(event_history.event_params) WHERE key = "full_event")
           from UNNEST(${sessions.event_data}) as event_history
           where event_history.event_rank = (${TABLE}.event_rank - 2) limit 1) ;;
+    full_suggestions: yes
     type: string
   }
   dimension: current_event_minus_3 {
@@ -179,6 +199,7 @@ view: event_path {
     sql: (select (select value.string_value FROM UNNEST(event_history.event_params) WHERE key = "full_event")
           from UNNEST(${sessions.event_data}) as event_history
           where event_history.event_rank = (${TABLE}.event_rank - 3) limit 1) ;;
+    full_suggestions: yes
     type: string
   }
   dimension: current_event_minus_4 {
@@ -188,6 +209,7 @@ view: event_path {
     sql: (select (select value.string_value FROM UNNEST(event_history.event_params) WHERE key = "full_event")
           from UNNEST(${sessions.event_data}) as event_history
           where event_history.event_rank = (${TABLE}.event_rank - 4) limit 1) ;;
+    full_suggestions: yes
     type: string
   }
   dimension: current_event_minus_5 {
@@ -197,6 +219,7 @@ view: event_path {
     sql: (select (select value.string_value FROM UNNEST(event_history.event_params) WHERE key = "full_event")
           from UNNEST(${sessions.event_data}) as event_history
           where event_history.event_rank = (${TABLE}.event_rank - 5) limit 1) ;;
+    full_suggestions: yes
     type: string
   }
   dimension: current_event_minus_6 {
@@ -206,6 +229,7 @@ view: event_path {
     sql: (select (select value.string_value FROM UNNEST(event_history.event_params) WHERE key = "full_event")
           from UNNEST(${sessions.event_data}) as event_history
           where event_history.event_rank = (${TABLE}.event_rank - 6) limit 1) ;;
+    full_suggestions: yes
     type: string
   }
   dimension: current_event_minus_7 {
@@ -215,6 +239,7 @@ view: event_path {
     sql: (select (select value.string_value FROM UNNEST(event_history.event_params) WHERE key = "full_event")
           from UNNEST(${sessions.event_data}) as event_history
           where event_history.event_rank = (${TABLE}.event_rank - 7) limit 1) ;;
+    full_suggestions: yes
     type: string
   }
   dimension: current_event_minus_8 {
@@ -224,6 +249,7 @@ view: event_path {
     sql: (select (select value.string_value FROM UNNEST(event_history.event_params) WHERE key = "full_event")
           from UNNEST(${sessions.event_data}) as event_history
           where event_history.event_rank = (${TABLE}.event_rank - 8) limit 1) ;;
+    full_suggestions: yes
     type: string
   }
   dimension: current_event_minus_9 {
@@ -233,6 +259,7 @@ view: event_path {
     sql: (select (select value.string_value FROM UNNEST(event_history.event_params) WHERE key = "full_event")
           from UNNEST(${sessions.event_data}) as event_history
           where event_history.event_rank = (${TABLE}.event_rank - 9) limit 1) ;;
+    full_suggestions: yes
     type: string
   }
 }
