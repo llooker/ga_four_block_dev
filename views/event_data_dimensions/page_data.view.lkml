@@ -235,7 +235,6 @@ view: page_data {
   }
 
   ## Reverse Page Path Dimensions
-
   dimension: current_page_minus_1 {
     view_label: "Page Flow"
     group_label: "Reverse Page Path"
@@ -336,9 +335,78 @@ view: page_data {
     type: string
   }
 
+  ## Page Funnel Filters
+  filter: page_1 {
+    view_label: "Page Funnel"
+    group_label: "Funnel Pages"
+    suggest_explore: sessions
+    suggest_dimension: events.event_param_page
+  }
+  filter: page_2 {
+    view_label: "Page Funnel"
+    group_label: "Funnel Pages"
+    suggest_explore: sessions
+    suggest_dimension: events.event_param_page
+  }
+  filter: page_3 {
+    view_label: "Page Funnel"
+    group_label: "Funnel Pages"
+    suggest_explore: sessions
+    suggest_dimension: events.event_param_page
+  }
+  filter: page_4 {
+    view_label: "Page Funnel"
+    group_label: "Funnel Pages"
+    suggest_explore: sessions
+    suggest_dimension: events.event_param_page
+  }
+  filter: page_5 {
+    view_label: "Page Funnel"
+    group_label: "Funnel Pages"
+    suggest_explore: sessions
+    suggest_dimension: events.event_param_page
+  }
+  filter: page_6 {
+    view_label: "Page Funnel"
+    group_label: "Funnel Pages"
+    suggest_explore: sessions
+    suggest_dimension: events.event_param_page
+  }
 
-## Measures
+  ## Page Funnel Dimensions
+  dimension: is_page_1 {
+    type: yesno
+    hidden: yes
+    sql: {% condition page_1 %} ${event_param_page} {% endcondition %} AND ${page_view_rank} = 1 ;;
+  }
+  dimension: is_page_2 {
+    type: yesno
+    hidden: yes
+    sql: {% condition page_2 %} ${event_param_page} {% endcondition %} AND ${page_view_rank} = 2 ;;
+  }
+  dimension: is_page_3 {
+    type: yesno
+    hidden: yes
+    sql: {% condition page_3 %} ${event_param_page} {% endcondition %} AND ${page_view_rank} = 3 ;;
+  }
+  dimension: is_page_4 {
+    type: yesno
+    hidden: yes
+    sql: {% condition page_4 %} ${event_param_page} {% endcondition %} AND ${page_view_rank} = 4 ;;
+  }
+  dimension: is_page_5 {
+    type: yesno
+    hidden: yes
+    sql: {% condition page_5 %} ${event_param_page} {% endcondition %} AND ${page_view_rank} = 5 ;;
+  }
+  dimension: is_page_6 {
+    type: yesno
+    hidden: yes
+    sql: {% condition page_6 %} ${event_param_page} {% endcondition %} AND ${page_view_rank} = 6 ;;
+  }
 
+
+  ## Measures
   measure: total_entrances {
     view_label: "Behavior"
     group_label: "Pages"
@@ -349,7 +417,6 @@ view: page_data {
     sql: ${ed_key} ;;
     value_format_name: formatted_number
   }
-
   measure: entrance_rate {
     view_label: "Behavior"
     group_label: "Pages"
@@ -359,7 +426,6 @@ view: page_data {
     sql: ${total_entrances}/nullif(${total_page_views},0) ;;
     value_format_name: percent_2
   }
-
   measure: total_bounce {
     view_label: "Behavior"
     group_label: "Pages"
@@ -369,7 +435,6 @@ view: page_data {
     filters: [is_bounce: "yes"]
     value_format_name: formatted_number
   }
-
   measure: bounce_rate {
     view_label: "Behavior"
     group_label: "Pages"
@@ -378,7 +443,6 @@ view: page_data {
     sql: ${total_bounce}/nullif(${total_page_views},0) ;;
     value_format_name: percent_2
   }
-
   measure: total_exits {
     view_label: "Behavior"
     group_label: "Pages"
@@ -389,7 +453,6 @@ view: page_data {
     sql: ${ed_key} ;;
     value_format_name: formatted_number
   }
-
   measure: exit_rate {
     view_label: "Behavior"
     group_label: "Pages"
@@ -399,7 +462,6 @@ view: page_data {
     sql: ${total_exits}/nullif(${total_page_views},0) ;;
     value_format_name: percent_2
   }
-
   measure: average_time_to_next_page {
     view_label: "Behavior"
     group_label: "Pages"
@@ -409,5 +471,85 @@ view: page_data {
     sql: coalesce(${time_to_next_page},0) ;;
     filters: [time_to_next_page: ">0"] ## Filtering out 0 Duration Page View Events, which occurs when a session only has one page_view.
     value_format_name: hour_format
+  }
+
+  ## Page Funnel Measures
+  measure: count_of_page_1 {
+    view_label: "Page Funnel"
+    group_label: "Count of pages"
+    label: "{% if page_1._in_query %}
+              {{_filters['page_1']}}
+            {% else %}
+              Count of Page 1
+            {% endif %}"
+    type: count_distinct
+    allow_approximate_optimization: yes
+    sql: ${ed_key} ;;
+    filters: [is_page_1: "yes"]
+  }
+  measure: count_of_page_2 {
+    view_label: "Page Funnel"
+    group_label: "Count of pages"
+    label: "{% if page_2._in_query %}
+              {{_filters['page_2']}}
+            {% else %}
+              Count of Page 2
+            {% endif %}"
+    type: count_distinct
+    allow_approximate_optimization: yes
+    sql: ${ed_key} ;;
+    filters: [is_page_2: "yes"]
+  }
+  measure: count_of_page_3 {
+    view_label: "Page Funnel"
+    group_label: "Count of pages"
+    label: "{% if page_3._in_query %}
+              {{_filters['page_3']}}
+            {% else %}
+              Count of Page 3
+            {% endif %}"
+    type: count_distinct
+    allow_approximate_optimization: yes
+    sql: ${ed_key} ;;
+    filters: [is_page_3: "yes"]
+  }
+  measure: count_of_page_4 {
+    view_label: "Page Funnel"
+    group_label: "Count of pages"
+    label: "{% if page_4._in_query %}
+              {{_filters['page_4']}}
+            {% else %}
+              Count of Page 4
+            {% endif %}"
+    type: count_distinct
+    allow_approximate_optimization: yes
+    sql: ${ed_key} ;;
+    filters: [is_page_4: "yes"]
+  }
+  measure: count_of_page_5 {
+    view_label: "Page Funnel"
+    group_label: "Count of pages"
+    label: "{% if page_5._in_query %}
+              {{_filters['page_5']}}
+            {% else %}
+              Count of Page 5
+            {% endif %}"
+    type: count_distinct
+    allow_approximate_optimization: yes
+    sql: ${ed_key} ;;
+    filters: [is_page_5: "yes"]
+  }
+  measure: count_of_page_6 {
+    view_label: "Page Funnel"
+    group_label: "Count of pages"
+    label: "{% if page_6._in_query %}
+              {{_filters['page_6']}}
+            {% else %}
+              Count of Page 6
+            {% endif %}"
+    type: count_distinct
+    allow_approximate_optimization: yes
+    sql: ${ed_key} ;;
+    filters: [is_page_6: "yes"]
   }
 }
