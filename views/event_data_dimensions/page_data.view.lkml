@@ -138,7 +138,7 @@ view: page_data {
     view_label: "Page Flow"
     group_label: "Relative Page Path"
     description: "Page Path for page that came directly before current page."
-    sql: (select (select value.string_value FROM UNNEST(event_history.event_params) WHERE key = "page")
+    sql: (select coalesce(regexp_extract((select value.string_value from UNNEST(event_history.event_params) where key = "page_location"),r"(?:.*?[\.][^\/]*)([\/][^\?]+)"),'/')
           from UNNEST(${sessions.event_data}) as event_history
           where event_history.page_view_rank = (${TABLE}.page_view_rank + 1)
           and event_history.event_name = "page_view" limit 1) ;;
@@ -149,7 +149,7 @@ view: page_data {
     view_label: "Page Flow"
     group_label: "Relative Page Path"
     description: "Page Path for page that came 2 pages before current page."
-    sql: (select (select value.string_value FROM UNNEST(event_history.event_params) WHERE key = "page")
+    sql: (select coalesce(regexp_extract((select value.string_value from UNNEST(event_history.event_params) where key = "page_location"),r"(?:.*?[\.][^\/]*)([\/][^\?]+)"),'/')
           from UNNEST(${sessions.event_data}) as event_history
           where event_history.page_view_rank = (${TABLE}.page_view_rank + 2)
           and event_history.event_name = "page_view" limit 1) ;;
@@ -160,7 +160,7 @@ view: page_data {
     view_label: "Page Flow"
     group_label: "Relative Page Path"
     description: "Page Path for page that came 3 pages before current page."
-    sql: (select (select value.string_value FROM UNNEST(event_history.event_params) WHERE key = "page")
+    sql: (select coalesce(regexp_extract((select value.string_value from UNNEST(event_history.event_params) where key = "page_location"),r"(?:.*?[\.][^\/]*)([\/][^\?]+)"),'/')
           from UNNEST(${sessions.event_data}) as event_history
           where event_history.page_view_rank = (${TABLE}.page_view_rank + 3)
           and event_history.event_name = "page_view" limit 1) ;;
@@ -171,7 +171,7 @@ view: page_data {
     view_label: "Page Flow"
     group_label: "Relative Page Path"
     description: "Page Path for page that came 4 pages before current page."
-    sql: (select (select value.string_value FROM UNNEST(event_history.event_params) WHERE key = "page")
+    sql: (select coalesce(regexp_extract((select value.string_value from UNNEST(event_history.event_params) where key = "page_location"),r"(?:.*?[\.][^\/]*)([\/][^\?]+)"),'/')
           from UNNEST(${sessions.event_data}) as event_history
           where event_history.page_view_rank = (${TABLE}.page_view_rank + 4)
           and event_history.event_name = "page_view" limit 1) ;;
@@ -182,7 +182,7 @@ view: page_data {
     view_label: "Page Flow"
     group_label: "Relative Page Path"
     description: "Page Path for page that came 5 pages before current page."
-    sql: (select (select value.string_value FROM UNNEST(event_history.event_params) WHERE key = "page")
+    sql: (select coalesce(regexp_extract((select value.string_value from UNNEST(event_history.event_params) where key = "page_location"),r"(?:.*?[\.][^\/]*)([\/][^\?]+)"),'/')
           from UNNEST(${sessions.event_data}) as event_history
           where event_history.page_view_rank = (${TABLE}.page_view_rank + 5)
           and event_history.event_name = "page_view" limit 1) ;;
@@ -193,7 +193,7 @@ view: page_data {
     view_label: "Page Flow"
     group_label: "Relative Page Path"
     description: "Page Path for page that came 6 pages before current page."
-    sql: (select (select value.string_value FROM UNNEST(event_history.event_params) WHERE key = "page")
+    sql: (select coalesce(regexp_extract((select value.string_value from UNNEST(event_history.event_params) where key = "page_location"),r"(?:.*?[\.][^\/]*)([\/][^\?]+)"),'/')
           from UNNEST(${sessions.event_data}) as event_history
           where event_history.page_view_rank = (${TABLE}.page_view_rank + 6)
           and event_history.event_name = "page_view" limit 1) ;;
@@ -204,7 +204,7 @@ view: page_data {
     view_label: "Page Flow"
     group_label: "Relative Page Path"
     description: "Page Path for page that came 7 pages before current page."
-    sql: (select (select value.string_value FROM UNNEST(event_history.event_params) WHERE key = "page")
+    sql: (select coalesce(regexp_extract((select value.string_value from UNNEST(event_history.event_params) where key = "page_location"),r"(?:.*?[\.][^\/]*)([\/][^\?]+)"),'/')
           from UNNEST(${sessions.event_data}) as event_history
           where event_history.page_view_rank = (${TABLE}.page_view_rank + 7)
           and event_history.event_name = "page_view" limit 1) ;;
@@ -215,7 +215,7 @@ view: page_data {
     view_label: "Page Flow"
     group_label: "Relative Page Path"
     description: "Page Path for page that came 8 pages before current page."
-    sql: (select (select value.string_value FROM UNNEST(event_history.event_params) WHERE key = "page")
+    sql: (select coalesce(regexp_extract((select value.string_value from UNNEST(event_history.event_params) where key = "page_location"),r"(?:.*?[\.][^\/]*)([\/][^\?]+)"),'/')
           from UNNEST(${sessions.event_data}) as event_history
           where event_history.page_view_rank = (${TABLE}.page_view_rank + 8)
           and event_history.event_name = "page_view" limit 1) ;;
@@ -226,7 +226,7 @@ view: page_data {
     view_label: "Page Flow"
     group_label: "Relative Page Path"
     description: "Page Path for page that came 9 pages before current page."
-    sql: (select (select value.string_value FROM UNNEST(event_history.event_params) WHERE key = "page")
+    sql: (select coalesce(regexp_extract((select value.string_value from UNNEST(event_history.event_params) where key = "page_location"),r"(?:.*?[\.][^\/]*)([\/][^\?]+)"),'/')
           from UNNEST(${sessions.event_data}) as event_history
           where event_history.page_view_rank = (${TABLE}.page_view_rank + 9)
           and event_history.event_name = "page_view" limit 1) ;;
@@ -240,7 +240,7 @@ view: page_data {
     view_label: "Page Flow"
     group_label: "Reverse Page Path"
     description: "Page Path for page that came directly after current page."
-    sql: (select (select value.string_value FROM UNNEST(event_history.event_params) WHERE key = "page")
+    sql: (select coalesce(regexp_extract((select value.string_value from UNNEST(event_history.event_params) where key = "page_location"),r"(?:.*?[\.][^\/]*)([\/][^\?]+)"),'/')
           from UNNEST(${sessions.event_data}) as event_history
           where event_history.page_view_rank = (${TABLE}.page_view_rank - 1)
           and event_history.event_name = "page_view" limit 1) ;;
@@ -251,7 +251,7 @@ view: page_data {
     view_label: "Page Flow"
     group_label: "Reverse Page Path"
     description: "Page Path for page that came 2 pages after current page."
-    sql: (select (select value.string_value FROM UNNEST(event_history.event_params) WHERE key = "page")
+    sql: (select coalesce(regexp_extract((select value.string_value from UNNEST(event_history.event_params) where key = "page_location"),r"(?:.*?[\.][^\/]*)([\/][^\?]+)"),'/')
           from UNNEST(${sessions.event_data}) as event_history
           where event_history.page_view_rank = (${TABLE}.page_view_rank - 2)
           and event_history.event_name = "page_view" limit 1) ;;
@@ -262,7 +262,7 @@ view: page_data {
     view_label: "Page Flow"
     group_label: "Reverse Page Path"
     description: "Page Path for page that came 3 pages after current page."
-    sql: (select (select value.string_value FROM UNNEST(event_history.event_params) WHERE key = "page")
+    sql: (select coalesce(regexp_extract((select value.string_value from UNNEST(event_history.event_params) where key = "page_location"),r"(?:.*?[\.][^\/]*)([\/][^\?]+)"),'/')
           from UNNEST(${sessions.event_data}) as event_history
           where event_history.page_view_rank = (${TABLE}.page_view_rank - 3)
           and event_history.event_name = "page_view" limit 1) ;;
@@ -273,7 +273,7 @@ view: page_data {
     view_label: "Page Flow"
     group_label: "Reverse Page Path"
     description: "Page Path for page that came 4 pages after current page."
-    sql: (select (select value.string_value FROM UNNEST(event_history.event_params) WHERE key = "page")
+    sql: (select coalesce(regexp_extract((select value.string_value from UNNEST(event_history.event_params) where key = "page_location"),r"(?:.*?[\.][^\/]*)([\/][^\?]+)"),'/')
           from UNNEST(${sessions.event_data}) as event_history
           where event_history.page_view_rank = (${TABLE}.page_view_rank - 4)
           and event_history.event_name = "page_view" limit 1) ;;
@@ -284,7 +284,7 @@ view: page_data {
     view_label: "Page Flow"
     group_label: "Reverse Page Path"
     description: "Page Path for page that came 5 pages after current page."
-    sql: (select (select value.string_value FROM UNNEST(event_history.event_params) WHERE key = "page")
+    sql: (select coalesce(regexp_extract((select value.string_value from UNNEST(event_history.event_params) where key = "page_location"),r"(?:.*?[\.][^\/]*)([\/][^\?]+)"),'/')
           from UNNEST(${sessions.event_data}) as event_history
           where event_history.page_view_rank = (${TABLE}.page_view_rank - 5)
           and event_history.event_name = "page_view" limit 1) ;;
@@ -295,7 +295,7 @@ view: page_data {
     view_label: "Page Flow"
     group_label: "Reverse Page Path"
     description: "Page Path for page that came 6 pages after current page."
-    sql: (select (select value.string_value FROM UNNEST(event_history.event_params) WHERE key = "page")
+    sql: (select coalesce(regexp_extract((select value.string_value from UNNEST(event_history.event_params) where key = "page_location"),r"(?:.*?[\.][^\/]*)([\/][^\?]+)"),'/')
           from UNNEST(${sessions.event_data}) as event_history
           where event_history.page_view_rank = (${TABLE}.page_view_rank - 6)
           and event_history.event_name = "page_view" limit 1) ;;
@@ -306,7 +306,7 @@ view: page_data {
     view_label: "Page Flow"
     group_label: "Reverse Page Path"
     description: "Page Path for page that came 7 pages after current page."
-    sql: (select (select value.string_value FROM UNNEST(event_history.event_params) WHERE key = "page")
+    sql: (select coalesce(regexp_extract((select value.string_value from UNNEST(event_history.event_params) where key = "page_location"),r"(?:.*?[\.][^\/]*)([\/][^\?]+)"),'/')
           from UNNEST(${sessions.event_data}) as event_history
           where event_history.page_view_rank = (${TABLE}.page_view_rank - 7)
           and event_history.event_name = "page_view" limit 1) ;;
@@ -317,7 +317,7 @@ view: page_data {
     view_label: "Page Flow"
     group_label: "Reverse Page Path"
     description: "Page Path for page that came 8 pages after current page."
-    sql: (select (select value.string_value FROM UNNEST(event_history.event_params) WHERE key = "page")
+    sql: (select coalesce(regexp_extract((select value.string_value from UNNEST(event_history.event_params) where key = "page_location"),r"(?:.*?[\.][^\/]*)([\/][^\?]+)"),'/')
           from UNNEST(${sessions.event_data}) as event_history
           where event_history.page_view_rank = (${TABLE}.page_view_rank - 8)
           and event_history.event_name = "page_view" limit 1) ;;
@@ -328,7 +328,7 @@ view: page_data {
     view_label: "Page Flow"
     group_label: "Reverse Page Path"
     description: "Page Path for page that came 9 pages after current page."
-    sql: (select (select value.string_value FROM UNNEST(event_history.event_params) WHERE key = "page")
+    sql: (select coalesce(regexp_extract((select value.string_value from UNNEST(event_history.event_params) where key = "page_location"),r"(?:.*?[\.][^\/]*)([\/][^\?]+)"),'/')
           from UNNEST(${sessions.event_data}) as event_history
           where event_history.page_view_rank = (${TABLE}.page_view_rank - 9)
           and event_history.event_name = "page_view" limit 1) ;;

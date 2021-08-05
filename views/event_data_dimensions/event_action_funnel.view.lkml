@@ -1,10 +1,4 @@
 view: event_action_funnel {
-  extends: [event_action_funnel_core]
-  #extends: [event_action_funnel_config]
-}
-
-view: event_action_funnel_core {
-  extension: required
   derived_table: {
     sql:
       -- SELECT event1.full_visitor_id as full_vistor_id,
@@ -32,11 +26,7 @@ event1.event_action as event1_event_action
     persist_for: "24 hours"
   }
 
-
-
-
-  ########## FILTERS ##########
-
+## Filters
   filter: event_1 {
     group_label: "Funnel Events"
     suggest_explore: sessions
@@ -79,8 +69,7 @@ event1.event_action as event1_event_action
     description: "Event 6 to be used with Count of Event 6"
   }
 
-  ########## DIMENSIONS ##########
-
+## Dimensions
   dimension: user_pseudo_id {
     type: string
     sql: ${TABLE}.user_pseudo_id ;;
@@ -317,8 +306,7 @@ event1.event_action as event1_event_action
   }
 
 
-  ########## MEASURES ##########
-
+## Measures
   measure: count_of_event_1 {
     type: count_distinct
     allow_approximate_optimization: yes

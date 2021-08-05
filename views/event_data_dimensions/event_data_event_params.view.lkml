@@ -83,11 +83,22 @@ view: event_data_event_params {
   dimension: event_param_page {
     group_label: "Event: Parameters"
     label: "Page"
-    description: "The url of the page."
+    description: "The path of the page."
     full_suggestions: yes
     type: string
-    sql: (SELECT value.string_value FROM UNNEST(event_params) WHERE key = "page") ;;
+    sql: coalesce(regexp_extract((select value.string_value from UNNEST(event_params) where key = "page_location"),r"(?:.*?[\.][^\/]*)([\/][^\?#]+)"),'/') ;;
   }
+
+  # The "Page" event parameter may not be enabled, in which situation the above regex query will extract the path from the page location value.
+  # If the "Page" event parameter is enabled, you may use this below dimension instead if desired:
+  # dimension: event_param_page_path {
+  #   group_label: "Event: Parameters"
+  #   label: "Page"
+  #   description: "The Page Path value"
+  #   full_suggestions: yes
+  #   type: string
+  #   sql: (SELECT value.string_value FROM UNNEST(event_params) WHERE key = "page") ;;
+  # }
 
   dimension: event_param_page_location {
     group_label: "Event: Parameters"

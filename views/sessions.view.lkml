@@ -300,7 +300,7 @@ left join device_geo d
     view_label: "Behavior"
     group_label: "Pages"
     description: "Landing/Entrance Page (first 'Page View' event) of a Session."
-    sql: (select (select value.string_value FROM UNNEST(event_history.event_params) WHERE key = "page")
+    sql: (select coalesce(regexp_extract((select value.string_value from UNNEST(event_params) where key = "page_location"),r"(?:.*?[\.][^\/]*)([\/][^\?]+)"),'/')
           from UNNEST(sessions.event_data) as event_history
           where event_history.sl_key = (sessions.sl_key) and event_history.page_view_rank = 1 limit 1) ;;
   }
@@ -309,7 +309,7 @@ left join device_geo d
     group_label: "Pages"
     description: "Exit Page (last 'Page View' event) of a Session."
 
-    sql: (select (select value.string_value FROM UNNEST(event_history.event_params) WHERE key = "page")
+    sql: (select coalesce(regexp_extract((select value.string_value from UNNEST(event_params) where key = "page_location"),r"(?:.*?[\.][^\/]*)([\/][^\?]+)"),'/')
           from UNNEST(sessions.event_data) as event_history
           where event_history.sl_key = (sessions.sl_key) and event_history.page_view_reverse_rank = 1 limit 1) ;;
   }
