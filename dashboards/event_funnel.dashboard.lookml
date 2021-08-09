@@ -1,5 +1,5 @@
 - dashboard: ga4_event_funnel
-  title: "[GA4] Event Funnel"
+  title: GA4 Event Funnel
   layout: newspaper
   preferred_viewer: dashboards-next
   elements:
@@ -8,10 +8,10 @@
     model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     type: looker_column
-    fields: [sessions.audience_trait, event_funnel.count_of_event_1, event_funnel.count_of_event_2,
-      event_funnel.count_of_event_3, event_funnel.count_of_event_4, event_funnel.count_of_event_5,
-      event_funnel.count_of_event_6]
-    sorts: [event_funnel.count_of_event_1 desc]
+    fields: [sessions.audience_trait, sessions.count_of_event_1, sessions.count_of_event_2,
+      sessions.count_of_event_3, sessions.count_of_event_4, sessions.count_of_event_5,
+      sessions.count_of_event_6]
+    sorts: [sessions.count_of_event_1 desc]
     limit: 12
     x_axis_gridlines: false
     y_axis_gridlines: true
@@ -43,15 +43,17 @@
     series_types: {}
     show_dropoff: true
     defaults_version: 1
+    hidden_fields: []
+    y_axes: []
     listen:
       Landing Page: sessions.landing_page
-      Event 1: event_funnel.event_1
-      Event 2: event_funnel.event_2
-      Event 3: event_funnel.event_3
-      Event 4: event_funnel.event_4
-      Event 5: event_funnel.event_5
-      Event 6: event_funnel.event_6
+      Event 2: sessions.event_2
+      Event 3: sessions.event_3
+      Event 5: sessions.event_5
+      Event 6: sessions.event_6
       Audience Selector: sessions.audience_selector
+      Event 1: sessions.event_1_filter
+      Event 4: sessions.event_4_filter
     row: 4
     col: 0
     width: 24
@@ -87,9 +89,9 @@
     model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     type: looker_column
-    fields: [event_funnel.count_of_event_1, event_funnel.count_of_event_2, event_funnel.count_of_event_3,
-      event_funnel.count_of_event_4, event_funnel.count_of_event_5, event_funnel.count_of_event_6]
-    sorts: [event_funnel.count_of_event_1 desc]
+    fields: [sessions.count_of_event_1, sessions.count_of_event_2, sessions.count_of_event_3,
+      sessions.count_of_event_4, sessions.count_of_event_5, sessions.count_of_event_6]
+    sorts: [sessions.count_of_event_1 desc]
     limit: 12
     x_axis_gridlines: false
     y_axis_gridlines: true
@@ -121,16 +123,18 @@
     series_types: {}
     show_dropoff: true
     defaults_version: 1
+    hidden_fields: []
+    y_axes: []
     listen:
       Landing Page: sessions.landing_page
-      Event 1: event_funnel.event_1
-      Event 2: event_funnel.event_2
-      Event 3: event_funnel.event_3
-      Event 4: event_funnel.event_4
-      Event 5: event_funnel.event_5
-      Event 6: event_funnel.event_6
+      Event 2: sessions.event_2
+      Event 3: sessions.event_3
+      Event 5: sessions.event_5
+      Event 6: sessions.event_6
       Audience Selector: sessions.audience_selector
       Goal Event: events.event_name
+      Event 1: sessions.event_1_filter
+      Event 4: sessions.event_4_filter
     row: 22
     col: 0
     width: 24
@@ -188,16 +192,18 @@
     series_types: {}
     show_dropoff: true
     defaults_version: 1
+    hidden_fields: []
+    y_axes: []
     listen:
       Landing Page: sessions.landing_page
-      Event 1: event_funnel.event_1
-      Event 2: event_funnel.event_2
-      Event 3: event_funnel.event_3
-      Event 4: event_funnel.event_4
-      Event 5: event_funnel.event_5
-      Event 6: event_funnel.event_6
+      Event 2: sessions.event_2
+      Event 3: sessions.event_3
+      Event 5: sessions.event_5
+      Event 6: sessions.event_6
       Audience Selector: sessions.audience_selector
       Goal Event: events.event_name
+      Event 1: sessions.event_1_filter
+      Event 4: sessions.event_4_filter
     row: 30
     col: 0
     width: 24
@@ -230,7 +236,7 @@
     model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     listens_to_filters: []
-    field: event_funnel.event_1
+    field: sessions.event_1_filter
   - name: Event 2
     title: Event 2
     type: field_filter
@@ -244,7 +250,7 @@
     model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     listens_to_filters: []
-    field: event_funnel.event_2
+    field: sessions.event_2_filter
   - name: Event 3
     title: Event 3
     type: field_filter
@@ -258,7 +264,7 @@
     model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     listens_to_filters: []
-    field: event_funnel.event_3
+    field: sessions.event_3_filter
   - name: Event 4
     title: Event 4
     type: field_filter
@@ -272,7 +278,7 @@
     model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     listens_to_filters: []
-    field: event_funnel.event_4
+    field: sessions.event_4_filter
   - name: Event 5
     title: Event 5
     type: field_filter
@@ -286,7 +292,7 @@
     model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     listens_to_filters: []
-    field: event_funnel.event_5
+    field: sessions.event_5_filter
   - name: Event 6
     title: Event 6
     type: field_filter
@@ -300,7 +306,7 @@
     model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
     explore: sessions
     listens_to_filters: []
-    field: event_funnel.event_6
+    field: sessions.event_6_filter
   - name: Goal Event
     title: Goal Event
     type: field_filter

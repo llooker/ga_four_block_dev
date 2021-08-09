@@ -1,3 +1,6 @@
+include: "/views/event_data_dimensions/event_funnel.view"
+include: "/views/event_data_dimensions/page_funnel.view"
+
 view: sessions {
   derived_table: {
     datagroup_trigger: ga4_default_datagroup
@@ -203,6 +206,7 @@ left join device_geo d
    ;;
   }
 
+extends: [event_funnel, page_funnel]
 
 ## Parameters
 

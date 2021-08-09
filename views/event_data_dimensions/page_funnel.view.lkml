@@ -1,19 +1,9 @@
 view: page_funnel {
-  derived_table: {
-    sql: select sessions.sl_key
-    ,  (select coalesce(regexp_extract((select value.string_value from UNNEST(event_params) where key = "page_location"),r"(?:.*?[\.][^\/]*)([\/][^\?#]+)"),'/') from UNNEST(event_data) where page_view_rank = 1) page_1
-    ,  (select coalesce(regexp_extract((select value.string_value from UNNEST(event_params) where key = "page_location"),r"(?:.*?[\.][^\/]*)([\/][^\?#]+)"),'/') from UNNEST(event_data) where page_view_rank = 2) page_2
-    ,  (select coalesce(regexp_extract((select value.string_value from UNNEST(event_params) where key = "page_location"),r"(?:.*?[\.][^\/]*)([\/][^\?#]+)"),'/') from UNNEST(event_data) where page_view_rank = 3) page_3
-    ,  (select coalesce(regexp_extract((select value.string_value from UNNEST(event_params) where key = "page_location"),r"(?:.*?[\.][^\/]*)([\/][^\?#]+)"),'/') from UNNEST(event_data) where page_view_rank = 4) page_4
-    ,  (select coalesce(regexp_extract((select value.string_value from UNNEST(event_params) where key = "page_location"),r"(?:.*?[\.][^\/]*)([\/][^\?#]+)"),'/') from UNNEST(event_data) where page_view_rank = 5) page_5
-    ,  (select coalesce(regexp_extract((select value.string_value from UNNEST(event_params) where key = "page_location"),r"(?:.*?[\.][^\/]*)([\/][^\?#]+)"),'/') from UNNEST(event_data) where page_view_rank = 6) page_6
-    from ${sessions.SQL_TABLE_NAME} AS sessions
-    ;;
-    persist_for: "24 hours"
-  }
+extension: required
 
 ## Filters
   filter: page_1_filter {
+    view_label: "Page Funnel"
     group_label: "Funnel Pages"
     suggest_explore: sessions
     suggest_dimension: events.event_param_page
@@ -21,6 +11,7 @@ view: page_funnel {
   }
 
   filter: page_2_filter {
+    view_label: "Page Funnel"
     group_label: "Funnel Pages"
     suggest_explore: sessions
     suggest_dimension: events.event_param_page
@@ -28,6 +19,7 @@ view: page_funnel {
   }
 
   filter: page_3_filter {
+    view_label: "Page Funnel"
     group_label: "Funnel Pages"
     suggest_explore: sessions
     suggest_dimension: events.event_param_page
@@ -35,6 +27,7 @@ view: page_funnel {
   }
 
   filter: page_4_filter {
+    view_label: "Page Funnel"
     group_label: "Funnel Pages"
     suggest_explore: sessions
     suggest_dimension: events.event_param_page
@@ -42,6 +35,7 @@ view: page_funnel {
   }
 
   filter: page_5_filter {
+    view_label: "Page Funnel"
     group_label: "Funnel Pages"
     suggest_explore: sessions
     suggest_dimension: events.event_param_page
@@ -49,6 +43,7 @@ view: page_funnel {
   }
 
   filter: page_6_filter {
+    view_label: "Page Funnel"
     group_label: "Funnel Pages"
     suggest_explore: sessions
     suggest_dimension: events.event_param_page
@@ -62,41 +57,35 @@ view: page_funnel {
     hidden: yes
     primary_key: yes
   }
-
   dimension: page_1 {
     type: string
     hidden: yes
-    sql: ${TABLE}.page_1 ;;
+    sql: (select coalesce(regexp_extract((select value.string_value from UNNEST(event_params) where key = "page_location"),r"(?:.*?[\.][^\/]*)([\/][^\?#]+)"),'/') from UNNEST(${sessions.event_data}) where page_view_rank = 1) ;;
   }
-
   dimension: page_2 {
     type: string
     hidden: yes
-    sql: ${TABLE}.page_2 ;;
+    sql: (select coalesce(regexp_extract((select value.string_value from UNNEST(event_params) where key = "page_location"),r"(?:.*?[\.][^\/]*)([\/][^\?#]+)"),'/') from UNNEST(${sessions.event_data}) where page_view_rank = 2) ;;
   }
-
   dimension: page_3 {
     type: string
     hidden: yes
-    sql: ${TABLE}.page_3 ;;
+    sql: (select coalesce(regexp_extract((select value.string_value from UNNEST(event_params) where key = "page_location"),r"(?:.*?[\.][^\/]*)([\/][^\?#]+)"),'/') from UNNEST(${sessions.event_data}) where page_view_rank = 3) ;;
   }
-
   dimension: page_4 {
     type: string
     hidden: yes
-    sql: ${TABLE}.page_4 ;;
+    sql: (select coalesce(regexp_extract((select value.string_value from UNNEST(event_params) where key = "page_location"),r"(?:.*?[\.][^\/]*)([\/][^\?#]+)"),'/') from UNNEST(${sessions.event_data}) where page_view_rank = 4) ;;
   }
-
   dimension: page_5 {
     type: string
     hidden: yes
-    sql: ${TABLE}.page_5 ;;
+    sql: (select coalesce(regexp_extract((select value.string_value from UNNEST(event_params) where key = "page_location"),r"(?:.*?[\.][^\/]*)([\/][^\?#]+)"),'/') from UNNEST(${sessions.event_data}) where page_view_rank = 5) ;;
   }
-
   dimension: page_6 {
     type: string
     hidden: yes
-    sql: ${TABLE}.page_6 ;;
+    sql: (select coalesce(regexp_extract((select value.string_value from UNNEST(event_params) where key = "page_location"),r"(?:.*?[\.][^\/]*)([\/][^\?#]+)"),'/') from UNNEST(${sessions.event_data}) where page_view_rank = 6) ;;
   }
 
   dimension: page_1_tag {
@@ -163,10 +152,11 @@ view: page_funnel {
 ## Measures
 
   measure: count_of_page_1 {
+    view_label: "Page Funnel"
     type: sum
     sql: ${page_1_tag} ;;
     label: "{% if page_1_filter._in_query %}
-    {{_filters['page_funnel.page_1_filter']}}
+    {{_filters['page_1_filter']}}
     {% else %}
     Count of Page 1
     {% endif %}"
@@ -174,10 +164,11 @@ view: page_funnel {
   }
 
   measure: count_of_page_2 {
+    view_label: "Page Funnel"
     type: sum
     sql: ${page_2_tag} ;;
     label: "{% if page_2_filter._in_query %}
-    {{_filters['page_funnel.page_2_filter']}}
+    {{_filters['page_2_filter']}}
     {% else %}
     Count of Page 2
     {% endif %}"
@@ -185,10 +176,11 @@ view: page_funnel {
   }
 
   measure: count_of_page_3 {
+    view_label: "Page Funnel"
     type: sum
     sql: ${page_3_tag} ;;
     label: "{% if page_3_filter._in_query %}
-    {{_filters['page_funnel.page_3_filter']}}
+    {{_filters['page_3_filter']}}
     {% else %}
     Count of Page 3
     {% endif %}"
@@ -196,10 +188,11 @@ view: page_funnel {
   }
 
   measure: count_of_page_4 {
+    view_label: "Page Funnel"
     type: sum
     sql: ${page_4_tag} ;;
     label: "{% if page_4_filter._in_query %}
-    {{_filters['page_funnel.page_4_filter']}}
+    {{_filters['page_4_filter']}}
     {% else %}
     Count of Page 4
     {% endif %}"
@@ -207,10 +200,11 @@ view: page_funnel {
   }
 
   measure: count_of_page_5 {
+    view_label: "Page Funnel"
     type: sum
     sql: ${page_5_tag} ;;
     label: "{% if page_5_filter._in_query %}
-    {{_filters['page_funnel.page_5_filter']}}
+    {{_filters['page_5_filter']}}
     {% else %}
     Count of Page 5
     {% endif %}"
@@ -218,10 +212,11 @@ view: page_funnel {
   }
 
   measure: count_of_page_6 {
+    view_label: "Page Funnel"
     type: sum
     sql: ${page_6_tag} ;;
     label: "{% if page_6_filter._in_query %}
-    {{_filters['page_funnel.page_6_filter']}}
+    {{_filters['page_6_filter']}}
     {% else %}
     Count of Page 6
     {% endif %}"
