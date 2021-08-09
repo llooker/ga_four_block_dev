@@ -19,35 +19,30 @@ view: event_funnel {
     suggest_dimension: events.event_name
     description: "Event 1 to be used with Count of Event 1"
   }
-
   filter: event_2_filter {
     group_label: "Funnel Events"
     suggest_explore: sessions
     suggest_dimension: events.event_name
     description: "Event 2 to be used with Count of Event 2"
   }
-
   filter: event_3_filter {
     group_label: "Funnel Events"
     suggest_explore: sessions
     suggest_dimension: events.event_name
     description: "Event 3 to be used with Count of Event 3"
   }
-
   filter: event_4_filter {
     group_label: "Funnel Events"
     suggest_explore: sessions
     suggest_dimension: events.event_name
     description: "Event 4 to be used with Count of Event 4"
   }
-
   filter: event_5_filter {
     group_label: "Funnel Events"
     suggest_explore: sessions
     suggest_dimension: events.event_name
     description: "Event 5 to be used with Count of Event 5"
   }
-
   filter: event_6_filter {
     group_label: "Funnel Events"
     suggest_explore: sessions
@@ -56,14 +51,12 @@ view: event_funnel {
   }
 
 ## Dimensions
-
   dimension: sl_key {
     type: string
     hidden: yes
     primary_key: yes
     sql: ${TABLE}.sl_key ;;
   }
-
   dimension: event_1 {
     type: string
     hidden: yes

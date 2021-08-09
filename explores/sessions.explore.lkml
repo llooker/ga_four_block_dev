@@ -31,6 +31,12 @@ explore: sessions {
     relationship: one_to_one
   }
 
+  join: page_funnel {
+    type: left_outer
+    sql_on: ${page_funnel.sl_key} = ${sessions.sl_key} ;;
+    relationship: one_to_one
+  }
+
   join: user_previous_session {
     view_label: "GA4 Sessions"
     sql_on: ${sessions.sl_key} = ${user_previous_session.sl_key} ;;
