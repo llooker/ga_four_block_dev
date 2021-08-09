@@ -643,6 +643,7 @@ left join device_geo d
     type: count_distinct
     sql: ${sl_key} ;;
     value_format_name: formatted_number
+    drill_fields: [session_attribution_source_medium,total_sessions,total_new_users,events.total_page_views,average_session_duration]
   }
 
   measure: total_first_visit_sessions {
