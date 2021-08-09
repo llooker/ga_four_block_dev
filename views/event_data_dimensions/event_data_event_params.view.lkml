@@ -80,13 +80,22 @@ view: event_data_event_params {
     full_suggestions: yes
   }
 
+  dimension: event_param_host {
+    group_label: "Event: Parameters"
+    label: "Host"
+    description: "Host of Page View URL"
+    full_suggestions: yes
+    type: string
+    sql: NET.HOST((SELECT value.string_value FROM UNNEST(event_params) WHERE key = "page_location")) ;;
+  }
+
   dimension: event_param_page {
     group_label: "Event: Parameters"
     label: "Page"
     description: "The path of the page."
     full_suggestions: yes
     type: string
-    sql: coalesce(regexp_extract((select value.string_value from UNNEST(event_params) where key = "page_location"),r"(?:.*?[\.][^\/]*)([\/][^\?#]+)"),'/') ;;
+    sql: coalesce(regexp_extract((SELECT value.string_value FROM UNNEST(event_params) WHERE key = "page_location"),r"(?:.*?[\.][^\/]*)([\/][^\?#]+)"),'/') ;;
   }
 
   # The "Page" event parameter may not be enabled, in which situation the above regex query will extract the path from the page location value.
