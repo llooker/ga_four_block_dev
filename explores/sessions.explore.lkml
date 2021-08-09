@@ -25,9 +25,9 @@ explore: sessions {
     required_joins: [events]
   }
 
-  join: event_action_funnel {
+  join: event_funnel {
     type: left_outer
-    sql_on: ${event_action_funnel.event1_session_id} = ${sessions.ga_session_id} ;;
+    sql_on: ${event_funnel.sl_key} = ${sessions.sl_key} ;;
     relationship: one_to_one
   }
 

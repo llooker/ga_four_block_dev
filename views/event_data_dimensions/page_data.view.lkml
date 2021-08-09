@@ -65,7 +65,11 @@ view: page_data {
     group_label: "Page Path"
     description: "1st Page in Session."
     type: string
-    sql: case when ${page_view_rank} = 1 then ${event_param_page} else null end ;;
+    sql: (select coalesce(regexp_extract((select value.string_value from UNNEST(event_history.event_params) where key = "page_location"),r"(?:.*?[\.][^\/]*)([\/][^\?]+)"),'/')
+    from UNNEST(${sessions.event_data}) as event_history
+    where event_history.page_view_rank = 1
+    and event_history.event_name = "page_view" limit 1) ;;
+    # sql: case when ${page_view_rank} = 1 then ${event_param_page} else null end ;;
     full_suggestions: yes
   }
   dimension: page_path_2 {
@@ -73,7 +77,11 @@ view: page_data {
     group_label: "Page Path"
     description: "2nd Page in Session."
     type: string
-    sql: case when ${page_view_rank} = 2 then ${event_param_page} else null end ;;
+    sql: (select coalesce(regexp_extract((select value.string_value from UNNEST(event_history.event_params) where key = "page_location"),r"(?:.*?[\.][^\/]*)([\/][^\?]+)"),'/')
+    from UNNEST(${sessions.event_data}) as event_history
+    where event_history.page_view_rank = 2
+    and event_history.event_name = "page_view" limit 1) ;;
+    # sql: case when ${page_view_rank} = 2 then ${event_param_page} else null end ;;
     full_suggestions: yes
   }
   dimension: page_path_3 {
@@ -81,7 +89,11 @@ view: page_data {
     group_label: "Page Path"
     description: "3rd Page in Session."
     type: string
-    sql: case when ${page_view_rank} = 3 then ${event_param_page} else null end ;;
+    sql: (select coalesce(regexp_extract((select value.string_value from UNNEST(event_history.event_params) where key = "page_location"),r"(?:.*?[\.][^\/]*)([\/][^\?]+)"),'/')
+    from UNNEST(${sessions.event_data}) as event_history
+    where event_history.page_view_rank = 3
+    and event_history.event_name = "page_view" limit 1) ;;
+    # sql: case when ${page_view_rank} = 3 then ${event_param_page} else null end ;;
     full_suggestions: yes
   }
   dimension: page_path_4 {
@@ -89,7 +101,11 @@ view: page_data {
     group_label: "Page Path"
     description: "4th Page in Session."
     type: string
-    sql: case when ${page_view_rank} = 4 then ${event_param_page} else null end ;;
+    sql: (select coalesce(regexp_extract((select value.string_value from UNNEST(event_history.event_params) where key = "page_location"),r"(?:.*?[\.][^\/]*)([\/][^\?]+)"),'/')
+    from UNNEST(${sessions.event_data}) as event_history
+    where event_history.page_view_rank = 4
+    and event_history.event_name = "page_view" limit 1) ;;
+    # sql: case when ${page_view_rank} = 4 then ${event_param_page} else null end ;;
     full_suggestions: yes
   }
   dimension: page_path_5 {
@@ -97,7 +113,11 @@ view: page_data {
     group_label: "Page Path"
     description: "5th Page in Session."
     type: string
-    sql: case when ${page_view_rank} = 5 then ${event_param_page} else null end ;;
+    sql: (select coalesce(regexp_extract((select value.string_value from UNNEST(event_history.event_params) where key = "page_location"),r"(?:.*?[\.][^\/]*)([\/][^\?]+)"),'/')
+    from UNNEST(${sessions.event_data}) as event_history
+    where event_history.page_view_rank = 5
+    and event_history.event_name = "page_view" limit 1) ;;
+    # sql: case when ${page_view_rank} = 5 then ${event_param_page} else null end ;;
     full_suggestions: yes
   }
   dimension: page_path_6 {
@@ -105,7 +125,11 @@ view: page_data {
     group_label: "Page Path"
     description: "6th Page in Session."
     type: string
-    sql: case when ${page_view_rank} = 6 then ${event_param_page} else null end ;;
+    sql: (select coalesce(regexp_extract((select value.string_value from UNNEST(event_history.event_params) where key = "page_location"),r"(?:.*?[\.][^\/]*)([\/][^\?]+)"),'/')
+    from UNNEST(${sessions.event_data}) as event_history
+    where event_history.page_view_rank = 6
+    and event_history.event_name = "page_view" limit 1) ;;
+    # sql: case when ${page_view_rank} = 6 then ${event_param_page} else null end ;;
     full_suggestions: yes
   }
   dimension: page_path_7 {
@@ -113,7 +137,11 @@ view: page_data {
     group_label: "Page Path"
     description: "4th Page in Session."
     type: string
-    sql: case when ${page_view_rank} = 7 then ${event_param_page} else null end ;;
+    sql: (select coalesce(regexp_extract((select value.string_value from UNNEST(event_history.event_params) where key = "page_location"),r"(?:.*?[\.][^\/]*)([\/][^\?]+)"),'/')
+    from UNNEST(${sessions.event_data}) as event_history
+    where event_history.page_view_rank = 7
+    and event_history.event_name = "page_view" limit 1) ;;
+    # sql: case when ${page_view_rank} = 7 then ${event_param_page} else null end ;;
     full_suggestions: yes
   }
   dimension: page_path_8 {
@@ -121,7 +149,11 @@ view: page_data {
     group_label: "Page Path"
     description: "5th Page in Session."
     type: string
-    sql: case when ${page_view_rank} = 8 then ${event_param_page} else null end ;;
+    sql: (select coalesce(regexp_extract((select value.string_value from UNNEST(event_history.event_params) where key = "page_location"),r"(?:.*?[\.][^\/]*)([\/][^\?]+)"),'/')
+    from UNNEST(${sessions.event_data}) as event_history
+    where event_history.page_view_rank = 8
+    and event_history.event_name = "page_view" limit 1) ;;
+    # sql: case when ${page_view_rank} = 8 then ${event_param_page} else null end ;;
     full_suggestions: yes
   }
   dimension: page_path_9 {
@@ -129,7 +161,11 @@ view: page_data {
     group_label: "Page Path"
     description: "6th Page in Session."
     type: string
-    sql: case when ${page_view_rank} = 9 then ${event_param_page} else null end ;;
+    sql: (select coalesce(regexp_extract((select value.string_value from UNNEST(event_history.event_params) where key = "page_location"),r"(?:.*?[\.][^\/]*)([\/][^\?]+)"),'/')
+    from UNNEST(${sessions.event_data}) as event_history
+    where event_history.page_view_rank = 9
+    and event_history.event_name = "page_view" limit 1) ;;
+    # sql: case when ${page_view_rank} = 9 then ${event_param_page} else null end ;;
     full_suggestions: yes
   }
 
@@ -377,12 +413,13 @@ view: page_data {
   dimension: is_page_1 {
     type: yesno
     hidden: yes
-    sql: {% condition page_1 %} ${event_param_page} {% endcondition %} AND ${page_view_rank} = 1 ;;
+    sql: {% condition page_1 %} ${page_path_1} {% endcondition %} ;;
   }
   dimension: is_page_2 {
     type: yesno
     hidden: yes
-    sql: {% condition page_2 %} ${event_param_page} {% endcondition %} AND ${page_view_rank} = 2 ;;
+    sql: {% condition page_1 %} ${page_path_1} {% endcondition %}
+     and {% condition page_2 %} ${page_path_2} {% endcondition %} ;;
   }
   dimension: is_page_3 {
     type: yesno
