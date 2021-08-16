@@ -5,7 +5,7 @@
   elements:
   - title: Users saw the campaign page
     name: Users saw the campaign page
-    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
+    model: ga4
     explore: sessions
     type: single_value
     fields: [sessions.total_users, user_segment.segment_users, user_segment.retention_rate]
@@ -66,7 +66,7 @@
     height: 4
   - title: Users Returned
     name: Users Returned
-    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
+    model: ga4
     explore: sessions
     type: single_value
     fields: [sessions.total_users, user_segment.segment_users, user_segment.retention_rate]
@@ -127,7 +127,7 @@
     height: 4
   - title: Retained User Transaction Conversion Rate
     name: Retained User Transaction Conversion Rate
-    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
+    model: ga4
     explore: sessions
     type: single_value
     fields: [events.transaction_conversion_rate, user_segment.segment_transaction_conversion_rate]
@@ -192,7 +192,7 @@
     height: 4
   - title: Transaction Conversion Rate
     name: Transaction Conversion Rate
-    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
+    model: ga4
     explore: sessions
     type: single_value
     fields: [events.transaction_conversion_rate, user_segment.segment_transaction_conversion_rate]
@@ -257,7 +257,7 @@
     height: 4
   - title: Revenue per User
     name: Revenue per User
-    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
+    model: ga4
     explore: sessions
     type: single_value
     fields: [events.transaction_revenue_per_user]
@@ -324,7 +324,7 @@
     height: 4
   - title: Revenue per Retained User
     name: Revenue per Retained User
-    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
+    model: ga4
     explore: sessions
     type: single_value
     fields: [user_segment.segment_transaction_revenue_per_user, events.transaction_revenue_per_user]
@@ -391,7 +391,7 @@
     height: 4
   - title: Impact by Audience
     name: Impact by Audience
-    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
+    model: ga4
     explore: sessions
     type: looker_grid
     fields: [sessions.audience_trait, sessions.total_users, user_segment.segment_users,
@@ -513,7 +513,7 @@
       type: advanced
       display: inline
       options: []
-    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
+    model: ga4
     explore: sessions
     listens_to_filters: []
     field: sessions.session_date
@@ -527,7 +527,7 @@
       type: advanced
       display: popover
       options: []
-    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
+    model: ga4
     explore: sessions
     listens_to_filters: []
     field: user_segment.user_segment_timeframe
@@ -541,7 +541,7 @@
       type: tag_list
       display: popover
       options: []
-    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
+    model: ga4
     explore: sessions
     listens_to_filters: []
     field: sessions.landing_page
@@ -555,7 +555,7 @@
       type: dropdown_menu
       display: inline
       options: []
-    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
+    model: ga4
     explore: sessions
     listens_to_filters: []
     field: sessions.audience_selector

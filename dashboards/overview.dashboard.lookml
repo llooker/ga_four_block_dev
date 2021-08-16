@@ -5,7 +5,7 @@
   elements:
   - title: Session Count
     name: Session Count
-    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
+    model: ga4
     explore: sessions
     type: single_value
     fields: [sessions.total_sessions, sessions.total_first_visit_sessions_percentage]
@@ -81,7 +81,7 @@
     height: 4
   - title: Bounces
     name: Bounces
-    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
+    model: ga4
     explore: sessions
     type: single_value
     fields: [sessions.total_bounced_sessions, sessions.total_bounced_sessions_percentage]
@@ -146,7 +146,7 @@
     height: 4
   - title: Avg Session Duration
     name: Avg Session Duration
-    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
+    model: ga4
     explore: sessions
     type: single_value
     fields: [sessions.average_session_duration]
@@ -211,7 +211,7 @@
     height: 4
   - title: Engaged Sessions
     name: Engaged Sessions
-    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
+    model: ga4
     explore: sessions
     type: single_value
     fields: [sessions.total_engaged_sessions, sessions.total_engaged_sessions_percentage]
@@ -276,7 +276,7 @@
     height: 4
   - title: Traffic
     name: Traffic
-    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
+    model: ga4
     explore: sessions
     type: looker_column
     fields: [sessions.total_sessions, sessions.session_data_session_start_week, sessions.total_bounced_sessions_percentage,
@@ -365,7 +365,7 @@
     height: 9
   - title: Session Duration Tier
     name: Session Duration Tier
-    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
+    model: ga4
     explore: sessions
     type: looker_bar
     fields: [sessions.session_data_session_duration_tier, sessions.total_sessions]
@@ -452,7 +452,7 @@
     height: 9
   - title: Users
     name: Users
-    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
+    model: ga4
     explore: sessions
     type: single_value
     fields: [sessions.total_users, sessions.percentage_returning_users]
@@ -517,7 +517,7 @@
     height: 4
   - title: Sessions by Continent
     name: Sessions by Continent
-    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
+    model: ga4
     explore: sessions
     type: looker_area
     fields: [sessions.session_data_session_start_week, sessions.total_sessions, sessions.geo_data_continent]
@@ -608,7 +608,7 @@
     height: 8
   - title: Top US States
     name: Top US States
-    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
+    model: ga4
     explore: sessions
     type: looker_geo_choropleth
     fields: [sessions.total_sessions, sessions.geo_data_region]
@@ -724,7 +724,7 @@
     height: 8
   - title: Top Countries (Non-US)
     name: Top Countries (Non-US)
-    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
+    model: ga4
     explore: sessions
     type: looker_geo_choropleth
     fields: [sessions.total_sessions, sessions.geo_data_country]
@@ -840,7 +840,7 @@
     height: 8
   - title: Sessions by Source Channel
     name: Sessions by Source Channel
-    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
+    model: ga4
     explore: sessions
     type: looker_bar
     fields: [sessions.audience_trait, sessions.total_sessions, audience_cohorts.rank]
@@ -890,7 +890,7 @@
     height: 7
   - title: Top Referrers
     name: Top Referrers
-    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
+    model: ga4
     explore: sessions
     type: looker_bar
     fields: [sessions.session_attribution_source, sessions.total_sessions]
@@ -953,7 +953,7 @@
     height: 11
   - title: Top Landing Pages
     name: Top Landing Pages
-    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
+    model: ga4
     explore: sessions
     type: looker_bar
     fields: [sessions.total_sessions, events.event_param_page]
@@ -1017,7 +1017,7 @@
     height: 11
   - title: Page Views
     name: Page Views
-    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
+    model: ga4
     explore: sessions
     type: single_value
     fields: [events.total_page_views, events.total_unique_page_views]
@@ -1078,7 +1078,7 @@
     height: 4
   - title: Average Time on Page
     name: Average Time on Page
-    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
+    model: ga4
     explore: sessions
     type: single_value
     fields: [events.average_time_to_next_page]
@@ -1114,7 +1114,7 @@
     height: 4
   - title: Top Pages
     name: Top Pages
-    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
+    model: ga4
     explore: sessions
     type: looker_bar
     fields: [events.total_page_views, events.total_unique_page_views, events.event_param_page]
@@ -1195,7 +1195,7 @@
     height: 12
   - title: Average Time by Page
     name: Average Time by Page
-    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
+    model: ga4
     explore: sessions
     type: looker_bar
     fields: [events.event_param_page, events.average_time_to_next_page, events.total_page_views]
@@ -1351,7 +1351,7 @@
       type: relative_timeframes
       display: inline
       options: []
-    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
+    model: ga4
     explore: sessions
     listens_to_filters: []
     field: sessions.session_date
@@ -1365,7 +1365,7 @@
       type: tag_list
       display: popover
       options: []
-    model: ga4_DEV_REMOVE_BEFORE_MARKETPLACE_UPDATE
+    model: ga4
     explore: sessions
     listens_to_filters: []
     field: sessions.landing_page
