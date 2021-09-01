@@ -567,6 +567,7 @@ view: events {
     type: count_distinct
     sql: CONCAT(${event_param_ga_session_id}, ${event_param_page}, ${event_param_page_title}) ;;
     value_format_name: formatted_number
+    filters: [event_name: "page_view"]
   }
 
   measure: total_engaged_events {

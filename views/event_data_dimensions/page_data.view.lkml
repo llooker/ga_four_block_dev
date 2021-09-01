@@ -397,8 +397,8 @@ view: page_data {
     group_label: "Pages"
     label: "Bounces"
     type: count_distinct
-    sql: ${ed_key} ;;
-    filters: [is_bounce: "yes"]
+    sql: ${sl_key} ;;
+    filters: [is_bounce: "yes", event_name: "page_view"]
     value_format_name: formatted_number
   }
   measure: bounce_rate {

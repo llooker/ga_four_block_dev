@@ -199,12 +199,6 @@
       Session Date: sessions.session_date
       Host Name: events.event_param_host
       Audience Selector: sessions.audience_selector
-      Page 3: sessions.page_3_filter
-      Page 2: sessions.page_2_filter
-      Page 1: sessions.page_1_filter
-      Page 4: sessions.page_4_filter
-      Page 5: sessions.page_5_filter
-      Page 6: sessions.page_6_filter
     row: 34
     col: 0
     width: 24

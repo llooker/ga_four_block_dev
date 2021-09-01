@@ -47,13 +47,14 @@
     y_axes: []
     listen:
       Landing Page: sessions.landing_page
-      Event 2: sessions.event_2
-      Event 3: sessions.event_3
-      Event 5: sessions.event_5
-      Event 6: sessions.event_6
       Audience Selector: sessions.audience_selector
       Event 1: sessions.event_1_filter
+      Event 2: sessions.event_2_filter
+      Event 3: sessions.event_3_filter
       Event 4: sessions.event_4_filter
+      Event 5: sessions.event_5_filter
+      Event 6: sessions.event_6_filter
+      Goal Event: events.event_name
     row: 4
     col: 0
     width: 24
@@ -127,14 +128,14 @@
     y_axes: []
     listen:
       Landing Page: sessions.landing_page
-      Event 2: sessions.event_2
-      Event 3: sessions.event_3
-      Event 5: sessions.event_5
-      Event 6: sessions.event_6
       Audience Selector: sessions.audience_selector
-      Goal Event: events.event_name
       Event 1: sessions.event_1_filter
+      Event 2: sessions.event_2_filter
+      Event 3: sessions.event_3_filter
       Event 4: sessions.event_4_filter
+      Event 5: sessions.event_5_filter
+      Event 6: sessions.event_6_filter
+      Goal Event: events.event_name
     row: 22
     col: 0
     width: 24
@@ -196,14 +197,8 @@
     y_axes: []
     listen:
       Landing Page: sessions.landing_page
-      Event 2: sessions.event_2
-      Event 3: sessions.event_3
-      Event 5: sessions.event_5
-      Event 6: sessions.event_6
       Audience Selector: sessions.audience_selector
       Goal Event: events.event_name
-      Event 1: sessions.event_1_filter
-      Event 4: sessions.event_4_filter
     row: 30
     col: 0
     width: 24
