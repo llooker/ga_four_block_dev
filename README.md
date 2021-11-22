@@ -10,8 +10,10 @@ In order to mirror a lot of the high level dashboards you see in your existing G
 - Retention Cohort Analysis capabilities (audience_cohorts.view)
 - Looker dimension for every combination of \_event\_name\_ / \_event\_params.key\_ and \_user_properties_ (event\_data\_dimensions folder) for the automatically collected data.
 
-GA4 data is exported (in this case, through [Transfer Services](https://cloud.google.com/bigquery/transfer/) in the format of a single flat table with a new entry for each event
+GA4 data is exported in the format of a single flat table with a new entry for each event
 This is is similar to Google's Firebase output and can be difficult to query due to date-based partitioned tables and a need for unnesting in all but the most high-level queries.
+
+Documentation for getting GA4 data into BigQuery can be found on the Google Analytics support site [here](https://support.google.com/analytics/answer/9823238?hl=en#zippy=%2Cin-this-article)
 
 # GA4 Data Structure
 The GA4 (Google Analytics 4) data is exported as date-partitioned tables consisting of event-level rows.
