@@ -1,12 +1,12 @@
 
 ## Connection Constants:
 constant: GA4_CONNECTION {
-  value: "4mile_bigquery_davidb"
+  value: "looker-demos"
   export: override_required
 }
 
 constant: GA4_SCHEMA {
-  value: "bigquery-public-data.ga4_obfuscated_sample_ecommerce`"
+  value: "adh-demo-data-review.analytics_213025502"
   export: override_optional
 }
 
