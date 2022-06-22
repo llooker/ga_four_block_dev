@@ -644,30 +644,6 @@ extends: [event_funnel, page_funnel]
       map_layer_name: us_states
     }
 
-  ## GA4 BQML fields ##
-
-  parameter: prediction_window_days {
-    view_label: "BQML"
-    type: number
-  }
-  dimension: x_days_future_purchases {
-    view_label: "BQML"
-    type: number
-    sql: (SELECT COUNT (DISTINCT e.ecommerce.transaction_id)
-          FROM ${sessions.SQL_TABLE_NAME} as s
-          LEFT JOIN UNNEST(event_data) as e
-          WHERE s.user_pseudo_id = ${user_pseudo_id}
-            AND s.session_data.session_start > ${TABLE}.session_data.session_start
-            AND date_diff(s.session_data.session_start,${TABLE}.session_data.session_start,DAY) < {% parameter prediction_window_days %} --X days, in seconds
-           ) ;;
-  }
-  dimension: will_purchase_in_future {
-    view_label: "BQML"
-    type: number
-    sql: IF(${x_days_future_purchases} >0,1,0) ;;
-  }
-  ## END - GA4 BQML fields ##
-
 ## Measures
 
   measure: total_sessions {

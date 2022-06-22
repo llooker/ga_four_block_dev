@@ -158,7 +158,6 @@ The components of the GA4 Block are isolated into folders for the file type/purp
 - Explores. Explores have been separated from the model file for potential re-use/extension/refinement. The only explore included by default is “sessions”. This “sessions” explore is where the attributes defined above are being included, as well as all views utilized.
 - Models. The GA4 model file is present here. It includes the sessions explore, the LookML dashboards, and a datagroup specific to this model.
 - Views
-- - BQML Sub-Folder contains the predictions.view file that creates the BQML propensity model.
 - - Event Data Dimensions Sub-Folder contains views that are extended or unnested via the “Events” view in the parent folder.
 - The remaining files are the primary views not directly related to Events.
 - Other. manifest.lkml is present in the root directory, and is where the instance constants are defined.
@@ -173,18 +172,17 @@ This is the base view of the sessions explore of the GA4 model. While GA4 is eve
 - Landing/Exit Page. These dimensions sub-select within unnested event_data values to obtain the page_view events with the highest ‘page_view_rank’ and ‘reverse_page_view_rank’ values for each session.
 - Session Attribution Channel. This dimension is calculated on values from various session attribution fields, and its definition is based on the default channel groupings defined here https://support.google.com/analytics/answer/9756891.
 - Session Data Is Bounce?. “Bounce” is not a value present in the GA4 data. This determination is using session length, as all “single page view” sessions will also have a 0 session duration, fulfilling the requirements of traditional bounce determinations.
-- GA4 BQML Fields. These three fields are used when generating the BQML purchase propensity model. By default, the prediction_window_days parameter value is set on the predictions.view file where needed.
 
 “events.view”
-The events view brings together the event level data defined in the various event_data_dimensions views.  Additionally event-level dimensions and measures are defined in this view. 
+The events view brings together the event level data defined in the various event_data_dimensions views.  Additionally event-level dimensions and measures are defined in this view.
 
-As the event data is a representation of the original source rows from your events_* tables, there are a mixture of single-value fields and simple nested fields, as well as  repeating key/value fields available within the unnested event_data fields. The single-value fields and simple nested fields are defined within this “events.view” file. The repeating key/value fields for the event parameters have been defined in “event_data_event_params.view”, and the repeating key/value fields for the user properties have been defined in “event_data_user_properties.view”. Both “event_data_event_params.view” and “event_data_user_properties.view” are extended into events.view. 
+As the event data is a representation of the original source rows from your events_* tables, there are a mixture of single-value fields and simple nested fields, as well as  repeating key/value fields available within the unnested event_data fields. The single-value fields and simple nested fields are defined within this “events.view” file. The repeating key/value fields for the event parameters have been defined in “event_data_event_params.view”, and the repeating key/value fields for the user properties have been defined in “event_data_user_properties.view”. Both “event_data_event_params.view” and “event_data_user_properties.view” are extended into events.view.
 
 The definition for a repeating key/value field uses the following format:
 (SELECT value.*value_type* FROM UNNEST(*nested_field*) WHERE key = "*key_value*")
 
 
-Here is an example of LookML used to define a nested dimension. 
+Here is an example of LookML used to define a nested dimension.
 dimension: event_param_all_data {
   group_label: "Event: Parameters"
   label: "All Data"
@@ -228,7 +226,7 @@ Similar to the event parameters, user properties are likely to include custom at
 This file is to facilitate the creation of custom cohorts for analysis, based on any data available. It is another view file that is extended into “events.view”, and not directly referenced in the model file. By default, the goals are centered around the event name and the “page” value for that event. It is expected that these default goal points will be customized or expanded on with the addition of custom events and/or event parameters. Instructions on how to add new goals, or new variables to filter on in the goal dashboard, are provided in the view file.
 
 “page_data.view”
-Another file that is extended into “events.view”, and not referenced in the model directly. Page Data takes advantage of the ‘page_view_rank’ and ‘reverse_page_view_rank’ fields inserted during the initial CTE of the sessions table. These fields allow for analysis of ‘page_view’ events within a session without the need for another derived table. 
+Another file that is extended into “events.view”, and not referenced in the model directly. Page Data takes advantage of the ‘page_view_rank’ and ‘reverse_page_view_rank’ fields inserted during the initial CTE of the sessions table. These fields allow for analysis of ‘page_view’ events within a session without the need for another derived table.
 
 Similar to how the landing and exit pages are obtained at the session-level, we are able to query within the scope of the session from within the unnested element. For example we can obtain the 3rd page view in a session with this dimension:
 
@@ -263,7 +261,7 @@ The “tag” dimensions are what qualifies subsequent page views for inclusion 
 
   dimension: page_1_tag {
     ...
-    sql: case when {% condition page_1_filter %} ${page_1} {% endcondition %} 
+    sql: case when {% condition page_1_filter %} ${page_1} {% endcondition %}
                      and ${page_1} is not null then 1 else 0 end ;;  }
 
   dimension: page_6_tag {
@@ -274,9 +272,9 @@ The “tag” dimensions are what qualifies subsequent page views for inclusion 
                and {% condition page_4_filter %} ${page_4} {% endcondition %}
                and {% condition page_5_filter %} ${page_5} {% endcondition %}
                and {% condition page_6_filter %} ${page_6} {% endcondition %}
-               and ${page_1} is not null and ${page_2} is not null and ${page_3} is not null 
-	   and ${page_4} is not null and ${page_5} is not null and ${page_6} is not null
-	   then 1 else 0 end ;;  }
+               and ${page_1} is not null and ${page_2} is not null and ${page_3} is not null
+     and ${page_4} is not null and ${page_5} is not null and ${page_6} is not null
+     then 1 else 0 end ;;  }
 
 “event_funnel.view”
 The event_funnel view is set up similarly to “page_funnel.view”, and is extended into “sessions.view” instead of being referenced in the model. As with the page_funnel, you can easily add/remove further iterations to the funnel by adding new dimensions with incrementing event_rank references. Due to the nature of the event data populated in GA4, it is possible for several (3 or more) events to fire with the exact same timestamp. For example: When a new user visits a site, they will generate “First Visit”, “Session Start”, and “Page View” events with identical event_timestamps. Due to this, the practicality of this funnel is limited without enhancing the event being pulled to include additional event parameters. Instead of “event_name”, another calculated dimension [such as “Full Event”] could be used, or additional filters to exclude events outside of the scope of the request could be added to increase the utility of this view.
