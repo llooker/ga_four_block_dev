@@ -173,6 +173,7 @@ This is the base view of the sessions explore of the GA4 model. While GA4 is eve
 - Landing/Exit Page. These dimensions sub-select within unnested event_data values to obtain the page_view events with the highest ‘page_view_rank’ and ‘reverse_page_view_rank’ values for each session.
 - Session Attribution Channel. This dimension is calculated on values from various session attribution fields, and its definition is based on the default channel groupings defined here https://support.google.com/analytics/answer/9756891.
 - Session Data Is Bounce?. “Bounce” is not a value present in the GA4 data. This determination is using session length, as all “single page view” sessions will also have a 0 session duration, fulfilling the requirements of traditional bounce determinations.
+- GA4 BQML Fields. These three fields are used when generating the BQML purchase propensity model. By default, the prediction_window_days parameter value is set on the predictions.view file where needed. These fields are commented out by default (See BQML under Notes).
 
 “events.view”
 The events view brings together the event level data defined in the various event_data_dimensions views.  Additionally event-level dimensions and measures are defined in this view.
