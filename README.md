@@ -158,6 +158,7 @@ The components of the GA4 Block are isolated into folders for the file type/purp
 - Explores. Explores have been separated from the model file for potential re-use/extension/refinement. The only explore included by default is “sessions”. This “sessions” explore is where the attributes defined above are being included, as well as all views utilized.
 - Models. The GA4 model file is present here. It includes the sessions explore, the LookML dashboards, and a datagroup specific to this model.
 - Views
+- - BQML Sub-Folder contains the predictions.view file that creates the BQML propensity model. This view is commented-out by default. (See BQML under Notes)
 - - Event Data Dimensions Sub-Folder contains views that are extended or unnested via the “Events” view in the parent folder.
 - The remaining files are the primary views not directly related to Events.
 - Other. manifest.lkml is present in the root directory, and is where the instance constants are defined.
@@ -303,10 +304,10 @@ The Custom Goal Conversions by default are only focused on Event Type and Page N
 
 * The initial run of the Incremental Persistent Derived Table will execute with a where clause of "WHERE 1=1". This will query all historical data in your GA4 Dataset across all date-partitioned tables. If you do not wish to have all historical data, you can add a hard date filter to the where clause within the "session\_list\_with\_event\_history" cte on sessions.view's derived table definition.
 * If you are utilizing user\_id instead of user\_pseudo\_id, you will need to replace references to the user\_pseudo\_id with user\_id in the derived key ("sl\_key") definition in sessions.view's derived table definition, and in the user-centric measure definitions.
-* BQML Customer Purchase Propensity Score: Earlier versions of this block included a demonstration of utilizing GA4 data to train a BQML customer purchase propensity score. To ease implementation costs, this has been removed. BQML Blocks remain available within the Looker Marketplace to facilitate this functionality, while also providing much more leverage of BigQuery ML's capabilities.
+* BQML Customer Purchase Propensity Score: This block includes a demonstration of utilizing GA4 data to train a BQML customer purchase propensity score. To ease implementation costs, this has been commented-out by default. To implement this feature, uncomment the BQML View Files and BQML Fields on the sessions.view file.
 
 ## Coming Soon
-1. Leverage advanced analytics to be able to predict which customers are likely to make another purchase in the future based off of their historical actions. This leverages the out of the box BQML capabilities of BigQuery that you can read up on here
+1. Leverage advanced analytics to be able to predict which customers are likely to make another purchase in the future based off of their historical actions.
 2. Better understand your customers by looking at their natural pathing through pages and events through your pages alongside the ability to create completely custom page and event paths to conduct any A/B testing to see how customers are trending.
 3. You can look at the successes of your marketing campaigns as well by using the campaign impact dashboard to identify a specific cohort of customers you targeted with a campaign and seeing how that particular customer base has trended over time to see if the campaign had any effect.
 4. Looker will offer an out of the box data action to enable you to push data back into your GA console.
