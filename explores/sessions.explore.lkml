@@ -36,4 +36,10 @@ explore: sessions {
     sql_on: ${sessions.user_pseudo_id} = ${user_segment.user_pseudo_id} ;;
     relationship: many_to_one
   }
+
+  # join: future_purchase_prediction {
+  #   view_label: "BQML"
+  #   relationship: one_to_one
+  #   sql_on: ${sessions.sl_key} = ${future_purchase_prediction.sl_key} ;;
+  # }
 }
