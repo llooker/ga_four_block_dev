@@ -1,4 +1,5 @@
 view: search_list {
+## UPDATED: 2022-07-22
 
   derived_table: {
     sql: with to_split as (SELECT ["360.cn",
