@@ -436,30 +436,87 @@ extends: [event_funnel, page_funnel]
       group_label: "Session Traffic Source"
       label: "Channel"
       description: "Default Channel Grouping as defined in https://support.google.com/analytics/answer/9756891?hl=en"
-      sql: case when ${session_attribution_source} = '(direct)'
+      ## UPDATED: 2022-07-27
+      sql: case 
+                -- DIRECT
+                when ${session_attribution_source} = '(direct)'
                  and (${session_attribution_medium} = '(none)' or ${session_attribution_medium} = '(not set)')
                   then 'Direct'
-                when ${session_attribution_medium} = 'organic'
-                  then 'Organic Search'
-                when REGEXP_CONTAINS(${session_attribution_source}, r"^(facebook|instagram|pinterest|reddit|twitter|linkedin)") = true
-                 and REGEXP_CONTAINS(${session_attribution_medium}, r"^(cpc|ppc|paid)") = true
+                  
+                -- CROSS-NETWORK
+                when ${session_attribution_campaign} like '%cross-network%'
+                  then 'Cross-Network'
+                
+                -- PAID SHOPPING
+                when (${session_attribution_source} IN (SELECT sl FROM ${shopping_list.SQL_TABLE_NAME})
+                  or REGEXP_CONTAINS(${session_attribution_campaign}, r"^(.*(([^a-df-z]|^)shop|shopping).*)$") = true )
+                 and REGEXP_CONTAINS(${session_attribution_medium}, r"^(.*cp.*|ppc|paid.*)$") = true
+                  then 'Paid Shopping'
+                  
+                -- PAID SEARCH
+                when ${session_attribution_source} IN (SELECT sl FROM ${search_list.SQL_TABLE_NAME})
+                 and REGEXP_CONTAINS(${session_attribution_medium}, r"^(.*cp.*|ppc|paid.*)$") = true
+                  then 'Paid Search'
+
+                -- PAID SOCIAL
+                when ${session_attribution_source} IN (SELECT sl FROM ${social_list.SQL_TABLE_NAME})
+                 and REGEXP_CONTAINS(${session_attribution_medium}, r"^(.*cp.*|ppc|paid.*)$") = true
                   then 'Paid Social'
-                when REGEXP_CONTAINS(${session_attribution_source}, r"^(facebook|instagram|pinterest|reddit|twitter|linkedin)") = true
-                  or REGEXP_CONTAINS(${session_attribution_medium}, r"^(social|social-network|social-media|sm|social network|social media)") = true
+                
+                -- PAID VIDEO
+                when ${session_attribution_source} IN (SELECT sl FROM ${video_list.SQL_TABLE_NAME})
+                 and REGEXP_CONTAINS(${session_attribution_medium}, r"^(.*cp.*|ppc|paid.*)$") = true
+                  then 'Paid Video'
+                  
+                -- DISPLAY
+                when REGEXP_CONTAINS(${session_attribution_medium}, r"^(display|cpm|banner|expandable|interstitial)$")
+                  then 'Display'
+                
+                -- ORGANIC SHOPPING
+                when ${session_attribution_source} IN (SELECT sl FROM ${shopping_list.SQL_TABLE_NAME})
+                  or REGEXP_CONTAINS(${session_attribution_campaign}, r"^(.*(([^a-df-z]|^)shop|shopping).*)$") = true
+                  then 'Organic Shopping'
+                
+                -- ORGANIC SOCIAL
+                when ${session_attribution_source} IN (SELECT sl FROM ${social_list.SQL_TABLE_NAME})
+                  or REGEXP_CONTAINS(${session_attribution_medium}, r"(social|social-network|social-media|sm|social network|social media)") = true
                   then 'Organic Social'
+                
+                -- ORGANIC VIDEO
+                when ${session_attribution_source} IN (SELECT sl FROM ${video_list.SQL_TABLE_NAME})
+                  or REGEXP_CONTAINS(${session_attribution_medium}, r"^(.*video.*)$") = true
+                  then 'Organic Video'
+                
+                -- ORGANIC SEARCH
+                when ${session_attribution_source} IN (SELECT sl FROM ${search_list.SQL_TABLE_NAME})
+                  or ${session_attribution_medium} = 'organic'
+                  then 'Organic Search'
+                  
+                -- EMAIL
                 when REGEXP_CONTAINS(${session_attribution_medium}, r"email|e-mail|e_mail|e mail") = true
                   or REGEXP_CONTAINS(${session_attribution_source}, r"email|e-mail|e_mail|e mail") = true
                   then 'Email'
+                
+                -- AFFILIATES
                 when REGEXP_CONTAINS(${session_attribution_medium}, r"affiliate|affiliates") = true
                   then 'Affiliates'
+                
+                -- REFERRAL
                 when ${session_attribution_medium} = 'referral'
                   then 'Referral'
-                when REGEXP_CONTAINS(${session_attribution_medium}, r"^(cpc|ppc|paidsearch)$")
-                  then 'Paid Search'
-                when REGEXP_CONTAINS(${session_attribution_medium}, r"^(display|cpm|banner)$")
-                  then 'Display'
-                when REGEXP_CONTAINS(${session_attribution_medium}, r"^(cpv|cpa|cpp|content-text)$")
-                  then 'Other Advertising'
+                
+                -- AUDIO
+                when ${session_attribution_medium} = 'audio'
+                  then 'Audio'
+                  
+                -- SMS
+                when ${session_attribution_medium} = 'sms'
+                  then 'SMS'
+                
+                -- MOBILE PUSH NOTIFICATIONS
+                when ${session_attribution_medium} like '%push'
+                  or REGEXP_CONTAINS(${session_attribution_medium}, r"^(mobile|notification)$")
+                  then 'Mobile Push Notifications'
                 else '(Other)' end ;;
     }
 
