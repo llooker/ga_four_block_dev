@@ -41,7 +41,7 @@ extends: [event_funnel, page_funnel]
     type: string
     sql: ${TABLE}.sl_key ;;
     primary_key: yes
-    hidden: yes
+    hidden: no
   }
 
   dimension_group: session {
