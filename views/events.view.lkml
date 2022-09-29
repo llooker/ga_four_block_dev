@@ -36,6 +36,13 @@ view: events {
     full_suggestions: yes
   }
 
+  dimension: user_id {
+    label: "Kraken User ID"
+    type: string
+    sql:  ${TABLE}.user_id ;;
+    description: "The Kraken User ID associated with the event"
+  }
+
   dimension: reverse_event_rank {
     label: "Reverse Event Rank"
     type: number
