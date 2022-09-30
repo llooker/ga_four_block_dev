@@ -37,6 +37,12 @@ explore: sessions {
     relationship: many_to_one
   }
 
+  join: kraken_user_facts {
+    relationship: many_to_one
+    view_label: "Kraken User Facts"
+    sql_on: ${kraken_user_facts.sl_key} = ${sessions.sl_key};;
+  }
+
   # join: future_purchase_prediction {
   #   view_label: "BQML"
   #   relationship: one_to_one
