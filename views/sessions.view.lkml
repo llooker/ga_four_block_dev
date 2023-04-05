@@ -326,7 +326,9 @@ extends: [event_funnel, page_funnel]
         'tiktok.com','tinyurl','tinyurl.com','toolbox','toolbox.com','touch.facebook.com','tr.pinterest.com','travellerspoint','travellerspoint.com','tripadvisor','tripadvisor.com','trombi','trombi.com','tudou','tudou.com','tuenti','tuenti.com','tumblr','tumblr.com','tweetdeck','tweetdeck.com',
         'twitter','twitter.com','twoo.com','typepad','typepad.com','unblog.fr','urbanspoon.com','ushareit.com','ushi.cn','vampirefreaks','vampirefreaks.com','vampirerave','vampirerave.com','vg.no','video.ibm.com','vk.com','vkontakte.ru','wakoopa','wakoopa.com','wattpad','wattpad.com','web.facebook.com',
         'web.skype.com','webshots','webshots.com','wechat','wechat.com','weebly','weebly.com','weibo','weibo.com','wer-weiss-was.de','weread','weread.com','whatsapp','whatsapp.com','wiki.answers.com','wikihow.com','wikitravel.org','woot.com','wordpress','wordpress.com','wordpress.org','xanga',
-        'xanga.com','xing','xing.com','yahoo-mbga.jp','yammer','yammer.com','yelp','yelp.co.uk','yelp.com','youroom.in','za.pinterest.com','zalo','zoo.gr','zooppa','zooppa.com'
+        'xanga.com','xing','xing.com','yahoo-mbga.jp','yammer','yammer.com','yelp','yelp.co.uk','yelp.com','youroom.in','za.pinterest.com','zalo','zoo.gr','zooppa','zooppa.com',
+
+        'Instagram_Stories','Instagram_Feed','Facebook_Mobile_Feed','Instagram_Reels','Facebook_Desktop_Feed'
         )
       and REGEXP_CONTAINS(${session_attribution_medium}, r"^(.*cp.*|ppc|paid.*)$") = true
       then 'Paid Social'
@@ -393,7 +395,9 @@ extends: [event_funnel, page_funnel]
         'tiktok.com','tinyurl','tinyurl.com','toolbox','toolbox.com','touch.facebook.com','tr.pinterest.com','travellerspoint','travellerspoint.com','tripadvisor','tripadvisor.com','trombi','trombi.com','tudou','tudou.com','tuenti','tuenti.com','tumblr','tumblr.com','tweetdeck','tweetdeck.com',
         'twitter','twitter.com','twoo.com','typepad','typepad.com','unblog.fr','urbanspoon.com','ushareit.com','ushi.cn','vampirefreaks','vampirefreaks.com','vampirerave','vampirerave.com','vg.no','video.ibm.com','vk.com','vkontakte.ru','wakoopa','wakoopa.com','wattpad','wattpad.com','web.facebook.com',
         'web.skype.com','webshots','webshots.com','wechat','wechat.com','weebly','weebly.com','weibo','weibo.com','wer-weiss-was.de','weread','weread.com','whatsapp','whatsapp.com','wiki.answers.com','wikihow.com','wikitravel.org','woot.com','wordpress','wordpress.com','wordpress.org','xanga',
-        'xanga.com','xing','xing.com','yahoo-mbga.jp','yammer','yammer.com','yelp','yelp.co.uk','yelp.com','youroom.in','za.pinterest.com','zalo','zoo.gr','zooppa','zooppa.com'
+        'xanga.com','xing','xing.com','yahoo-mbga.jp','yammer','yammer.com','yelp','yelp.co.uk','yelp.com','youroom.in','za.pinterest.com','zalo','zoo.gr','zooppa','zooppa.com',
+
+        'Instagram_Stories','Instagram_Feed','Facebook_Mobile_Feed','Instagram_Reels','Facebook_Desktop_Feed'
       )
       or REGEXP_CONTAINS(${session_attribution_medium}, r"(social|social-network|social-media|sm|social network|social media)") = true
       then 'Organic Social'
