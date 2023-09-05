@@ -175,4 +175,259 @@ view: event_data_event_params {
     full_suggestions: yes
   }
 
+  ########## CUSTOM PARAMS
+
+  dimension: custom_add_one_more_hour_action {
+    group_label: "Event: Additional Parameters"
+    label: "add_one_more_hour_action"
+    type: string
+    sql: (SELECT value.string_value FROM UNNEST(event_params) WHERE key = 'add_one_more_hour_action') ;;
+  }
+
+dimension: custom_add_one_more_hour_amount {
+    group_label: "Event: Additional Parameters"
+    label: "add_one_more_hour_amount"
+    type: string
+    sql: (SELECT value.double_value FROM UNNEST(event_params) WHERE key = 'add_one_more_hour_amount') ;;
+  }
+
+dimension: custom_book_again_type {
+    group_label: "Event: Additional Parameters"
+    label: "book_again_type"
+    type: string
+    sql: (SELECT value.string_value FROM UNNEST(event_params) WHERE key = 'book_again_type') ;;
+  }
+
+dimension: custom_coupon {
+    group_label: "Event: Additional Parameters"
+    label: "coupon"
+    type: string
+    sql: (SELECT value.string_value FROM UNNEST(event_params) WHERE key = 'coupon') ;;
+  }
+
+dimension: custom_error_message_category {
+    group_label: "Event: Additional Parameters"
+    label: "error_message_category"
+    type: string
+    sql: (SELECT value.string_value FROM UNNEST(event_params) WHERE key = 'error_message_category') ;;
+  }
+
+dimension: custom_error_message_label {
+    group_label: "Event: Additional Parameters"
+    label: "error_message_label"
+    type: string
+    sql: (SELECT value.string_value FROM UNNEST(event_params) WHERE key = 'error_message_label') ;;
+  }
+
+dimension: custom_ignore_referrer {
+    group_label: "Event: Additional Parameters"
+    label: "ignore_referrer"
+    type: string
+    sql: (SELECT value.string_value FROM UNNEST(event_params) WHERE key = 'ignore_referrer') ;;
+  }
+
+dimension: custom_item_list_id {
+    group_label: "Event: Additional Parameters"
+    label: "item_list_id"
+    type: string
+    sql: (SELECT value.string_value FROM UNNEST(event_params) WHERE key = 'item_list_id') ;;
+  }
+
+dimension: custom_item_list_name {
+    group_label: "Event: Additional Parameters"
+    label: "item_list_name"
+    type: string
+    sql: (SELECT value.string_value FROM UNNEST(event_params) WHERE key = 'item_list_name') ;;
+  }
+
+dimension: custom_om_campaign_name {
+    group_label: "Event: Additional Parameters"
+    label: "om_campaign_name"
+    type: string
+    sql: (SELECT value.string_value FROM UNNEST(event_params) WHERE key = 'om_campaign_name') ;;
+  }
+
+dimension: custom_payment_type {
+    group_label: "Event: Additional Parameters"
+    label: "payment_type"
+    type: string
+    sql: (SELECT value.string_value FROM UNNEST(event_params) WHERE key = 'payment_type') ;;
+  }
+
+dimension: custom_promotion_amount {
+    group_label: "Event: Additional Parameters"
+    label: "promotion_amount"
+    type: string
+    sql: (SELECT value.double_value FROM UNNEST(event_params) WHERE key = 'promotion_amount') ;;
+  }
+
+dimension: custom_promotion_name {
+    group_label: "Event: Additional Parameters"
+    label: "promotion_name"
+    type: string
+    sql: (SELECT value.string_value FROM UNNEST(event_params) WHERE key = 'promotion_name') ;;
+  }
+
+dimension: custom_promotion_type {
+    group_label: "Event: Additional Parameters"
+    label: "promotion_type"
+    type: string
+    sql: (SELECT value.string_value FROM UNNEST(event_params) WHERE key = 'promotion_type') ;;
+  }
+
+dimension: custom_purchased_day {
+    group_label: "Event: Additional Parameters"
+    label: "purchased_day"
+    type: string
+    sql: (SELECT value.string_value FROM UNNEST(event_params) WHERE key = 'purchased_day') ;;
+  }
+
+dimension: custom_purchased_duration {
+    group_label: "Event: Additional Parameters"
+    label: "purchased_duration"
+    type: string
+    sql: (SELECT value.int_value FROM UNNEST(event_params) WHERE key = 'purchased_duration') ;;
+  }
+
+dimension: custom_purchased_product {
+    group_label: "Event: Additional Parameters"
+    label: "purchased_product"
+    type: string
+    sql: (SELECT value.string_value FROM UNNEST(event_params) WHERE key = 'purchased_product') ;;
+  }
+
+dimension: custom_purchased_site {
+    group_label: "Event: Additional Parameters"
+    label: "purchased_site"
+    type: string
+    sql: (SELECT value.string_value FROM UNNEST(event_params) WHERE key = 'purchased_site') ;;
+  }
+
+dimension: custom_purchased_subtype {
+    group_label: "Event: Additional Parameters"
+    label: "purchased_subtype"
+    type: string
+    sql: (SELECT value.string_value FROM UNNEST(event_params) WHERE key = 'purchased_subtype') ;;
+  }
+
+dimension: custom_raf_share_location_method {
+    group_label: "Event: Additional Parameters"
+    label: "raf_share_location_method"
+    type: string
+    sql: (SELECT value.string_value FROM UNNEST(event_params) WHERE key = 'raf_share_location_method') ;;
+  }
+
+dimension: custom_referral_show_or_hide {
+    group_label: "Event: Additional Parameters"
+    label: "referral_show_or_hide"
+    type: string
+    sql: (SELECT value.string_value FROM UNNEST(event_params) WHERE key = 'referral_show_or_hide') ;;
+  }
+
+dimension: custom_search_count_for_sessions {
+    group_label: "Event: Additional Parameters"
+    label: "search_count_for_sessions"
+    type: string
+    sql: (SELECT value.int_value FROM UNNEST(event_params) WHERE key = 'search_count_for_sessions') ;;
+  }
+
+dimension: custom_search_results_count {
+    group_label: "Event: Additional Parameters"
+    label: "search_results_count"
+    type: string
+    sql: (SELECT value.int_value FROM UNNEST(event_params) WHERE key = 'search_results_count') ;;
+  }
+
+dimension: custom_search_results_returned {
+    group_label: "Event: Additional Parameters"
+    label: "search_results_returned"
+    type: string
+    sql: (SELECT value.int_value FROM UNNEST(event_params) WHERE key = 'search_results_returned') ;;
+  }
+
+dimension: custom_search_term {
+    group_label: "Event: Additional Parameters"
+    label: "search_term"
+    type: string
+    sql: (SELECT value.string_value FROM UNNEST(event_params) WHERE key = 'search_term') ;;
+  }
+
+dimension: custom_searched_for_day {
+    group_label: "Event: Additional Parameters"
+    label: "searched_for_day"
+    type: string
+    sql: (SELECT value.string_value FROM UNNEST(event_params) WHERE key = 'searched_for_day') ;;
+  }
+
+dimension: custom_searched_for_day_of_week {
+    group_label: "Event: Additional Parameters"
+    label: "searched_for_day_of_week"
+    type: string
+    sql: (SELECT value.string_value FROM UNNEST(event_params) WHERE key = 'searched_for_day_of_week') ;;
+  }
+
+dimension: custom_searched_for_duration {
+    group_label: "Event: Additional Parameters"
+    label: "searched_for_duration"
+    type: string
+    sql: (SELECT value.int_value FROM UNNEST(event_params) WHERE key = 'searched_for_duration') ;;
+  }
+
+dimension: custom_searched_for_site {
+    group_label: "Event: Additional Parameters"
+    label: "searched_for_site"
+    type: string
+    sql: (SELECT value.string_value FROM UNNEST(event_params) WHERE key = 'searched_for_site') ;;
+  }
+
+dimension: custom_searched_for_subtype {
+    group_label: "Event: Additional Parameters"
+    label: "searched_for_subtype"
+    type: string
+    sql: (SELECT value.int_value FROM UNNEST(event_params) WHERE key = 'searched_for_subtype') ;;
+  }
+
+dimension: custom_searched_for_time {
+    group_label: "Event: Additional Parameters"
+    label: "searched_for_time"
+    type: string
+    sql: (SELECT value.int_value FROM UNNEST(event_params) WHERE key = 'searched_for_time') ;;
+  }
+
+dimension: custom_searched_for_type {
+    group_label: "Event: Additional Parameters"
+    label: "searched_for_type"
+    type: string
+    sql: (SELECT value.string_value FROM UNNEST(event_params) WHERE key = 'searched_for_type') ;;
+  }
+
+dimension: custom_selected_room_availability {
+    group_label: "Event: Additional Parameters"
+    label: "selected_room_availability"
+    type: string
+    sql: (SELECT value.string_value FROM UNNEST(event_params) WHERE key = 'selected_room_availability') ;;
+  }
+
+dimension: custom_transaction_id {
+    group_label: "Event: Additional Parameters"
+    label: "transaction_id"
+    type: string
+    sql: (SELECT value.string_value FROM UNNEST(event_params) WHERE key = 'transaction_id') ;;
+  }
+
+dimension: custom_value {
+    group_label: "Event: Additional Parameters"
+    label: "value"
+    type: string
+    sql: (SELECT value.int_value FROM UNNEST(event_params) WHERE key = 'value') ;;
+  }
+
+dimension: custom_verification_screen {
+    group_label: "Event: Additional Parameters"
+    label: "verification_screen"
+    type: string
+    sql: (SELECT value.string_value FROM UNNEST(event_params) WHERE key = 'verification_screen') ;;
+  }
+
+
 }
