@@ -285,7 +285,7 @@ dimension: custom_purchased_day {
 dimension: custom_purchased_duration {
     group_label: "Event: Additional Parameters"
     label: "purchased_duration"
-    type: string
+    type: number
     sql: (SELECT value.int_value FROM UNNEST(event_params) WHERE key = 'purchased_duration') ;;
   }
 
@@ -327,21 +327,21 @@ dimension: custom_referral_show_or_hide {
 dimension: custom_search_count_for_sessions {
     group_label: "Event: Additional Parameters"
     label: "search_count_for_sessions"
-    type: string
+    type: number
     sql: (SELECT value.int_value FROM UNNEST(event_params) WHERE key = 'search_count_for_sessions') ;;
   }
 
 dimension: custom_search_results_count {
     group_label: "Event: Additional Parameters"
     label: "search_results_count"
-    type: string
+    type: number
     sql: (SELECT value.int_value FROM UNNEST(event_params) WHERE key = 'search_results_count') ;;
   }
 
 dimension: custom_search_results_returned {
     group_label: "Event: Additional Parameters"
     label: "search_results_returned"
-    type: string
+    type: number
     sql: (SELECT value.int_value FROM UNNEST(event_params) WHERE key = 'search_results_returned') ;;
   }
 
