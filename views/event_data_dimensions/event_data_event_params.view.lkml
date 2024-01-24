@@ -428,6 +428,55 @@ dimension: custom_verification_screen {
     type: string
     sql: (SELECT value.string_value FROM UNNEST(event_params) WHERE key = 'verification_screen') ;;
   }
+##
+  dimension: custom_alternative_slot_time_count {
+    group_label: "Event: Additional Parameters"
+    label: "alternative_slot_time_count"
+    type: number
+    sql: (SELECT value.int_value FROM UNNEST(event_params) WHERE key = 'alternative_slot_time_count') ;;
+  }
+
+  dimension: custom_alternative_slot_time_variance {
+    group_label: "Event: Additional Parameters"
+    label: "alternative_slot_time_variance"
+    type: number
+    sql: (SELECT value.int_value FROM UNNEST(event_params) WHERE key = 'alternative_slot_time_variance') ;;
+  }
+
+  dimension: custom_next_available_slots_count {
+    group_label: "Event: Additional Parameters"
+    label: "next_available_slots_count"
+    type: number
+    sql: (SELECT value.int_value FROM UNNEST(event_params) WHERE key = 'next_available_slots_count') ;;
+  }
+
+  dimension: custom_previous_available_slots_count {
+    group_label: "Event: Additional Parameters"
+    label: "previous_available_slots_count"
+    type: number
+    sql: (SELECT value.int_value FROM UNNEST(event_params) WHERE key = 'previous_available_slots_count') ;;
+  }
+
+  dimension: custom_same_available_slots_count {
+    group_label: "Event: Additional Parameters"
+    label: "same_available_slots_count"
+    type: number
+    sql: (SELECT value.int_value FROM UNNEST(event_params) WHERE key = 'same_available_slots_count') ;;
+  }
+
+  dimension: custom_day_viewed {
+    group_label: "Event: Additional Parameters"
+    label: "day_viewed"
+    type: string
+    sql: (SELECT value.string_value FROM UNNEST(event_params) WHERE key = 'day_viewed') ;;
+  }
+
+  dimension: custom_braze_banner_campaign {
+    group_label: "Event: Additional Parameters"
+    label: "braze_banner_campaign"
+    type: string
+    sql: (SELECT value.string_value FROM UNNEST(event_params) WHERE key = 'braze_banner_campaign') ;;
+  }
 
 
 }
