@@ -478,5 +478,12 @@ dimension: custom_verification_screen {
     sql: (SELECT value.string_value FROM UNNEST(event_params) WHERE key = 'braze_banner_campaign') ;;
   }
 
+  dimension: ab_test_bucket {
+    group_label: "Event: Additional Parameters"
+    label: "ab_test_bucket"
+    type: string
+    sql: (SELECT value.string_value FROM UNNEST(user_properties) WHERE key = 'ab_test_bucket') ;;
+  }
+
 
 }
