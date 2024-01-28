@@ -485,5 +485,12 @@ dimension: custom_verification_screen {
     sql: (SELECT value.string_value FROM UNNEST(user_properties) WHERE key = 'ab_test_bucket') ;;
   }
 
+  dimension: experiment_1_bucket {
+    group_label: "Event: Additional Parameters"
+    label: "experiment_1_bucket"
+    type: number
+    sql: (SELECT value.int_value FROM UNNEST(user_properties) WHERE key = 'experiment_1_bucket') ;;
+  }
+
 
 }
