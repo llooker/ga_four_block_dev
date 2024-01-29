@@ -86,6 +86,13 @@ extends: [event_funnel, page_funnel]
     ## It is necessary for proper unnesting in the model Join.
   }
 
+  dimension: event_names_list {
+    group_label: "Session: Additional Parameters"
+    sql: (SELECT STRING_AGG(DISTINCT event_history.event_name)
+          FROM UNNEST(sessions.event_data) as event_history
+          WHERE event_history.sl_key = sessions.sl_key) ;;
+  }
+
   dimension: audience_trait {
     view_label: "Audience"
     group_label: "Audience Cohorts"
