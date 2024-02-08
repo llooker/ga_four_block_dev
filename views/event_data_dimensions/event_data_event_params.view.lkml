@@ -369,7 +369,7 @@ dimension: custom_searched_for_day_of_week {
 dimension: custom_searched_for_duration {
     group_label: "Event: Additional Parameters"
     label: "searched_for_duration"
-    type: string
+    type: number
     sql: (SELECT value.int_value FROM UNNEST(event_params) WHERE key = 'searched_for_duration') ;;
   }
 
@@ -384,7 +384,7 @@ dimension: custom_searched_for_subtype {
     group_label: "Event: Additional Parameters"
     label: "searched_for_subtype"
     type: string
-    sql: (SELECT value.int_value FROM UNNEST(event_params) WHERE key = 'searched_for_subtype') ;;
+    sql: (SELECT value.string_value FROM UNNEST(event_params) WHERE key = 'searched_for_subtype') ;;
   }
 
 dimension: custom_searched_for_time {
@@ -419,7 +419,7 @@ dimension: custom_value {
     group_label: "Event: Additional Parameters"
     label: "value"
     type: string
-    sql: (SELECT value.int_value FROM UNNEST(event_params) WHERE key = 'value') ;;
+    sql: (SELECT value.string_value FROM UNNEST(event_params) WHERE key = 'value') ;;
   }
 
 dimension: custom_verification_screen {
