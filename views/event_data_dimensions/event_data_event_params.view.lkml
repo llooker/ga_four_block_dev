@@ -390,7 +390,7 @@ dimension: custom_searched_for_subtype {
 dimension: custom_searched_for_time {
     group_label: "Event: Additional Parameters"
     label: "searched_for_time"
-    type: string
+    type: number
     sql: (SELECT value.int_value FROM UNNEST(event_params) WHERE key = 'searched_for_time') ;;
   }
 
