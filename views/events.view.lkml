@@ -495,8 +495,15 @@ view: events {
 
   ## User Fields
   dimension: user_first_touch_timestamp {
+    label: "User First Touch Timestamp UNIX"
     type: number
     sql: ${TABLE}.user_first_touch_timestamp ;;
+  }
+
+  dimension: user_first_touch_timestamp_ts {
+    label: "User First Touch Timestamp"
+    type: date_time
+    sql: TIMESTAMP_MICROS(${TABLE}.user_first_touch_timestamp) ;;
   }
 
   dimension: user_ltv__currency {
