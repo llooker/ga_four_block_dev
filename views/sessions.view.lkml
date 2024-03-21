@@ -2,17 +2,7 @@ include: "/views/event_data_dimensions/event_funnel.view"
 include: "/views/event_data_dimensions/page_funnel.view"
 
 view: sessions {
-  derived_table: {
-    datagroup_trigger: ga4_default_datagroup
-    partition_keys: ["session_date"]
-    cluster_keys: ["session_date"]
-    #increment_key: "session_date"
-    #increment_offset: 3
-    sql:
-    select *
-    from pirate_dbt_prod.ga_sessions
-   ;;
-  }
+  sql_table_name: pirate_dbt_prod.ga_sessions ;;
 
 extends: [event_funnel, page_funnel]
 
