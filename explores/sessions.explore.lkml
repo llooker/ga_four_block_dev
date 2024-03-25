@@ -5,6 +5,10 @@ include: "/attributes/*.lkml"
 explore: sessions {
   label: "GA4 Sessions"
   description: "Explores Google Analytics sessions data."
+  always_filter: {
+    filters: [sessions.session_date: "7 days"]
+  }
+
 
   join: audience_cohorts {
     type: left_outer
