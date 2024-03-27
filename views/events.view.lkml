@@ -36,6 +36,13 @@ view: events {
     full_suggestions: yes
   }
 
+  dimension: user_id {
+    label: "Kraken User ID"
+    type: string
+    sql:  ${TABLE}.user_id ;;
+    description: "The Kraken User ID associated with the event"
+  }
+
   dimension: reverse_event_rank {
     label: "Reverse Event Rank"
     type: number
@@ -488,8 +495,15 @@ view: events {
 
   ## User Fields
   dimension: user_first_touch_timestamp {
+    label: "User First Touch Timestamp UNIX"
     type: number
     sql: ${TABLE}.user_first_touch_timestamp ;;
+  }
+
+  dimension: user_first_touch_timestamp_ts {
+    label: "User First Touch Timestamp"
+    type: date_time
+    sql: TIMESTAMP_MICROS(${TABLE}.user_first_touch_timestamp) ;;
   }
 
   dimension: user_ltv__currency {

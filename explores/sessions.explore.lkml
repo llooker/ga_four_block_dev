@@ -5,6 +5,10 @@ include: "/attributes/*.lkml"
 explore: sessions {
   label: "GA4 Sessions"
   description: "Explores Google Analytics sessions data."
+  always_filter: {
+    filters: [sessions.session_date: "7 days"]
+  }
+
 
   join: audience_cohorts {
     type: left_outer
@@ -35,6 +39,12 @@ explore: sessions {
     type: left_outer
     sql_on: ${sessions.user_pseudo_id} = ${user_segment.user_pseudo_id} ;;
     relationship: many_to_one
+  }
+
+  join: kraken_user_facts {
+    relationship: many_to_one
+    view_label: "Kraken User Facts"
+    sql_on: ${kraken_user_facts.sl_key} = ${sessions.sl_key};;
   }
 
   # join: future_purchase_prediction {
