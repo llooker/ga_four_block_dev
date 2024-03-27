@@ -14,11 +14,11 @@ extends: [event_funnel, page_funnel]
     type: unquoted
     default_value: "ga_sessions_degranulated"
     allowed_value: {
-      label: "Degranulated"
+      label: "Fast"
       value: "ga_sessions_degranulated"
     }
     allowed_value: {
-      label: "Complete"
+      label: "Slow"
       value: "ga_sessions"
     }
   }
