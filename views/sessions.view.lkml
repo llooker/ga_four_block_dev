@@ -2,11 +2,26 @@ include: "/views/event_data_dimensions/event_funnel.view"
 include: "/views/event_data_dimensions/page_funnel.view"
 
 view: sessions {
-  sql_table_name: pirate_dbt_prod.ga_sessions_degranulated ;;
+  sql_table_name: pirate_dbt_prod.{% parameter ${ga_version} %} ;;
 
 extends: [event_funnel, page_funnel]
 
 ## Parameters
+
+  parameter: ga_version {
+    label: "GA version"
+    view_label: "Sessions"
+    type: unquoted
+    default_value: "ga_sessions_degranulated"
+    allowed_value: {
+      label: "Degranulated"
+      value: "ga_sessions_degranulated"
+    }
+    allowed_value: {
+      label: "Complete"
+      value: "ga_sessions"
+    }
+  }
 
   parameter: audience_selector {
     view_label: "Audience"
